@@ -28,7 +28,7 @@ export default function Page() {
     },
     {
       title: "Healthcare Cost Prediction",
-      link: "https://www.kaggle.com/ahmedmessaad/healthcostpridiction",
+      link: "https://www.kaggle.com/code/ahmedmessaad/healthcare-cost-prediction-using-neural-networks",
       date: "2024",
       desc: "Conv1D neural network achieving R² = 0.8793 for healthcare cost forecasting with comprehensive feature engineering and statistical analysis.",
       tech: ["Conv1D", "Feature Engineering", "Plotly"],
