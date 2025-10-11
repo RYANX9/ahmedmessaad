@@ -161,6 +161,7 @@ export default function Page() {
           </div>
           <div className="hidden sm:block text-xs text-gray-300">•</div>
           <div className="text-xs text-gray-300">M'sila, Algeria</div>
+          <div className="hidden sm:block text-xs text-gray-300">•</div>
           <a href="mailto:ahmed.messaad@outlook.com" className="text-xs underline underline-offset-2 hover:text-white transition-colors">ahmed.messaad@outlook.com</a>
         </motion.div>
       </div>
