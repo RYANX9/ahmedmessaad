@@ -1,225 +1,168 @@
-"use client";
+"use client"
 
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Briefcase, FlaskConical, Sparkle, Sparkles, Code2, Globe } from "lucide-react";
 
 export default function Page() {
-  const pages = [
-    "Home",
-    "About",
-    "Projects",
-    "Skills",
-    "Contact",
+  const projects = [
+    {
+      title: "AIRM Brain Tumor System",
+      link: "https://youtu.be/2OeqBKF3X_A",
+      date: "2024",
+      desc: "99% accuracy brain tumor classification using EfficientNet-B7. Complete DICOM integration with PyQt5 clinical interface for real-world deployment.",
+      tech: ["PyTorch", "EfficientNet-B7", "DICOM", "PyQt5"],
+    },
+    {
+      title: "HemaVision",
+      link: "https://youtu.be/YxhA877Wyn0",
+      date: "2023–2024",
+      desc: "Complete blood analysis system: automated cell detection, segmentation, counting & classification (97% accuracy) with organized table display — eliminating manual microscopy.",
+      tech: ["YOLOv8", "OpenCV", "ResNet", "Disease Classification"],
+    },
+    {
+      title: "My Daily Health",
+      link: "https://youtu.be/kh7WBjNPpEM",
+      date: "2023",
+      desc: "Multi-disease AI diagnostic ensemble (90-99% accuracy) combining ResNet50, DenseNet121 & EfficientNet-B3 with interpretable real-time predictions.",
+      tech: ["TensorFlow", "Keras", "Transfer Learning", "Tkinter"],
+    },
+    {
+      title: "Healthcare Cost Prediction",
+      link: "https://www.kaggle.com/code/ahmedmessaad/healthcare-cost-prediction-using-neural-networks",
+      date: "2024",
+      desc: "Conv1D neural network achieving R² = 0.8793 for healthcare cost forecasting with comprehensive feature engineering and statistical analysis.",
+      tech: ["Conv1D", "Feature Engineering", "Plotly"],
+    },
   ];
 
-  const [index, setIndex] = useState(0);
+  const [current, setCurrent] = useState(0);
 
-  useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "ArrowRight") setIndex((i) => Math.min(i + 1, pages.length - 1));
-      if (e.key === "ArrowLeft") setIndex((i) => Math.max(i - 1, 0));
-      if (e.key === "Home") setIndex(0);
-      if (e.key === "End") setIndex(pages.length - 1);
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  const nextProject = () => setCurrent((prev) => (prev + 1) % projects.length);
+  const prevProject = () => setCurrent((prev) => (prev - 1 + projects.length) % projects.length);
 
   return (
-    <main className="w-screen h-screen overflow-hidden bg-neutral-50 text-neutral-900 font-sans">
-      <div className="absolute top-6 left-6 z-30">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-600 to-violet-500 flex items-center justify-center text-white font-semibold">AM</div>
-          <div className="hidden sm:block">
-            <div className="text-sm">Ahmed Messaad</div>
-            <div className="text-xs text-neutral-500">AI / ML Researcher • M’sila, Algeria</div>
+    <main className="min-h-screen w-full bg-[#0f1115] text-gray-100 font-sans flex flex-col py-8 md:py-0">
+      <div className="max-w-[1400px] w-full mx-auto flex-1 flex flex-col lg:grid lg:grid-cols-12 gap-6 lg:gap-8 items-center px-4 sm:px-6 lg:px-8 pb-20 lg:pb-8">
+
+        {/* Left column — Intro with profile picture */}
+        <section className="lg:col-span-6 w-full flex flex-col justify-center">
+          <motion.div
+            initial={{ x: -60, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 80, damping: 12 }}
+            className="space-y-4 md:space-y-6 flex flex-col items-start"
+          >
+            <div className="w-32 h-32 md:w-44 md:h-44 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl">
+              <img
+                src="/ahmed.jpg"
+                alt="Ahmed Messaad"
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            <h1 className="text-3xl sm:text-4xl md:text-5xl leading-tight font-extrabold tracking-tight">Ahmed Messaad</h1>
+            
+            <div className="text-sm md:text-base text-gray-400 tracking-wide -mt-2">AI / ML Researcher • M'sila, Algeria</div>
+
+            <p className="text-base md:text-xl text-gray-300 max-w-xl">Developing intelligent healthcare systems that bridge cutting-edge AI research with real-world clinical deployment — from medical imaging to predictive analytics.</p>
+
+            <div className="flex items-center gap-3 md:gap-4 mt-2 flex-wrap">
+              <a href="mailto:ahmed.messaad@outlook.com" className="inline-flex items-center gap-2 md:gap-3 rounded-2xl px-4 py-2 border border-gray-700 text-xs md:text-sm hover:border-gray-500 transition-colors">Contact</a>
+              <a href="https://linkedin.com/in/ahmedmessaad" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 md:gap-3 rounded-2xl px-4 py-2 bg-white/5 text-xs md:text-sm hover:bg-white/7 transition-colors">LinkedIn</a>
+            </div>
+
+            <div className="mt-4 md:mt-6 text-xs md:text-sm text-gray-400 max-w-prose leading-relaxed">
+              <strong className="text-gray-200">Expertise:</strong> Deep learning for medical imaging (CNNs, transfer learning), embedded AI systems, DICOM pipeline integration, and clinical-grade model deployment. Published researcher at ICSTEM 2023.
+            </div>
+          </motion.div>
+        </section>
+
+        {/* Right column — Projects as slideshow */}
+        <aside className="lg:col-span-6 w-full flex flex-col justify-center space-y-4 md:space-y-6">
+          <div className="relative rounded-2xl min-h-[280px] md:h-[260px] p-5 md:p-6 border border-white/6 bg-white/2 backdrop-blur-md flex flex-col justify-between overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div 
+                key={projects[current].title} 
+                initial={{ opacity: 0, x: 40 }} 
+                animate={{ opacity: 1, x: 0 }} 
+                exit={{ opacity: 0, x: -40 }} 
+                transition={{ duration: 0.4 }} 
+                className="flex flex-col justify-between h-full"
+              >
+                <div>
+                  <div className="text-xs text-gray-300">Project</div>
+                  <h3 className="text-base md:text-lg font-semibold mt-1">{projects[current].title}</h3>
+                  <a href={projects[current].link} target="_blank" rel="noreferrer" className="text-xs md:text-sm text-cyan-400 hover:underline inline-block mt-1">View Demo ↗</a>
+                  <p className="mt-2 md:mt-3 text-xs md:text-sm text-gray-300 leading-relaxed">{projects[current].desc}</p>
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs text-gray-400 mt-4 gap-2">
+                  <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+                    <span>{projects[current].date}</span>
+                    <span className="text-gray-500">|</span>
+                    <span className="break-words">{projects[current].tech.join(" • ")}</span>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            <div className="absolute bottom-4 right-4 flex gap-2 md:gap-3 z-10">
+              <button onClick={prevProject} className="text-xs px-3 py-1.5 rounded-full border border-white/10 hover:border-white/30 transition-colors bg-[#0f1115]/80 backdrop-blur-sm">← Prev</button>
+              <button onClick={nextProject} className="text-xs px-3 py-1.5 rounded-full border border-white/10 hover:border-white/30 transition-colors bg-[#0f1115]/80 backdrop-blur-sm">Next →</button>
+            </div>
           </div>
-        </div>
+
+          <motion.div 
+            whileHover={{ scale: 1.02 }} 
+            className="rounded-2xl min-h-[140px] p-4 md:p-5 border border-white/6 flex flex-col justify-between bg-[#06070a]"
+          >
+            <div>
+              <div className="text-xs text-gray-500">International Recognition</div>
+              <h3 className="text-base md:text-lg font-semibold mt-1">ICSTEM 2023 — Outstanding Research</h3>
+              <p className="mt-1 md:mt-2 text-xs md:text-sm text-gray-400">"Brain Disease Diagnosis Using Deep Learning" • Istanbul, Turkey</p>
+            </div>
+            <div className="flex items-center gap-2 md:gap-3 text-xs text-gray-500 mt-3 flex-wrap">
+              <span>FIA Robotics Finalist 2023</span>
+              <span>•</span>
+              <span>5-Star Academic Excellence</span>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            whileHover={{ scale: 1.02 }} 
+            className="rounded-2xl min-h-[130px] p-4 md:p-5 border border-white/6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white/2"
+          >
+            <div className="flex-1">
+              <div className="text-xs text-gray-300">Education</div>
+              <h3 className="text-base md:text-lg font-semibold mt-1">M.Sc. Embedded Systems</h3>
+              <p className="mt-1 md:mt-2 text-xs md:text-sm text-gray-300 max-w-xs">University Mohamed Boudiaf • Specializing in embedded AI for medical devices and edge computing</p>
+            </div>
+            <div className="text-xs md:text-sm text-gray-400 sm:text-right">
+              <div className="font-medium text-gray-300">Open to Collaborations</div>
+              <div className="mt-1">Research • Consulting • Projects</div>
+            </div>
+          </motion.div>
+        </aside>
       </div>
 
-      {/* Left vertical nav */}
-      <nav className="absolute left-6 top-1/2 transform -translate-y-1/2 z-30 flex flex-col gap-2">
-        {pages.map((p, i) => (
-          <button
-            key={p}
-            onClick={() => setIndex(i)}
-            aria-current={index === i}
-            className={`w-3 h-3 rounded-full transition-all ring-1 ring-neutral-200 hover:scale-110 ${
-              index === i ? "bg-indigo-600 scale-125 shadow-lg" : "bg-neutral-200"
-            }`}
-            title={p}
-          />
-        ))}
-      </nav>
-
-      {/* Right utilities */}
-      <div className="absolute right-6 top-6 z-30 flex items-center gap-3">
-        <a href="mailto:ahmed.messaad@outlook.com" className="text-xs">Email</a>
-        <a href="https://linkedin.com/in/ahmedmessaad" target="_blank" rel="noreferrer" className="text-xs">LinkedIn</a>
-      </div>
-
-      {/* Panels container: no scroll, switch panels with transform */}
-      <div className="w-full h-full relative overflow-hidden"> 
-        {/* ADDED: overflow-hidden to the outer container for clean edge */}
-        <div
-          className="h-full flex transition-transform duration-700 ease-in-out"
-          style={{ 
-            width: `${pages.length * 100}vw`, // Set width to 500vw (5 pages)
-            transform: `translateX(-${index * 100}vw)` // Translate by the page width
-          }}
+      {/* Footer bar */}
+      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 px-4 w-full max-w-4xl">
+        <motion.div 
+          initial={{ opacity: 0 }} 
+          animate={{ opacity: 1 }} 
+          transition={{ delay: 0.4 }} 
+          className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 bg-white/3 border border-white/6 rounded-full px-4 py-2.5 backdrop-blur-md text-xs md:text-sm mx-auto w-fit"
         >
-
-          {/* Home - REMOVED w-screen */}
-          <section className="h-full flex flex-shrink-0 items-center justify-center p-8" style={{ width: '100vw' }}>
-            <div className="max-w-3xl text-center">
-              <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-tight">
-                Hello — I’m Ahmed.
-              </h1>
-              <p className="mt-6 text-lg text-neutral-600">
-                I build intelligent systems for healthcare. Deep learning, medical imaging, and edge deployment.
-              </p>
-
-              <div className="mt-8 flex items-center justify-center gap-4">
-                <button
-                  onClick={() => setIndex(2)}
-                  className="px-5 py-3 rounded-2xl border border-neutral-200 shadow-sm hover:shadow-md transition"
-                >
-                  View Projects
-                </button>
-
-                <button
-                  onClick={() => setIndex(4)}
-                  className="px-5 py-3 rounded-2xl bg-indigo-600 text-white hover:brightness-105 transition"
-                >
-                  Contact
-                </button>
-              </div>
-
-              <div className="mt-12 flex items-center justify-center gap-6 text-xs text-neutral-500">
-                <div>Master's in Electronics of Embedded Systems — Univ. Mohamed Boudiaf</div>
-              </div>
-            </div>
-          </section>
-
-          {/* About - REMOVED w-screen */}
-          <section className="h-full flex flex-shrink-0 items-center justify-center p-8 bg-gradient-to-b from-white to-neutral-100" style={{ width: '100vw' }}>
-            <div className="max-w-2xl">
-              <h2 className="text-3xl font-semibold">About</h2>
-              <p className="mt-4 text-neutral-600">
-                I specialize in deep learning and computer vision to create diagnostic systems that bridge research and clinical practice. My work focuses on pragmatic models that can be deployed in real clinical environments — from DICOM pipelines to edge-friendly inference.
-              </p>
-
-              <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                <li>
-                  <strong>Approach:</strong> Practical models, interpretable outputs, and robust pipelines.
-                </li>
-                <li>
-                  <strong>Background:</strong> ICSTEM 2023 publication, startup collaborations, and academic research.
-                </li>
-                <li>
-                  <strong>Interests:</strong> Medical imaging, transfer learning, embedded AI.
-                </li>
-                <li>
-                  <strong>Tools:</strong> PyTorch, TensorFlow, YOLOv8, OpenCV.
-                </li>
-              </ul>
-
-              <div className="mt-8 flex gap-4">
-                <a href="/resume.pdf" className="text-sm underline">Resume (PDF)</a>
-                <a href="mailto:ahmed.messaad@outlook.com" className="text-sm underline">Contact</a>
-              </div>
-            </div>
-          </section>
-
-          {/* Projects - REMOVED w-screen */}
-          <section className="h-full flex flex-shrink-0 items-center justify-center p-8" style={{ width: '100vw' }}>
-            <div className="max-w-4xl w-full">
-              <h2 className="text-3xl font-semibold">Selected Projects</h2>
-
-              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <article className="p-6 rounded-2xl border border-neutral-100 shadow-sm hover:shadow-md transition">
-                  <div className="text-xs text-neutral-500">Startup Collaboration • 2024</div>
-                  <h3 className="mt-2 font-semibold">AIRM — Brain Tumor System</h3>
-                  <p className="mt-2 text-sm text-neutral-600">EfficientNet-B7 based classifier, DICOM pipeline, PyQt5 interface — focused on clinical usability.</p>
-                  <div className="mt-4 text-xs text-neutral-500">Tech: PyTorch • EfficientNet • DICOM • PyQt5</div>
-                </article>
-
-                <article className="p-6 rounded-2xl border border-neutral-100 shadow-sm hover:shadow-md transition">
-                  <div className="text-xs text-neutral-500">Hemolab Startup • 2023–2024</div>
-                  <h3 className="mt-2 font-semibold">HemaVision</h3>
-                  <p className="mt-2 text-sm text-neutral-600">Blood cell segmentation & classification using YOLOv8 with custom preprocessing for robust lab results.</p>
-                  <div className="mt-4 text-xs text-neutral-500">Tech: YOLOv8 • OpenCV • ResNet</div>
-                </article>
-
-                <article className="p-6 rounded-2xl border border-neutral-100 shadow-sm hover:shadow-md transition">
-                  <div className="text-xs text-neutral-500">Master’s Thesis • 2023</div>
-                  <h3 className="mt-2 font-semibold">My Daily Health</h3>
-                  <p className="mt-2 text-sm text-neutral-600">Multi-disease diagnostic ensemble for brain tumors, Alzheimer’s, and COVID-19 — interpretable and realtime.</p>
-                  <div className="mt-4 text-xs text-neutral-500">Tech: TensorFlow • Keras • Transfer Learning</div>
-                </article>
-
-                <article className="p-6 rounded-2xl border border-neutral-100 shadow-sm hover:shadow-md transition">
-                  <div className="text-xs text-neutral-500">Data Analytics • 2024</div>
-                  <h3 className="mt-2 font-semibold">Healthcare Cost Prediction</h3>
-                  <p className="mt-2 text-sm text-neutral-600">Predictive modeling to optimize resources — Conv1D networks and feature engineering yielded strong R² performance.</p>
-                  <div className="mt-4 text-xs text-neutral-500">Tech: CNN • Plotly</div>
-                </article>
-              </div>
-
-            </div>
-          </section>
-
-          {/* Skills - REMOVED w-screen */}
-          <section className="h-full flex flex-shrink-0 items-center justify-center p-8 bg-gradient-to-b from-white to-neutral-100" style={{ width: '100vw' }}>
-            <div className="max-w-2xl">
-              <h2 className="text-3xl font-semibold">Expertise</h2>
-              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-neutral-600">
-                <div>
-                  <strong>AI & ML:</strong>
-                  <div className="mt-2">Deep Learning, Computer Vision, Transfer Learning, Model Optimization</div>
-                </div>
-                <div>
-                  <strong>Frameworks:</strong>
-                  <div className="mt-2">PyTorch, TensorFlow, Keras, OpenCV, YOLOv8</div>
-                </div>
-                <div>
-                  <strong>Development:</strong>
-                  <div className="mt-2">Python, C++, PyQt5, Tkinter, Jupyter, Agile</div>
-                </div>
-                <div>
-                  <strong>Specialized:</strong>
-                  <div className="mt-2">Medical Imaging, DICOM Processing, Embedded AI, Edge Computing</div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Contact - REMOVED w-screen */}
-          <section className="h-full flex flex-shrink-0 items-center justify-center p-8" style={{ width: '100vw' }}>
-            <div className="max-w-xl text-center">
-              <h2 className="text-3xl font-semibold">Get in touch</h2>
-              <p className="mt-4 text-neutral-600">I’m available for research collaborations, healthcare projects, and consulting opportunities.</p>
-
-              <div className="mt-6 grid grid-cols-1 gap-3">
-                <a href="mailto:ahmed.messaad@outlook.com" className="px-4 py-3 rounded-xl border">Email: ahmed.messaad@outlook.com</a>
-                <a href="https://linkedin.com/in/ahmedmessaad" target="_blank" rel="noreferrer" className="px-4 py-3 rounded-xl border">LinkedIn</a>
-                <a href="/resume.pdf" className="px-4 py-3 rounded-xl border">Download Resume</a>
-              </div>
-
-              <div className="mt-8 text-xs text-neutral-400">Tip: use ← → keys to navigate between sections</div>
-            </div>
-          </section>
-
-        </div>
+          <div className="flex items-center gap-2 md:gap-3">
+            <Sparkle className="w-4 h-4 text-gray-300 hidden sm:block" />
+            <span className="text-xs text-gray-200">Ahmed Messaad — AI/ML Researcher</span>
+          </div>
+          <div className="hidden sm:block text-xs text-gray-300">•</div>
+          <div className="text-xs text-gray-300">M'sila, Algeria</div>
+          <div className="hidden sm:block text-xs text-gray-300">•</div>
+          <a href="mailto:ahmed.messaad@outlook.com" className="text-xs underline underline-offset-2 hover:text-white transition-colors">ahmed.messaad@outlook.com</a>
+        </motion.div>
       </div>
-
-      {/* Footer small controls */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30 flex items-center gap-4">
-        <button onClick={() => setIndex((index) => Math.max(0, index - 1))} className="p-2 rounded-full border">←</button>
-        <div className="text-xs text-neutral-500">{pages[index]}</div>
-        <button onClick={() => setIndex((index) => Math.min(pages.length - 1, index + 1))} className="p-2 rounded-full border">→</button>
-      </div>
-
     </main>
   );
 }
