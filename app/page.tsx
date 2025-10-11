@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Briefcase, FlaskConical, Brain, Sparkles, Code2, Globe } from "lucide-react";
+import { Briefcase, FlaskConical, Sparkle, Sparkles, Code2, Globe } from "lucide-react";
 
 export default function Page() {
   const projects = [
@@ -154,7 +154,7 @@ export default function Page() {
           className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 bg-white/3 border border-white/6 rounded-full px-4 py-2.5 backdrop-blur-md text-xs md:text-sm mx-auto w-fit"
         >
           <div className="flex items-center gap-2 md:gap-3">
-            <Sparkles className="w-4 h-4 text-gray-300 hidden sm:block" />
+            <Sparkle className="w-4 h-4 text-gray-300 hidden sm:block" />
             <span className="text-xs text-gray-200">Ahmed Messaad — AI/ML Researcher</span>
           </div>
           <div className="hidden sm:block text-xs text-gray-300">•</div>
