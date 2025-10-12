@@ -8,8 +8,27 @@ export default function Page() {
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
+      const animatedImg = document.getElementById('animated-profile');
+      const gridSection = document.getElementById('profile-grid-section');
+      
+      if (animatedImg && gridSection) {
+        const rect = gridSection.getBoundingClientRect();
+        
+        // Move image to grid position
+        animatedImg.style.top = `${rect.top}px`;
+        animatedImg.style.left = `${rect.left}px`;
+        animatedImg.style.width = `${rect.width}px`;
+        animatedImg.style.height = `${rect.height}px`;
+        animatedImg.style.transform = 'translate(0, 0)';
+        
+        // After animation completes, hide the animated image and show content
+        setTimeout(() => {
+          animatedImg.style.opacity = '0';
+          animatedImg.style.transition = 'opacity 300ms ease-in-out';
+          setIsLoading(false);
+        }, 1200);
+      }
+    }, 500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -95,6 +114,35 @@ export default function Page() {
         .arrow-animate:hover svg {
           animation: arrow-bounce 0.6s ease-in-out infinite;
         }
+
+        /* Custom invisible scrollbar that doesn't take space */
+        .custom-scroll {
+          scrollbar-width: none; /* Firefox */
+          -ms-overflow-style: none; /* IE/Edge */
+        }
+        
+        .custom-scroll::-webkit-scrollbar {
+          width: 0px;
+          background: transparent;
+        }
+        
+        /* Optional: Show thin scrollbar on hover only */
+        .custom-scroll:hover::-webkit-scrollbar {
+          width: 6px;
+        }
+        
+        .custom-scroll:hover::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        
+        .custom-scroll:hover::-webkit-scrollbar-thumb {
+          background: #2a2a2a;
+          border-radius: 3px;
+        }
+        
+        .custom-scroll:hover::-webkit-scrollbar-thumb:hover {
+          background: #3a3a3a;
+        }
       `}</style>
 
       {/* Loading Overlay - Behind picture */}
@@ -102,6 +150,25 @@ export default function Page() {
         className={`fixed inset-0 bg-[#0a0a0a] z-[90] pointer-events-none transition-opacity duration-700 ${
           isLoading ? "opacity-100" : "opacity-0"
         }`}
+      />
+
+      {/* Single Animated Profile Image - STARTS CENTERED */}
+      <img
+        id="animated-profile"
+        src="/ahmed.jpg"
+        alt="Ahmed Messaad"
+        className="object-cover"
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          width: '320px',
+          height: '320px',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 100,
+          pointerEvents: 'none',
+          transition: 'top 1200ms cubic-bezier(0.65, 0, 0.35, 1), left 1200ms cubic-bezier(0.65, 0, 0.35, 1), width 1200ms cubic-bezier(0.65, 0, 0.35, 1), height 1200ms cubic-bezier(0.65, 0, 0.35, 1), transform 1200ms cubic-bezier(0.65, 0, 0.35, 1)',
+        }}
       />
 
       {/* Header */}
@@ -149,54 +216,14 @@ export default function Page() {
           </div>
         </section>
 
-        {/* Profile - Picture with smooth animation */}
+        {/* Profile - Picture destination */}
         <section 
           id="profile-grid-section"
           className="border border-[#2a2a2a] bg-[#1a1a1a] flex items-center justify-center overflow-hidden relative"
         >
-          {/* Animated clone that moves from center to grid position */}
-          <div
-            style={{
-              position: 'fixed',
-              top: isLoading ? '50%' : 'var(--grid-top)',
-              left: isLoading ? '50%' : 'var(--grid-left)',
-              width: isLoading ? '320px' : 'var(--grid-width)',
-              height: isLoading ? '320px' : 'var(--grid-height)',
-              transform: isLoading ? 'translate(-50%, -50%)' : 'translate(0, 0)',
-              opacity: isLoading ? 1 : 0,
-              zIndex: 100,
-              pointerEvents: 'none',
-              transition: 'top 1400ms ease-in-out, left 1400ms ease-in-out, width 1400ms ease-in-out, height 1400ms ease-in-out, transform 1400ms ease-in-out, opacity 600ms ease-in-out 1000ms',
-            }}
-            className=""
-            ref={(el) => {
-              if (el && typeof window !== 'undefined') {
-                const gridSection = document.getElementById('profile-grid-section');
-                if (gridSection) {
-                  const rect = gridSection.getBoundingClientRect();
-                  el.style.setProperty('--grid-top', `${rect.top}px`);
-                  el.style.setProperty('--grid-left', `${rect.left}px`);
-                  el.style.setProperty('--grid-width', `${rect.width}px`);
-                  el.style.setProperty('--grid-height', `${rect.height}px`);
-                }
-              }
-            }}
-          >
-            <img
-              src="/ahmed.jpg"
-              alt="Ahmed Messaad"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          
-          {/* Static grid image that fades in */}
           <img
             src="/ahmed.jpg"
             alt="Ahmed Messaad"
-            style={{
-              opacity: isLoading ? 0 : 1,
-              transition: 'opacity 600ms ease-in-out 800ms',
-            }}
             className="w-full h-full object-cover"
           />
         </section>
@@ -210,7 +237,7 @@ export default function Page() {
               : "opacity-100 translate-y-0 delay-700"
           }`}
         >
-          <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-[#2a2a2a] scrollbar-track-[#0a0a0a] py-4">
+          <div className="flex-1 overflow-y-auto custom-scroll py-4">
             {projects.map((p) => (
               <div
                 key={p.id}
