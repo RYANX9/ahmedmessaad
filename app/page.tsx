@@ -80,6 +80,17 @@ export default function Page() {
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600;700&family=Inter:wght@300;400;500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap');
         
+        * {
+          scrollbar-width: none !important;
+          -ms-overflow-style: none !important;
+        }
+        
+        *::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
+        }
+        
         /* Primary - Bold titles and headers */
         .font-mono {
           font-family: 'IBM Plex Mono', monospace;
@@ -115,16 +126,26 @@ export default function Page() {
           animation: arrow-bounce 0.6s ease-in-out infinite;
         }
 
-        /* Completely invisible scrollbar - ALWAYS HIDDEN */
+        /* Completely invisible scrollbar - ALWAYS HIDDEN - NO LAYOUT SHIFT */
         .invisible-scroll {
-          scrollbar-width: none; /* Firefox */
-          -ms-overflow-style: none; /* IE/Edge */
+          scrollbar-width: none !important; /* Firefox */
+          -ms-overflow-style: none !important; /* IE/Edge */
+          overflow-y: scroll !important;
         }
         
         .invisible-scroll::-webkit-scrollbar {
-          display: none; /* Chrome/Safari/Opera */
-          width: 0;
-          height: 0;
+          display: none !important; /* Chrome/Safari/Opera */
+          width: 0 !important;
+          height: 0 !important;
+          background: transparent !important;
+        }
+        
+        .invisible-scroll::-webkit-scrollbar-track {
+          display: none !important;
+        }
+        
+        .invisible-scroll::-webkit-scrollbar-thumb {
+          display: none !important;
         }
       `}</style>
 
