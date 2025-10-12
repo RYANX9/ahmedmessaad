@@ -175,7 +175,7 @@ export default function Page() {
       {/* Single Animated Profile Image - STARTS FROM CENTER POINT */}
       <img
         id="animated-profile"
-        src="/AHMED.jpg"
+        src="/ahmed.jpg"
         alt="Ahmed Messaad"
         className="object-cover hidden lg:block" // ADDED 'hidden lg:block' to hide on mobile
         style={{
