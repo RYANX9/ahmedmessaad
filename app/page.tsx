@@ -14,21 +14,24 @@ export default function Page() {
       if (animatedImg && gridSection) {
         const rect = gridSection.getBoundingClientRect();
         
-        // Move image to grid position
-        animatedImg.style.top = `${rect.top}px`;
-        animatedImg.style.left = `${rect.left}px`;
+        // Calculate the center point of the grid cell
+        const gridCenterX = rect.left + rect.width / 2;
+        const gridCenterY = rect.top + rect.height / 2;
+        
+        // Move image to grid position - maintaining center point origin
+        animatedImg.style.top = `${gridCenterY}px`;
+        animatedImg.style.left = `${gridCenterX}px`;
         animatedImg.style.width = `${rect.width}px`;
         animatedImg.style.height = `${rect.height}px`;
-        animatedImg.style.transform = 'translate(0, 0)';
+        // Keep the transform as translate -50%, -50% so it stays centered on that point
         
-        // After animation completes, hide the animated image and show content
+        // After animation completes, swap to the static image seamlessly
         setTimeout(() => {
-          animatedImg.style.opacity = '0';
-          animatedImg.style.transition = 'opacity 300ms ease-in-out';
+          animatedImg.style.zIndex = '-1';
           setIsLoading(false);
-        }, 1200);
+        }, 1400);
       }
-    }, 500);
+    }, 300);
     return () => clearTimeout(timer);
   }, []);
 
@@ -156,7 +159,7 @@ export default function Page() {
         }`}
       />
 
-      {/* Single Animated Profile Image - STARTS CENTERED */}
+      {/* Single Animated Profile Image - STARTS FROM CENTER POINT */}
       <img
         id="animated-profile"
         src="/ahmed.jpg"
@@ -164,14 +167,15 @@ export default function Page() {
         className="object-cover"
         style={{
           position: 'fixed',
-          top: '50%',
-          left: '50%',
-          width: '320px',
-          height: '320px',
+          top: '50vh',
+          left: '50vw',
+          width: '280px',
+          height: '280px',
           transform: 'translate(-50%, -50%)',
+          transformOrigin: 'center center',
           zIndex: 100,
           pointerEvents: 'none',
-          transition: 'top 1200ms cubic-bezier(0.65, 0, 0.35, 1), left 1200ms cubic-bezier(0.65, 0, 0.35, 1), width 1200ms cubic-bezier(0.65, 0, 0.35, 1), height 1200ms cubic-bezier(0.65, 0, 0.35, 1), transform 1200ms cubic-bezier(0.65, 0, 0.35, 1)',
+          transition: 'top 1400ms cubic-bezier(0.76, 0, 0.24, 1), left 1400ms cubic-bezier(0.76, 0, 0.24, 1), width 1400ms cubic-bezier(0.76, 0, 0.24, 1), height 1400ms cubic-bezier(0.76, 0, 0.24, 1)',
         }}
       />
 
