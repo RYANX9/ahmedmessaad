@@ -175,7 +175,7 @@ export default function Page() {
       {/* Single Animated Profile Image - STARTS FROM CENTER POINT */}
       <img
         id="animated-profile"
-        src="/AHMED.jpg"
+        src="/ahmed.jpg"
         alt="Ahmed Messaad"
         className="object-cover hidden lg:block" // ADDED 'hidden lg:block' to hide on mobile
         style={{
@@ -343,10 +343,10 @@ export default function Page() {
             About
           </h3>
           <p className="text-neutral-300 text-[13px] xl:text-[15px] leading-relaxed font-sans">
-            Ahmed Messaad is an AI/ML researcher specializing in medical
-            diagnostics. Based in M'sila, Algeria, he bridges deep learning
-            research with clinical practice, creating intelligent systems
-            accessible globally.
+            Ahmed MBridging the gap between deep learning and the hospital floor. 
+            As an AI/ML Researcher in M'sila, Algeria, 
+            I engineer Medical Diagnostic systems that transform research into high-impact, globally accessible tools, 
+            delivering advanced clinical insight wherever it's needed.
           </p>
         </section>
 
