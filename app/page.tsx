@@ -7,6 +7,22 @@ export default function Page() {
   const [isLoading, setIsLoading] = useState(true);
 
   React.useEffect(() => {
+    // Check if the current screen size is considered large (Tailwind's 'lg' breakpoint is 1024px)
+    const isLargeScreen = typeof window !== 'undefined' && window.innerWidth >= 1024;
+
+    if (!isLargeScreen) {
+        // On small screens (mobile), skip the animation.
+        // Immediately set isLoading to false to show the content.
+        const animatedImg = document.getElementById('animated-profile');
+        if (animatedImg) {
+            // Ensure the animated image is hidden immediately to prevent a flash
+            animatedImg.style.visibility = 'hidden';
+        }
+        setIsLoading(false);
+        return;
+    }
+
+    // --- Animation logic for large screens only ---
     const timer = setTimeout(() => {
       const animatedImg = document.getElementById('animated-profile');
       const gridSection = document.getElementById('profile-grid-section');
@@ -29,6 +45,9 @@ export default function Page() {
           animatedImg.style.visibility = 'hidden';
           setIsLoading(false);
         }, 1400);
+      } else {
+        // Fallback in case of elements not being found
+        setIsLoading(false);
       }
     }, 300);
     return () => clearTimeout(timer);
@@ -450,7 +469,6 @@ export default function Page() {
             accessible globally.
           </p>
         </section>
-
         {/* Projects */}
         <aside
           id="projects"
