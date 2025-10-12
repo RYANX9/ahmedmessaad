@@ -175,7 +175,7 @@ export default function Page() {
       {/* Single Animated Profile Image - STARTS FROM CENTER POINT */}
       <img
         id="animated-profile"
-        src="/ahmed.jpg"
+        src="/AHMED.jpg"
         alt="Ahmed Messaad"
         className="object-cover hidden lg:block" // ADDED 'hidden lg:block' to hide on mobile
         style={{
@@ -202,13 +202,13 @@ export default function Page() {
           AHMED MESSAAD
         </div>
         <nav className="flex gap-3 lg:gap-8 text-[10px] lg:text-[13px] uppercase tracking-wide font-mono">
-          <a href="#projects" className="text-neutral-400 hover:text-white transition">
+          <a href="" className="text-neutral-400 hover:text-white transition">
             Projects
           </a>
-          <a href="#about" className="text-neutral-400 hover:text-white transition">
+          <a href="" className="text-neutral-400 hover:text-white transition">
             About
           </a>
-          <a href="#contact" className="text-neutral-400 hover:text-white transition">
+          <a href="" className="text-neutral-400 hover:text-white transition">
             Contact
           </a>
         </nav>
