@@ -10,8 +10,9 @@ export default function Page() {
     const timer = setTimeout(() => {
       const animatedImg = document.getElementById('animated-profile');
       const gridSection = document.getElementById('profile-grid-section');
+      const staticImg = gridSection?.querySelector('img');
       
-      if (animatedImg && gridSection) {
+      if (animatedImg && gridSection && staticImg) {
         const rect = gridSection.getBoundingClientRect();
         
         // Calculate the center point of the grid cell
@@ -24,9 +25,10 @@ export default function Page() {
         animatedImg.style.width = `${rect.width}px`;
         animatedImg.style.height = `${rect.height}px`;
         
-        // After animation completes, just hide it behind - NO opacity change
+        // After animation completes - just remove the animated image completely
         setTimeout(() => {
-          animatedImg.style.visibility = 'hidden';
+          animatedImg.remove();
+          // Now fade in content only (not the pic)
           setIsLoading(false);
         }, 1400);
       }
@@ -207,7 +209,7 @@ export default function Page() {
           className={`border border-[#2a2a2a] p-8 xl:p-12 flex flex-col justify-center transition-all duration-1000 ${
             isLoading
               ? "opacity-0 translate-y-[50px]"
-              : "opacity-100 translate-y-0 delay-[1500ms]"
+              : "opacity-100 translate-y-0 delay-500"
           }`}
         >
           <h1 className="text-[28px] xl:text-[38px] leading-tight">
@@ -223,16 +225,18 @@ export default function Page() {
           </div>
         </section>
 
-        {/* Profile - Picture destination - NO ANIMATION */}
+        {/* Profile - Picture destination */}
         <section 
           id="profile-grid-section"
-          className="border border-[#2a2a2a] bg-[#1a1a1a] flex items-center justify-center overflow-hidden relative opacity-100"
+          className="border border-[#2a2a2a] bg-[#1a1a1a] flex items-center justify-center overflow-hidden relative"
         >
           <img
             src="/ahmed.jpg"
             alt="Ahmed Messaad"
-            className="w-full h-full object-cover opacity-100"
-            style={{ transition: 'none' }}
+            className="w-full h-full object-cover opacity-0"
+            style={{
+              transition: 'none',
+            }}
           />
         </section>
 
@@ -242,7 +246,7 @@ export default function Page() {
           className={`row-span-2 border border-[#2a2a2a] bg-[#0a0a0a] flex flex-col overflow-hidden transition-all duration-1000 ${
             isLoading
               ? "opacity-0 translate-y-[50px]"
-              : "opacity-100 translate-y-0 delay-[1600ms]"
+              : "opacity-100 translate-y-0 delay-700"
           }`}
         >
           <div className="flex-1 overflow-y-auto invisible-scroll py-4">
@@ -323,7 +327,7 @@ export default function Page() {
           className={`border border-[#2a2a2a] p-8 xl:p-12 flex flex-col justify-center transition-all duration-1000 ${
             isLoading
               ? "opacity-0 translate-y-[50px]"
-              : "opacity-100 translate-y-0 delay-[1700ms]"
+              : "opacity-100 translate-y-0 delay-900"
           }`}
         >
           <h3 className="text-[10px] xl:text-[11px] uppercase tracking-wider text-neutral-500 mb-4 xl:mb-6 font-accent">
@@ -346,7 +350,7 @@ export default function Page() {
           className={`border border-[#2a2a2a] bg-[#1a1a1a] p-8 xl:p-12 flex flex-col cursor-pointer relative hover:bg-[#252525] transition-all duration-1000 ${
             isLoading
               ? "opacity-0 translate-y-[50px]"
-              : "opacity-100 translate-y-0 delay-[1800ms]"
+              : "opacity-100 translate-y-0 delay-900"
           }`}
         >
           <svg
