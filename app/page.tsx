@@ -10,9 +10,8 @@ export default function Page() {
     const timer = setTimeout(() => {
       const animatedImg = document.getElementById('animated-profile');
       const gridSection = document.getElementById('profile-grid-section');
-      const staticImg = document.getElementById('static-profile-img');
       
-      if (animatedImg && gridSection && staticImg) {
+      if (animatedImg && gridSection) {
         const rect = gridSection.getBoundingClientRect();
         
         // Calculate the center point of the grid cell
@@ -25,13 +24,9 @@ export default function Page() {
         animatedImg.style.width = `${rect.width}px`;
         animatedImg.style.height = `${rect.height}px`;
         
-        // After animation completes
+        // After animation completes, just hide it behind - NO opacity change
         setTimeout(() => {
-          // Show static image instantly
-          staticImg.style.opacity = '1';
-          // Remove animated image from DOM
-          animatedImg.remove();
-          // Fade in text content
+          animatedImg.style.visibility = 'hidden';
           setIsLoading(false);
         }, 1400);
       }
@@ -234,12 +229,10 @@ export default function Page() {
           className="border border-[#2a2a2a] bg-[#1a1a1a] flex items-center justify-center overflow-hidden relative"
         >
           <img
-            id="static-profile-img"
             src="/ahmed.jpg"
             alt="Ahmed Messaad"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover opacity-0"
             style={{
-              opacity: 0,
               transition: 'none',
             }}
           />
