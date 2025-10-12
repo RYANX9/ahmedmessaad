@@ -207,7 +207,7 @@ export default function Page() {
           className={`border border-[#2a2a2a] p-8 xl:p-12 flex flex-col justify-center transition-all duration-1000 ${
             isLoading
               ? "opacity-0 translate-y-[50px]"
-              : "opacity-100 translate-y-0 delay-500"
+              : "opacity-100 translate-y-0 delay-[1500ms]"
           }`}
         >
           <h1 className="text-[28px] xl:text-[38px] leading-tight">
@@ -223,15 +223,16 @@ export default function Page() {
           </div>
         </section>
 
-        {/* Profile - Picture destination */}
+        {/* Profile - Picture destination - NO ANIMATION */}
         <section 
           id="profile-grid-section"
-          className="border border-[#2a2a2a] bg-[#1a1a1a] flex items-center justify-center overflow-hidden relative"
+          className="border border-[#2a2a2a] bg-[#1a1a1a] flex items-center justify-center overflow-hidden relative opacity-100"
         >
           <img
             src="/ahmed.jpg"
             alt="Ahmed Messaad"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover opacity-100"
+            style={{ transition: 'none' }}
           />
         </section>
 
@@ -241,7 +242,7 @@ export default function Page() {
           className={`row-span-2 border border-[#2a2a2a] bg-[#0a0a0a] flex flex-col overflow-hidden transition-all duration-1000 ${
             isLoading
               ? "opacity-0 translate-y-[50px]"
-              : "opacity-100 translate-y-0 delay-700"
+              : "opacity-100 translate-y-0 delay-[1600ms]"
           }`}
         >
           <div className="flex-1 overflow-y-auto invisible-scroll py-4">
@@ -322,7 +323,7 @@ export default function Page() {
           className={`border border-[#2a2a2a] p-8 xl:p-12 flex flex-col justify-center transition-all duration-1000 ${
             isLoading
               ? "opacity-0 translate-y-[50px]"
-              : "opacity-100 translate-y-0 delay-900"
+              : "opacity-100 translate-y-0 delay-[1700ms]"
           }`}
         >
           <h3 className="text-[10px] xl:text-[11px] uppercase tracking-wider text-neutral-500 mb-4 xl:mb-6 font-accent">
@@ -345,7 +346,7 @@ export default function Page() {
           className={`border border-[#2a2a2a] bg-[#1a1a1a] p-8 xl:p-12 flex flex-col cursor-pointer relative hover:bg-[#252525] transition-all duration-1000 ${
             isLoading
               ? "opacity-0 translate-y-[50px]"
-              : "opacity-100 translate-y-0 delay-900"
+              : "opacity-100 translate-y-0 delay-[1800ms]"
           }`}
         >
           <svg
