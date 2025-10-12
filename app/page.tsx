@@ -342,7 +342,7 @@ export default function Page() {
           onClick={() =>
             (window.location.href = "mailto:ahmed.messaad@outlook.com")
           }
-          className={`border border-[#2a2a2a] bg-[#1a1a1a] p-8 xl:p-12 flex flex-col justify-between cursor-pointer relative hover:bg-[#252525] transition-all duration-1000 ${
+          className={`border border-[#2a2a2a] bg-[#1a1a1a] p-8 xl:p-12 flex flex-col cursor-pointer relative hover:bg-[#252525] transition-all duration-1000 ${
             isLoading
               ? "opacity-0 translate-y-[50px]"
               : "opacity-100 translate-y-0 delay-900"
@@ -357,10 +357,10 @@ export default function Page() {
           >
             <path d="M8 24L24 8M24 8H8M24 8V24" />
           </svg>
-          <div className="text-[9px] xl:text-[10px] tracking-wider uppercase text-neutral-500 font-accent">
+          <div className="text-[9px] xl:text-[10px] tracking-wider uppercase text-neutral-500 font-accent mb-auto">
             Ready to Collaborate?
           </div>
-          <h2 className="text-[44px] xl:text-[56px] font-bold leading-none">
+          <h2 className="text-[44px] xl:text-[56px] font-bold leading-none mb-6 xl:mb-8">
             <span className="font-mono">CONTACT</span>
             <span className="italic font-serif font-light ml-2">me</span>
           </h2>
