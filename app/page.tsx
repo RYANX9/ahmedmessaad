@@ -10,7 +10,7 @@ export default function Page() {
     const timer = setTimeout(() => {
       const animatedImg = document.getElementById('animated-profile');
       const gridSection = document.getElementById('profile-grid-section');
-      const staticImg = gridSection?.querySelector('img');
+      const staticImg = document.getElementById('static-profile-img');
       
       if (animatedImg && gridSection && staticImg) {
         const rect = gridSection.getBoundingClientRect();
@@ -25,10 +25,13 @@ export default function Page() {
         animatedImg.style.width = `${rect.width}px`;
         animatedImg.style.height = `${rect.height}px`;
         
-        // After animation completes - just remove the animated image completely
+        // After animation completes
         setTimeout(() => {
+          // Show static image instantly
+          staticImg.style.opacity = '1';
+          // Remove animated image from DOM
           animatedImg.remove();
-          // Now fade in content only (not the pic)
+          // Fade in text content
           setIsLoading(false);
         }, 1400);
       }
@@ -231,10 +234,12 @@ export default function Page() {
           className="border border-[#2a2a2a] bg-[#1a1a1a] flex items-center justify-center overflow-hidden relative"
         >
           <img
+            id="static-profile-img"
             src="/ahmed.jpg"
             alt="Ahmed Messaad"
-            className="w-full h-full object-cover opacity-0"
+            className="w-full h-full object-cover"
             style={{
+              opacity: 0,
               transition: 'none',
             }}
           />
