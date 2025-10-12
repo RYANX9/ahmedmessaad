@@ -5,31 +5,35 @@ import React, { useState } from "react";
 export default function Page() {
   const [activeProject, setActiveProject] = useState<string | null>("airm");
   const [isLoading, setIsLoading] = useState(true);
+  const [showAnimatedImg, setShowAnimatedImg] = useState(true);
 
   React.useEffect(() => {
-    const timer = setTimeout(() => {
+    // Small delay to ensure DOM is ready
+    const initialTimer = setTimeout(() => {
       const animatedImg = document.getElementById('animated-profile');
       const gridSection = document.getElementById('profile-grid-section');
       
       if (animatedImg && gridSection) {
         const rect = gridSection.getBoundingClientRect();
         
-        // Move image to grid position
-        animatedImg.style.top = `${rect.top}px`;
-        animatedImg.style.left = `${rect.left}px`;
-        animatedImg.style.width = `${rect.width}px`;
-        animatedImg.style.height = `${rect.height}px`;
-        animatedImg.style.transform = 'translate(0, 0)';
+        // Start animation after brief delay
+        requestAnimationFrame(() => {
+          animatedImg.style.top = `${rect.top}px`;
+          animatedImg.style.left = `${rect.left}px`;
+          animatedImg.style.width = `${rect.width}px`;
+          animatedImg.style.height = `${rect.height}px`;
+          animatedImg.style.transform = 'translate(0, 0)';
+        });
         
-        // After animation completes, hide the animated image and show content
+        // After animation completes, hide animated image and show content
         setTimeout(() => {
-          animatedImg.style.opacity = '0';
-          animatedImg.style.transition = 'opacity 300ms ease-in-out';
+          setShowAnimatedImg(false);
           setIsLoading(false);
-        }, 1200);
+        }, 1400);
       }
-    }, 500);
-    return () => clearTimeout(timer);
+    }, 100);
+    
+    return () => clearTimeout(initialTimer);
   }, []);
 
   const projects = [
@@ -80,6 +84,12 @@ export default function Page() {
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600;700&family=Inter:wght@300;400;500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap');
         
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
         /* Primary - Bold titles and headers */
         .font-mono {
           font-family: 'IBM Plex Mono', monospace;
@@ -115,61 +125,56 @@ export default function Page() {
           animation: arrow-bounce 0.6s ease-in-out infinite;
         }
 
-        /* Custom invisible scrollbar that doesn't take space */
-        .custom-scroll {
-          scrollbar-width: none; /* Firefox */
-          -ms-overflow-style: none; /* IE/Edge */
+        /* COMPLETELY INVISIBLE SCROLLBAR - NO SPACE TAKEN */
+        .invisible-scroll {
+          scrollbar-width: none !important; /* Firefox */
+          -ms-overflow-style: none !important; /* IE/Edge */
+          overflow-y: scroll;
         }
         
-        .custom-scroll::-webkit-scrollbar {
-          width: 0px;
-          background: transparent;
-        }
-        
-        /* Optional: Show thin scrollbar on hover only */
-        .custom-scroll:hover::-webkit-scrollbar {
-          width: 6px;
-        }
-        
-        .custom-scroll:hover::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        
-        .custom-scroll:hover::-webkit-scrollbar-thumb {
-          background: #2a2a2a;
-          border-radius: 3px;
-        }
-        
-        .custom-scroll:hover::-webkit-scrollbar-thumb:hover {
-          background: #3a3a3a;
+        .invisible-scroll::-webkit-scrollbar {
+          display: none !important; /* Chrome/Safari/Opera */
+          width: 0 !important;
+          height: 0 !important;
         }
       `}</style>
 
-      {/* Loading Overlay - Behind picture */}
+      {/* Loading Overlay */}
       <div
         className={`fixed inset-0 bg-[#0a0a0a] z-[90] pointer-events-none transition-opacity duration-700 ${
           isLoading ? "opacity-100" : "opacity-0"
         }`}
       />
 
-      {/* Single Animated Profile Image - STARTS CENTERED */}
-      <img
-        id="animated-profile"
-        src="/ahmed.jpg"
-        alt="Ahmed Messaad"
-        className="object-cover"
-        style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          width: '320px',
-          height: '320px',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 100,
-          pointerEvents: 'none',
-          transition: 'top 1200ms cubic-bezier(0.65, 0, 0.35, 1), left 1200ms cubic-bezier(0.65, 0, 0.35, 1), width 1200ms cubic-bezier(0.65, 0, 0.35, 1), height 1200ms cubic-bezier(0.65, 0, 0.35, 1), transform 1200ms cubic-bezier(0.65, 0, 0.35, 1)',
-        }}
-      />
+      {/* Single Animated Profile Image - STARTS CENTERED AS PERFECT SQUARE */}
+      {showAnimatedImg && (
+        <div
+          id="animated-profile"
+          className="fixed"
+          style={{
+            top: '50%',
+            left: '50%',
+            width: '320px',
+            height: '320px',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 100,
+            pointerEvents: 'none',
+            transition: 'all 1200ms cubic-bezier(0.65, 0, 0.35, 1)',
+            overflow: 'hidden',
+          }}
+        >
+          <img
+            src="/ahmed.jpg"
+            alt="Ahmed Messaad"
+            className="w-full h-full object-cover"
+            style={{
+              display: 'block',
+              width: '100%',
+              height: '100%',
+            }}
+          />
+        </div>
+      )}
 
       {/* Header */}
       <header
@@ -228,7 +233,7 @@ export default function Page() {
           />
         </section>
 
-        {/* Projects */}
+        {/* Projects - INVISIBLE SCROLLBAR */}
         <aside
           id="projects"
           className={`row-span-2 border border-[#2a2a2a] bg-[#0a0a0a] flex flex-col overflow-hidden transition-all duration-1000 ${
@@ -237,7 +242,7 @@ export default function Page() {
               : "opacity-100 translate-y-0 delay-700"
           }`}
         >
-          <div className="flex-1 overflow-y-auto custom-scroll py-4">
+          <div className="flex-1 invisible-scroll py-4">
             {projects.map((p) => (
               <div
                 key={p.id}
