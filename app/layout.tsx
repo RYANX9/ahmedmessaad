@@ -12,9 +12,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Ahmed Messaad",
-  description: "AI/ML Researcher specializing in Medical Imaging and Deep Learning.",
+  description:
+    "AI/ML Researcher specializing in Medical Imaging and Deep Learning.",
+  icons: {
+    icon: [
+      { url: "/ahmed-icon1.png", type: "image/png", sizes: "120x120" },
+    ],
+    apple: "/ahmed-icon1.png",
+  },
 };
 
 export default function RootLayout({
@@ -24,6 +31,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Force favicon override */}
+        <link rel="icon" href="/ahmed-icon1.png" type="image/png" sizes="120x120" />
+        <link rel="shortcut icon" href="/ahmed-icon1.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/ahmed-icon1.png" />
+        <meta name="theme-color" content="#000000" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
