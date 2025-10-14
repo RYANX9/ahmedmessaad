@@ -407,7 +407,6 @@ export default function Page() {
                 className="flex flex-col items-center sm:hidden text-xs text-gray-300 pt-1"
               >
                 <div className="text-xs">AI Research Engineer</div>
-                <div className="text-xs">M'sila, Algeria</div>
                 <a
                   href="mailto:ahmed.messaad@outlook.com"
                   className="underline underline-offset-2 hover:text-white transition-colors mt-1"
