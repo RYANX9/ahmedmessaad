@@ -410,7 +410,7 @@ export default function Page() {
                   href="mailto:ahmed.messaad@outlook.com"
                   className="underline underline-offset-2 hover:text-white transition-colors mt-1"
                 >
-                  ahmed.messaad@outlook.com
+                  Contact
                 </a>
                 <div className="text-xs">AI Research Engineer</div>
 
