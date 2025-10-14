@@ -400,19 +400,30 @@ export default function Page() {
             {footerOpen && (
               <motion.div
                 key="footer-details"
-                initial={{ opacity: 0, scaleY: 0 }}
-                animate={{ opacity: 1, scaleY: 1 }}
-                exit={{ opacity: 0, scaleY: 0 }}
-                transition={{
-                  duration: 0.35,
-                  ease: "easeInOut"
+                initial={{
+                  clipPath: "inset(100% 0% 0% 0%)",
+                  opacity: 0,
+                  y: 10,
                 }}
-                style={{ originY: 0 }}
-                className="flex flex-col items-center sm:hidden text-xs text-gray-300 mt-2 overflow-hidden"
+                animate={{
+                  clipPath: "inset(0% 0% 0% 0%)",
+                  opacity: 1,
+                  y: 0,
+                }}
+                exit={{
+                  clipPath: "inset(100% 0% 0% 0%)",
+                  opacity: 0,
+                  y: 10,
+                }}
+                transition={{
+                  duration: 0.45,
+                  ease: [0.33, 1, 0.68, 1],
+                }}
+                className="flex flex-col items-center sm:hidden text-xs text-gray-300 mt-2 space-y-1 overflow-hidden"
               >
                 <a
                   href="mailto:ahmed.messaad@outlook.com"
-                  className="underline underline-offset-2 hover:text-white transition-colors mb-1"
+                  className="underline underline-offset-2 hover:text-white transition-colors"
                 >
                   ahmed.messaad@outlook.com
                 </a>
@@ -420,6 +431,7 @@ export default function Page() {
               </motion.div>
             )}
           </AnimatePresence>
+
 
         </motion.div>
       </div>
