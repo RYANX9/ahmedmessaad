@@ -396,7 +396,6 @@ export default function Page() {
           </div>
 
           {/* Mobile expandable section */}
-          {/* Mobile expandable section */}
           <AnimatePresence>
             {footerOpen && (
               <motion.div
