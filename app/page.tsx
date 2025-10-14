@@ -385,7 +385,7 @@ export default function Page() {
           {/* Desktop only */}
           <div className="hidden sm:flex items-center gap-2 text-xs text-gray-300">
             <span>•</span>
-            <span>M'sila, Algeria</span>
+            <span>AI Research Engineer</span>
             <span>•</span>
             <a
               href="mailto:ahmed.messaad@outlook.com"
@@ -406,13 +406,14 @@ export default function Page() {
                 transition={{ duration: 0.3 }}
                 className="flex flex-col items-center sm:hidden text-xs text-gray-300 pt-1"
               >
-                <div className="text-xs">AI Research Engineer</div>
                 <a
                   href="mailto:ahmed.messaad@outlook.com"
                   className="underline underline-offset-2 hover:text-white transition-colors mt-1"
                 >
                   ahmed.messaad@outlook.com
                 </a>
+                <div className="text-xs">AI Research Engineer</div>
+
               </motion.div>
             )}
           </AnimatePresence>
