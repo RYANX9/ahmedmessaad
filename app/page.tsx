@@ -400,23 +400,27 @@ export default function Page() {
             {footerOpen && (
               <motion.div
                 key="footer-details"
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="flex flex-col items-center sm:hidden text-xs text-gray-300 pt-1"
+                initial={{ opacity: 0, scaleY: 0 }}
+                animate={{ opacity: 1, scaleY: 1 }}
+                exit={{ opacity: 0, scaleY: 0 }}
+                transition={{
+                  duration: 0.35,
+                  ease: "easeInOut"
+                }}
+                style={{ originY: 0 }}
+                className="flex flex-col items-center sm:hidden text-xs text-gray-300 mt-2 overflow-hidden"
               >
                 <a
                   href="mailto:ahmed.messaad@outlook.com"
-                  className="underline underline-offset-2 hover:text-white transition-colors mt-1"
+                  className="underline underline-offset-2 hover:text-white transition-colors mb-1"
                 >
-                  Contact
+                  ahmed.messaad@outlook.com
                 </a>
                 <div className="text-xs">AI Research Engineer</div>
-
               </motion.div>
             )}
           </AnimatePresence>
+
         </motion.div>
       </div>
     </main>
