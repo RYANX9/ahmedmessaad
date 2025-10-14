@@ -396,6 +396,7 @@ export default function Page() {
           </div>
 
           {/* Mobile expandable section */}
+          {/* Mobile expandable section */}
           <AnimatePresence>
             {footerOpen && (
               <motion.div
@@ -406,6 +407,7 @@ export default function Page() {
                 transition={{ duration: 0.3 }}
                 className="flex flex-col items-center sm:hidden text-xs text-gray-300 pt-1"
               >
+                <div className="text-xs">AI Research Engineer</div>
                 <div className="text-xs">M'sila, Algeria</div>
                 <a
                   href="mailto:ahmed.messaad@outlook.com"
@@ -416,6 +418,7 @@ export default function Page() {
               </motion.div>
             )}
           </AnimatePresence>
+
         </motion.div>
       </div>
     </main>
