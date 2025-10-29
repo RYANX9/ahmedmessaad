@@ -3,16 +3,18 @@
 import React, { useState, useEffect } from 'react';
 
 export default function Portfolio() {
-  const [activeNode, setActiveNode] = useState<string | null>(null);
-  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isLoaded, setIsLoaded] = useState(false);
+  const [expandedProject, setExpandedProject] = useState(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    setTimeout(() => setIsLoaded(true), 100);
+    setTimeout(() => setIsLoaded(true), 300);
     
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+    const handleMouseMove = (e) => {
+      setMousePos({ 
+        x: (e.clientX / window.innerWidth - 0.5) * 20,
+        y: (e.clientY / window.innerHeight - 0.5) * 20
+      });
     };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
@@ -20,402 +22,395 @@ export default function Portfolio() {
 
   const projects = [
     {
-      id: 'airm',
+      id: 1,
       title: 'AIRM Brain Tumor System',
       year: '2024',
-      metric: '99% Accuracy',
-      desc: 'Production-ready diagnostic system with end-to-end DICOM pipeline validated by radiologists',
-      tech: 'EfficientNet-B7 • PyDICOM • PyQt5',
-      link: 'https://youtu.be/2OeqBKF3X_A'
+      metric: '99%',
+      metricLabel: 'Accuracy',
+      desc: 'Production-ready diagnostic system achieving 99% accuracy across four tumor categories. Built end-to-end DICOM pipeline with clinical interface validated by radiologists.',
+      tech: ['EfficientNet-B7', 'PyDICOM', 'PyQt5', 'SQL'],
+      link: 'https://youtu.be/2OeqBKF3X_A',
+      gradient: 'from-violet-500/20 to-purple-500/20'
     },
     {
-      id: 'hema',
+      id: 2,
       title: 'HemaVision',
       year: '2023–24',
-      metric: '97% Classification',
-      desc: 'Automated hematology platform reducing diagnostic time from 45 minutes to 3 minutes',
-      tech: 'YOLOv8 • U-Net • OpenCV',
-      link: 'https://youtu.be/YxhA877Wyn0'
+      metric: '97%',
+      metricLabel: 'Classification',
+      desc: 'Automated hematology platform with 97% classification accuracy. Reduced diagnostic time from 45 minutes to 3 minutes while maintaining clinical-grade precision.',
+      tech: ['YOLOv8', 'U-Net', 'OpenCV', 'PyTorch'],
+      link: 'https://youtu.be/YxhA877Wyn0',
+      gradient: 'from-blue-500/20 to-cyan-500/20'
     },
     {
-      id: 'health',
+      id: 3,
       title: 'My Daily Health',
       year: '2023',
-      metric: '90-99% Range',
-      desc: 'Multi-disease diagnostic platform with systematic evaluation across five domains',
-      tech: 'TensorFlow • ResNet • Flask',
-      link: 'https://youtu.be/kh7WBjNPpEM'
+      metric: '90-99%',
+      metricLabel: 'Range',
+      desc: 'Multi-disease diagnostic platform with 90-99% accuracy across five disease domains. Systematic evaluation of 12 architectures using stratified cross-validation.',
+      tech: ['TensorFlow', 'ResNet', 'EfficientNet', 'Flask'],
+      link: 'https://youtu.be/kh7WBjNPpEM',
+      gradient: 'from-emerald-500/20 to-teal-500/20'
     },
     {
-      id: 'cost',
+      id: 4,
       title: 'Healthcare Cost Prediction',
       year: '2024',
-      metric: 'R² = 0.88',
-      desc: 'Conv1D neural network with SHAP analysis for insurance cost forecasting',
-      tech: 'Conv1D • SHAP • Scikit-learn',
-      link: 'https://www.kaggle.com/code/ahmedmessaad/healthcare-cost-prediction-using-neural-networks'
+      metric: 'R²=0.88',
+      metricLabel: 'Forecast',
+      desc: 'Conv1D neural network achieving R² = 0.88 for insurance cost forecasting. Feature engineering with SHAP analysis identified key cost drivers.',
+      tech: ['Conv1D', 'SHAP', 'Scikit-learn', 'Plotly'],
+      link: 'https://www.kaggle.com/code/ahmedmessaad/healthcare-cost-prediction-using-neural-networks',
+      gradient: 'from-amber-500/20 to-orange-500/20'
     }
   ];
 
   return (
-    <div className="relative w-screen h-screen bg-black overflow-hidden font-mono">
+    <div className="relative w-screen h-screen bg-gradient-to-br from-[#0a0a0f] via-[#12121a] to-[#0a0a0f] overflow-hidden">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
         
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'JetBrains Mono', monospace; }
-        
-        .neural-line {
-          stroke: rgba(0, 255, 170, 0.15);
-          stroke-width: 1;
-          fill: none;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        * { 
+          margin: 0; 
+          padding: 0; 
+          box-sizing: border-box; 
         }
         
-        .neural-line.active {
-          stroke: rgba(0, 255, 170, 0.6);
-          stroke-width: 2;
-          filter: drop-shadow(0 0 8px rgba(0, 255, 170, 0.5));
+        body { 
+          font-family: 'Inter', sans-serif;
+          -webkit-font-smoothing: antialiased;
         }
         
-        .pulse {
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        .font-display {
+          font-family: 'Playfair Display', serif;
         }
         
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.3; }
+        .smooth-appear {
+          animation: smoothAppear 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         
-        .glow {
-          filter: drop-shadow(0 0 12px rgba(0, 255, 170, 0.6));
+        @keyframes smoothAppear {
+          0% { 
+            opacity: 0; 
+            transform: translateY(30px) scale(0.96);
+            filter: blur(10px);
+          }
+          100% { 
+            opacity: 1; 
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+          }
         }
         
-        .scan-line {
-          animation: scan 8s linear infinite;
+        .grain {
+          position: fixed;
+          inset: 0;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+          pointer-events: none;
+          opacity: 0.5;
+          z-index: 100;
         }
         
-        @keyframes scan {
-          0% { transform: translateY(-100%); }
-          100% { transform: translateY(100vh); }
+        .glow-subtle {
+          box-shadow: 0 0 60px -10px rgba(139, 92, 246, 0.3);
         }
         
-        .node-enter {
-          animation: nodeEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        .border-gradient {
+          position: relative;
         }
         
-        @keyframes nodeEnter {
-          0% { transform: scale(0) rotate(-180deg); opacity: 0; }
-          100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        .border-gradient::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          padding: 1px;
+          background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.1));
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
         }
         
-        .glitch {
-          animation: glitch 3s infinite;
+        .shimmer {
+          position: relative;
+          overflow: hidden;
         }
         
-        @keyframes glitch {
-          0%, 90%, 100% { transform: translate(0); }
-          92% { transform: translate(-2px, 2px); }
-          94% { transform: translate(2px, -2px); }
-          96% { transform: translate(-1px, 1px); }
+        .shimmer::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+          animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+          100% { left: 100%; }
+        }
+        
+        .parallax {
+          transition: transform 0.2s ease-out;
         }
       `}</style>
 
-      {/* Background grid */}
-      <div className="absolute inset-0 opacity-20">
-        <svg className="w-full h-full">
-          <defs>
-            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0,255,170,0.1)" strokeWidth="0.5"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
-      </div>
+      {/* Ambient grain texture */}
+      <div className="grain" />
 
-      {/* Scan line effect */}
-      <div className="scan-line absolute w-full h-px bg-gradient-to-r from-transparent via-emerald-400/30 to-transparent" />
+      {/* Ambient light orbs */}
+      <div className="fixed top-0 left-1/4 w-[500px] h-[500px] bg-violet-500/10 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
+      <div className="fixed bottom-0 right-1/4 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '10s', animationDelay: '2s' }} />
 
-      {/* Neural network connections */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
-        {/* Desktop: Connect all nodes */}
-        <g className="hidden lg:block">
-          {/* Profile to Projects */}
-          <path d="M 20,50 Q 50,50 50,25" className={`neural-line ${activeNode ? 'active' : ''}`} />
-          <path d="M 20,50 Q 50,50 72,20" className={`neural-line ${activeNode === 'airm' ? 'active' : ''}`} />
-          <path d="M 20,50 Q 50,50 72,45" className={`neural-line ${activeNode === 'hema' ? 'active' : ''}`} />
-          <path d="M 20,50 Q 50,50 72,70" className={`neural-line ${activeNode === 'health' ? 'active' : ''}`} />
-          <path d="M 20,50 Q 50,50 72,95" className={`neural-line ${activeNode === 'cost' ? 'active' : ''}`} />
-          
-          {/* Profile to About/Contact */}
-          <path d="M 20,50 L 20,82" className="neural-line" />
-          <path d="M 20,82 L 35,82" className="neural-line" />
-          <path d="M 65,82 L 80,82" className="neural-line" />
-          <path d="M 80,82 L 80,50" className="neural-line" />
-        </g>
-      </svg>
-
-      {/* Main Grid Container - Desktop */}
-      <div className="hidden lg:grid lg:grid-cols-[20%_60%_20%] lg:grid-rows-[15%_35%_35%_15%] w-full h-full p-4 gap-4 relative" style={{ zIndex: 2 }}>
+      {/* Desktop Layout */}
+      <div className="hidden lg:flex flex-col h-screen p-8 gap-6">
         
-        {/* Top Left - Name Header */}
-        <div className={`col-start-1 row-start-1 border border-emerald-400/30 bg-black/60 backdrop-blur-sm flex items-center justify-center transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`}>
-          <div className="text-center">
-            <div className="text-emerald-400 text-xs mb-1 tracking-widest">AI RESEARCH ENGINEER</div>
-            <div className="text-white text-lg font-bold tracking-wider">AHMED MESSAAD</div>
-          </div>
-        </div>
-
-        {/* Top Center - Main Title */}
-        <div className={`col-start-2 row-start-1 border border-emerald-400/30 bg-black/60 backdrop-blur-sm flex items-center justify-center px-6 transition-all duration-1000 delay-100 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`}>
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-white mb-1">
-              EXPLAINABLE AI <span className="text-emerald-400">×</span> CLINICAL SYSTEMS
-            </h1>
-            <div className="text-emerald-400/70 text-xs tracking-widest">TRANSFER LEARNING • COMPUTER VISION • MEDICAL IMAGING</div>
-          </div>
-        </div>
-
-        {/* Top Right - CV Download */}
-        <div className={`col-start-3 row-start-1 border border-emerald-400/30 bg-black/60 backdrop-blur-sm flex items-center justify-center transition-all duration-1000 delay-200 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`}>
-          <a 
-            href="/ahmed_messad_cv.pdf"
-            download
-            className="group flex flex-col items-center justify-center gap-2 hover:scale-105 transition-transform"
-          >
-            <svg className="w-8 h-8 text-emerald-400 group-hover:animate-bounce" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path d="M12 15L12 3M12 15L8 11M12 15L16 11M20 17H4" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            <span className="text-emerald-400 text-xs tracking-widest">DOWNLOAD CV</span>
-          </a>
-        </div>
-
-        {/* Left - Profile Image */}
-        <div className={`col-start-1 row-start-2 row-span-2 border border-emerald-400/30 bg-black/60 backdrop-blur-sm overflow-hidden relative group transition-all duration-1000 delay-300 node-enter ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-          <img 
-            src="/ahmed.jpg" 
-            alt="Ahmed Messaad"
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-          <div className="absolute bottom-4 left-4 right-4">
-            <div className="text-emerald-400 text-xs mb-1 tracking-widest">PROFILE_ID: 001</div>
-            <div className="text-white text-sm font-bold">M'SILA, ALGERIA</div>
-          </div>
-          {/* Pulsing corner indicator */}
-          <div className="absolute top-2 right-2 w-2 h-2 bg-emerald-400 rounded-full pulse" />
-        </div>
-
-        {/* Center - Projects Grid */}
-        <div className="col-start-2 row-start-2 row-span-2 grid grid-cols-2 grid-rows-2 gap-4">
-          {projects.map((project, idx) => (
-            <div
-              key={project.id}
-              onMouseEnter={() => { setActiveNode(project.id); setHoveredNode(project.id); }}
-              onMouseLeave={() => { setActiveNode(null); setHoveredNode(null); }}
-              className={`border border-emerald-400/30 bg-black/60 backdrop-blur-sm p-4 cursor-pointer relative overflow-hidden group transition-all duration-1000 node-enter ${isLoaded ? 'opacity-100' : 'opacity-0'} ${hoveredNode === project.id ? 'border-emerald-400 glow' : ''}`}
-              style={{ transitionDelay: `${400 + idx * 100}ms` }}
-            >
-              {/* Project number */}
-              <div className="absolute top-2 right-2 text-emerald-400/40 text-4xl font-bold leading-none">
-                {String(idx + 1).padStart(2, '0')}
-              </div>
-              
-              <div className="relative z-10">
-                <div className="text-emerald-400 text-[10px] mb-1 tracking-widest">PROJECT_{project.id.toUpperCase()}</div>
-                <h3 className="text-white text-sm font-bold mb-2 leading-tight">{project.title}</h3>
-                
-                {hoveredNode === project.id ? (
-                  <div className="space-y-2 animate-in fade-in duration-300">
-                    <p className="text-white/70 text-xs leading-relaxed">{project.desc}</p>
-                    <div className="text-emerald-400/70 text-[10px] tracking-wide">{project.tech}</div>
-                    <a 
-                      href={project.link}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 text-emerald-400 text-xs hover:gap-3 transition-all mt-2"
-                    >
-                      VIEW DEMO
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </a>
-                  </div>
-                ) : (
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <div className="w-1 h-1 bg-emerald-400 rounded-full pulse" />
-                      <span className="text-emerald-400 text-xs">{project.metric}</span>
-                    </div>
-                    <div className="text-white/50 text-xs">{project.year}</div>
-                  </div>
-                )}
-              </div>
-
-              {/* Hover effect overlay */}
-              <div className="absolute inset-0 bg-emerald-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </div>
-          ))}
-        </div>
-
-        {/* Right - Recognition */}
-        <div className={`col-start-3 row-start-2 row-span-2 border border-emerald-400/30 bg-black/60 backdrop-blur-sm p-4 flex flex-col justify-between transition-all duration-1000 delay-800 node-enter ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-          <div>
-            <div className="text-emerald-400 text-[10px] mb-2 tracking-widest">ACHIEVEMENTS</div>
-            
-            <div className="space-y-4">
-              <div className="border-l-2 border-emerald-400/50 pl-3">
-                <div className="text-white text-xs font-bold mb-1">ICSTEM 2023</div>
-                <div className="text-white/60 text-[10px]">Outstanding Research</div>
-                <div className="text-emerald-400/70 text-[9px] mt-1">Istanbul, Turkey</div>
-              </div>
-              
-              <div className="border-l-2 border-emerald-400/30 pl-3">
-                <div className="text-white text-xs font-bold mb-1">FIA Robotics</div>
-                <div className="text-white/60 text-[10px]">Finalist 2023</div>
-              </div>
-              
-              <div className="border-l-2 border-emerald-400/30 pl-3">
-                <div className="text-white text-xs font-bold mb-1">Academic Excellence</div>
-                <div className="text-white/60 text-[10px]">5-Star Recognition</div>
-              </div>
-            </div>
-          </div>
+        {/* Header Row */}
+        <div className={`flex gap-6 h-[15vh] transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'}`}>
           
-          <div className="text-emerald-400/40 text-[9px] tracking-wider">
-            VERIFIED • SYSTEM_ACTIVE
+          {/* Name */}
+          <div className="flex-1 border-gradient shimmer rounded-3xl bg-white/[0.02] backdrop-blur-xl p-8 flex items-center justify-center group hover:bg-white/[0.04] transition-all duration-500"
+               style={{ transform: `translate(${mousePos.x * 0.2}px, ${mousePos.y * 0.2}px)` }}>
+            <div className="text-center">
+              <h1 className="text-3xl font-bold tracking-tight text-white mb-1">
+                Ahmed Messaad
+              </h1>
+              <p className="text-sm text-white/40 tracking-wider uppercase">AI Research Engineer</p>
+            </div>
+          </div>
+
+          {/* Title */}
+          <div className="flex-[2.5] border-gradient shimmer rounded-3xl bg-white/[0.02] backdrop-blur-xl p-8 flex items-center justify-center hover:bg-white/[0.04] transition-all duration-500"
+               style={{ transform: `translate(${mousePos.x * 0.15}px, ${mousePos.y * 0.15}px)` }}>
+            <div className="text-center max-w-3xl">
+              <h2 className="text-2xl md:text-3xl font-display font-semibold text-white leading-tight mb-2">
+                Engineering Explainable AI Systems for Clinical Impact
+              </h2>
+              <p className="text-xs text-white/40 tracking-widest uppercase">
+                Transfer Learning • Computer Vision • Medical Imaging
+              </p>
+            </div>
+          </div>
+
+          {/* CV */}
+          <div className="flex-1 border-gradient shimmer rounded-3xl bg-white/[0.02] backdrop-blur-xl p-8 flex items-center justify-center group hover:bg-white/[0.04] hover:glow-subtle transition-all duration-500"
+               style={{ transform: `translate(${mousePos.x * 0.25}px, ${mousePos.y * 0.25}px)` }}>
+            <a href="/ahmed_messad_cv.pdf" download className="flex flex-col items-center gap-2">
+              <svg className="w-10 h-10 text-white/60 group-hover:text-white group-hover:scale-110 transition-all" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                <path d="M12 15L12 3M12 15L8 11M12 15L16 11M20 17H4" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <span className="text-xs text-white/60 group-hover:text-white tracking-widest uppercase">Download CV</span>
+            </a>
           </div>
         </div>
 
-        {/* Bottom Left - About */}
-        <div className={`col-start-1 col-span-1 row-start-4 border border-emerald-400/30 bg-black/60 backdrop-blur-sm p-4 flex items-center transition-all duration-1000 delay-900 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div>
-            <div className="text-emerald-400 text-[10px] mb-2 tracking-widest">ABOUT</div>
-            <p className="text-white/70 text-xs leading-relaxed">
-              Developing clinically-deployable AI systems bridging research and healthcare impact.
-            </p>
+        {/* Main Content Row */}
+        <div className="flex gap-6 flex-1">
+          
+          {/* Left Column */}
+          <div className="flex flex-col gap-6 w-[20%]">
+            
+            {/* Profile Image */}
+            <div className={`flex-[2] border-gradient shimmer rounded-3xl bg-white/[0.02] backdrop-blur-xl overflow-hidden group relative transition-all duration-1000 delay-200 ${isLoaded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}
+                 style={{ transform: `translate(${mousePos.x * 0.3}px, ${mousePos.y * 0.3}px)` }}>
+              <img src="/ahmed.jpg" alt="Ahmed Messaad" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6">
+                <p className="text-white/60 text-xs mb-1 tracking-wider uppercase">Location</p>
+                <p className="text-white font-medium">M'sila, Algeria</p>
+              </div>
+            </div>
+
+            {/* About */}
+            <div className={`flex-1 border-gradient shimmer rounded-3xl bg-white/[0.02] backdrop-blur-xl p-6 hover:bg-white/[0.04] transition-all duration-1000 delay-300 ${isLoaded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}
+                 style={{ transform: `translate(${mousePos.x * 0.25}px, ${mousePos.y * 0.25}px)` }}>
+              <p className="text-white/30 text-[10px] mb-3 tracking-widest uppercase">About</p>
+              <p className="text-white/70 text-xs leading-relaxed">
+                Developing clinically-deployable AI systems that bridge academic research and healthcare impact.
+              </p>
+            </div>
+          </div>
+
+          {/* Projects Grid */}
+          <div className="grid grid-cols-2 grid-rows-2 gap-6 flex-[2.2]">
+            {projects.map((project, idx) => (
+              <div
+                key={project.id}
+                onMouseEnter={() => setExpandedProject(project.id)}
+                onMouseLeave={() => setExpandedProject(null)}
+                className={`border-gradient shimmer rounded-3xl bg-gradient-to-br ${project.gradient} backdrop-blur-xl p-6 relative overflow-hidden group cursor-pointer transition-all duration-1000 hover:scale-[1.02] hover:glow-subtle ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+                style={{ 
+                  transitionDelay: `${400 + idx * 100}ms`,
+                  transform: expandedProject === project.id ? `translate(${mousePos.x * 0.4}px, ${mousePos.y * 0.4}px) scale(1.02)` : `translate(${mousePos.x * 0.2}px, ${mousePos.y * 0.2}px)`
+                }}
+              >
+                {/* Background number */}
+                <div className="absolute top-4 right-4 text-[120px] font-bold text-white/[0.03] leading-none pointer-events-none">
+                  {project.id}
+                </div>
+
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="mb-auto">
+                    <p className="text-white/40 text-[10px] mb-2 tracking-widest uppercase">{project.year}</p>
+                    <h3 className="text-white text-lg font-semibold mb-3 leading-tight">{project.title}</h3>
+                    
+                    {expandedProject === project.id ? (
+                      <div className="space-y-3 animate-in fade-in duration-500">
+                        <p className="text-white/70 text-xs leading-relaxed">{project.desc}</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {project.tech.map((t) => (
+                            <span key={t} className="text-[10px] text-white/50 bg-white/5 px-2 py-1 rounded-full">{t}</span>
+                          ))}
+                        </div>
+                        <a 
+                          href={project.link}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-2 text-white text-xs font-medium hover:gap-3 transition-all mt-2"
+                        >
+                          View Project
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </a>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <div className="inline-block bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full">
+                          <span className="text-white text-sm font-bold">{project.metric}</span>
+                          <span className="text-white/50 text-xs ml-1.5">{project.metricLabel}</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Right Column */}
+          <div className="flex flex-col gap-6 w-[20%]">
+            
+            {/* Recognition */}
+            <div className={`flex-[2] border-gradient shimmer rounded-3xl bg-white/[0.02] backdrop-blur-xl p-6 hover:bg-white/[0.04] transition-all duration-1000 delay-500 ${isLoaded ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}
+                 style={{ transform: `translate(${mousePos.x * 0.25}px, ${mousePos.y * 0.25}px)` }}>
+              <p className="text-white/30 text-[10px] mb-4 tracking-widest uppercase">Recognition</p>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-white font-semibold text-sm mb-1">ICSTEM 2023</h4>
+                  <p className="text-white/50 text-xs">Outstanding Research</p>
+                  <p className="text-white/30 text-xs mt-1">Istanbul, Turkey</p>
+                </div>
+                <div className="h-px bg-white/10" />
+                <div>
+                  <h4 className="text-white font-semibold text-sm mb-1">FIA Robotics</h4>
+                  <p className="text-white/50 text-xs">Finalist 2023</p>
+                </div>
+                <div className="h-px bg-white/10" />
+                <div>
+                  <h4 className="text-white font-semibold text-sm mb-1">Academic Excellence</h4>
+                  <p className="text-white/50 text-xs">5-Star Recognition</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Education */}
+            <div className={`flex-1 border-gradient shimmer rounded-3xl bg-white/[0.02] backdrop-blur-xl p-6 hover:bg-white/[0.04] transition-all duration-1000 delay-600 ${isLoaded ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}
+                 style={{ transform: `translate(${mousePos.x * 0.25}px, ${mousePos.y * 0.25}px)` }}>
+              <p className="text-white/30 text-[10px] mb-3 tracking-widest uppercase">Education</p>
+              <h4 className="text-white font-semibold text-sm mb-1">M.Sc. Embedded Systems</h4>
+              <p className="text-white/50 text-xs">University Mohamed Boudiaf</p>
+            </div>
           </div>
         </div>
 
-        {/* Bottom Center - Education */}
-        <div className={`col-start-2 row-start-4 border border-emerald-400/30 bg-black/60 backdrop-blur-sm p-4 flex items-center justify-between transition-all duration-1000 delay-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div>
-            <div className="text-emerald-400 text-[10px] mb-1 tracking-widest">EDUCATION</div>
-            <div className="text-white text-sm font-bold">M.Sc. Embedded Systems Electronics</div>
-            <div className="text-white/60 text-xs mt-1">University Mohamed Boudiaf</div>
-          </div>
-          <div className="text-right">
-            <div className="text-emerald-400 text-xs">THESIS</div>
-            <div className="text-white/50 text-[10px] max-w-[200px]">Multi-Disease Diagnostic Platform</div>
-          </div>
-        </div>
-
-        {/* Bottom Right - Contact */}
-        <div className={`col-start-3 row-start-4 border border-emerald-400/30 bg-black/60 backdrop-blur-sm flex items-center justify-center transition-all duration-1000 delay-1100 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="flex gap-4">
-            <a href="mailto:ahmed.messaad@outlook.com" className="text-emerald-400 text-xs hover:text-white transition-colors tracking-widest">EMAIL</a>
-            <span className="text-emerald-400/30">|</span>
-            <a href="https://linkedin.com/in/ahmedmessaad" target="_blank" rel="noreferrer" className="text-emerald-400 text-xs hover:text-white transition-colors tracking-widest">LINKEDIN</a>
-            <span className="text-emerald-400/30">|</span>
-            <a href="https://github.com/RYANX9" target="_blank" rel="noreferrer" className="text-emerald-400 text-xs hover:text-white transition-colors tracking-widest">GITHUB</a>
+        {/* Footer */}
+        <div className={`flex gap-6 h-[12vh] transition-all duration-1000 delay-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className="flex-1 border-gradient shimmer rounded-3xl bg-white/[0.02] backdrop-blur-xl p-6 flex items-center justify-center hover:bg-white/[0.04] transition-all duration-500"
+               style={{ transform: `translate(${mousePos.x * 0.2}px, ${mousePos.y * 0.2}px)` }}>
+            <div className="flex gap-8">
+              <a href="mailto:ahmed.messaad@outlook.com" className="text-white/60 hover:text-white text-sm transition-colors tracking-wider">Email</a>
+              <a href="https://linkedin.com/in/ahmedmessaad" target="_blank" rel="noreferrer" className="text-white/60 hover:text-white text-sm transition-colors tracking-wider">LinkedIn</a>
+              <a href="https://github.com/RYANX9" target="_blank" rel="noreferrer" className="text-white/60 hover:text-white text-sm transition-colors tracking-wider">GitHub</a>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Mobile/Tablet Layout */}
-      <div className="lg:hidden flex flex-col h-full overflow-y-auto p-4 gap-4">
-        {/* Header */}
-        <div className="border border-emerald-400/30 bg-black/60 backdrop-blur-sm p-4 text-center">
-          <div className="text-emerald-400 text-xs mb-1 tracking-widest">AI RESEARCH ENGINEER</div>
-          <div className="text-white text-xl font-bold tracking-wider mb-2">AHMED MESSAAD</div>
-          <div className="text-emerald-400/70 text-[10px] tracking-widest">EXPLAINABLE AI × CLINICAL SYSTEMS</div>
-        </div>
-
-        {/* Profile */}
-        <div className="border border-emerald-400/30 bg-black/60 backdrop-blur-sm overflow-hidden relative h-64">
-          <img src="/ahmed.jpg" alt="Ahmed Messaad" className="w-full h-full object-cover"/>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"/>
-          <div className="absolute bottom-4 left-4">
-            <div className="text-emerald-400 text-xs tracking-widest">M'SILA, ALGERIA</div>
-          </div>
-        </div>
-
-        {/* About */}
-        <div className="border border-emerald-400/30 bg-black/60 backdrop-blur-sm p-4">
-          <div className="text-emerald-400 text-xs mb-2 tracking-widest">ABOUT</div>
-          <p className="text-white/70 text-sm leading-relaxed">
-            Developing clinically-deployable AI systems bridging research and healthcare impact. Specializing in explainable deep learning, transfer learning optimization, and medical imaging.
+      <div className="lg:hidden flex flex-col h-full overflow-y-auto p-4 gap-4 pb-20">
+        <div className="border-gradient shimmer rounded-3xl bg-white/[0.02] backdrop-blur-xl p-6 text-center">
+          <h1 className="text-2xl font-bold text-white mb-1">Ahmed Messaad</h1>
+          <p className="text-xs text-white/40 tracking-wider uppercase mb-3">AI Research Engineer</p>
+          <p className="text-sm font-display text-white/70 leading-relaxed">
+            Engineering Explainable AI Systems for Clinical Impact
           </p>
         </div>
 
-        {/* Projects */}
-        {projects.map((project, idx) => (
-          <div key={project.id} className="border border-emerald-400/30 bg-black/60 backdrop-blur-sm p-4">
-            <div className="flex justify-between items-start mb-2">
-              <div className="text-emerald-400 text-[10px] tracking-widest">PROJECT_{String(idx + 1).padStart(2, '0')}</div>
-              <div className="text-emerald-400 text-xs">{project.metric}</div>
+        <div className="border-gradient shimmer rounded-3xl bg-white/[0.02] backdrop-blur-xl overflow-hidden h-64">
+          <img src="/ahmed.jpg" alt="Ahmed Messaad" className="w-full h-full object-cover"/>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"/>
+        </div>
+
+        <div className="border-gradient shimmer rounded-3xl bg-white/[0.02] backdrop-blur-xl p-6">
+          <p className="text-white/30 text-xs mb-2 tracking-widest uppercase">About</p>
+          <p className="text-white/70 text-sm leading-relaxed">
+            Developing clinically-deployable AI systems that bridge academic research and healthcare impact. Specializing in explainable deep learning, transfer learning optimization, and medical imaging.
+          </p>
+        </div>
+
+        {projects.map((project) => (
+          <div key={project.id} className={`border-gradient shimmer rounded-3xl bg-gradient-to-br ${project.gradient} backdrop-blur-xl p-6`}>
+            <p className="text-white/40 text-xs mb-2 tracking-widest uppercase">{project.year}</p>
+            <h3 className="text-white text-lg font-semibold mb-2">{project.title}</h3>
+            <div className="inline-block bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full mb-3">
+              <span className="text-white text-sm font-bold">{project.metric}</span>
+              <span className="text-white/50 text-xs ml-1.5">{project.metricLabel}</span>
             </div>
-            <h3 className="text-white text-base font-bold mb-2">{project.title}</h3>
-            <p className="text-white/70 text-xs mb-3 leading-relaxed">{project.desc}</p>
-            <div className="text-emerald-400/70 text-[10px] mb-3">{project.tech}</div>
-            <a href={project.link} target="_blank" rel="noreferrer" className="text-emerald-400 text-xs inline-flex items-center gap-2">
-              VIEW DEMO →
+            <p className="text-white/70 text-sm mb-3 leading-relaxed">{project.desc}</p>
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              {project.tech.map((t) => (
+                <span key={t} className="text-xs text-white/50 bg-white/5 px-2 py-1 rounded-full">{t}</span>
+              ))}
+            </div>
+            <a href={project.link} target="_blank" rel="noreferrer" className="text-white text-sm inline-flex items-center gap-2">
+              View Project →
             </a>
           </div>
         ))}
 
-        {/* Recognition */}
-        <div className="border border-emerald-400/30 bg-black/60 backdrop-blur-sm p-4">
-          <div className="text-emerald-400 text-xs mb-3 tracking-widest">ACHIEVEMENTS</div>
+        <div className="border-gradient shimmer rounded-3xl bg-white/[0.02] backdrop-blur-xl p-6">
+          <p className="text-white/30 text-xs mb-3 tracking-widest uppercase">Recognition</p>
           <div className="space-y-3">
-            <div className="border-l-2 border-emerald-400 pl-3">
-              <div className="text-white text-sm font-bold">ICSTEM 2023 • Istanbul</div>
-              <div className="text-white/60 text-xs">Outstanding Research</div>
+            <div>
+              <h4 className="text-white font-semibold text-sm">ICSTEM 2023 • Istanbul</h4>
+              <p className="text-white/50 text-xs">Outstanding Research</p>
             </div>
-            <div className="border-l-2 border-emerald-400/50 pl-3">
-              <div className="text-white text-sm font-bold">FIA Robotics Finalist</div>
-              <div className="text-white/60 text-xs">2023</div>
+            <div>
+              <h4 className="text-white font-semibold text-sm">FIA Robotics Finalist</h4>
+              <p className="text-white/50 text-xs">2023</p>
             </div>
           </div>
         </div>
 
-        {/* Education */}
-        <div className="border border-emerald-400/30 bg-black/60 backdrop-blur-sm p-4">
-          <div className="text-emerald-400 text-xs mb-2 tracking-widest">EDUCATION</div>
-          <div className="text-white text-base font-bold mb-1">M.Sc. Embedded Systems Electronics</div>
-          <div className="text-white/60 text-sm">University Mohamed Boudiaf</div>
+        <div className="border-gradient shimmer rounded-3xl bg-white/[0.02] backdrop-blur-xl p-6">
+          <p className="text-white/30 text-xs mb-2 tracking-widest uppercase">Education</p>
+          <h4 className="text-white font-semibold text-sm mb-1">M.Sc. Embedded Systems Electronics</h4>
+          <p className="text-white/50 text-sm">University Mohamed Boudiaf</p>
         </div>
 
-        {/* Contact */}
-        <div className="border border-emerald-400/30 bg-black/60 backdrop-blur-sm p-4 mb-20">
-          <div className="text-emerald-400 text-xs mb-3 tracking-widest">CONTACT</div>
+        <div className="border-gradient shimmer rounded-3xl bg-white/[0.02] backdrop-blur-xl p-6">
+          <p className="text-white/30 text-xs mb-3 tracking-widest uppercase">Contact</p>
           <div className="flex flex-col gap-2">
-            <a href="mailto:ahmed.messaad@outlook.com" className="text-white text-sm hover:text-emerald-400 transition-colors">ahmed.messaad@outlook.com</a>
-            <a href="https://linkedin.com/in/ahmedmessaad" target="_blank" rel="noreferrer" className="text-white text-sm hover:text-emerald-400 transition-colors">LinkedIn →</a>
-            <a href="https://github.com/RYANX9" target="_blank" rel="noreferrer" className="text-white text-sm hover:text-emerald-400 transition-colors">GitHub →</a>
+            <a href="mailto:ahmed.messaad@outlook.com" className="text-white text-sm">ahmed.messaad@outlook.com</a>
+            <a href="https://linkedin.com/in/ahmedmessaad" target="_blank" rel="noreferrer" className="text-white text-sm">LinkedIn →</a>
+            <a href="https://github.com/RYANX9" target="_blank" rel="noreferrer" className="text-white text-sm">GitHub →</a>
           </div>
         </div>
-
-        {/* CV Download - Fixed */}
-        <a 
-          href="/ahmed_messad_cv.pdf"
-          download
-          className="fixed bottom-4 right-4 border border-emerald-400/30 bg-black/90 backdrop-blur-sm px-4 py-2 text-emerald-400 text-xs tracking-widest hover:bg-emerald-400/10 transition-colors"
-        >
-          DOWNLOAD CV
-        </a>
       </div>
-
-      {/* Cursor follower */}
-      <div 
-        className="hidden lg:block pointer-events-none fixed w-4 h-4 border border-emerald-400/50 rounded-full transition-transform duration-100 ease-out"
-        style={{ 
-          left: mousePos.x - 8, 
-          top: mousePos.y - 8,
-          transform: hoveredNode ? 'scale(2)' : 'scale(1)',
-          zIndex: 9999
-        }}
-      />
     </div>
   );
 }
