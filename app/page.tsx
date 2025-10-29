@@ -10,7 +10,7 @@ export default function Portfolio() {
   useEffect(() => {
     setTimeout(() => setIsLoaded(true), 300);
     
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       setMousePos({ 
         x: (e.clientX / window.innerWidth - 0.5) * 20,
         y: (e.clientY / window.innerHeight - 0.5) * 20
