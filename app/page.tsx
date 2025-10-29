@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 
 export default function Portfolio() {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [expandedProject, setExpandedProject] = useState(null);
+  const [expandedProject, setExpandedProject] = useState<number | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
