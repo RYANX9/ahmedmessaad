@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from 'react';
 
 export default function Portfolio() {
-  const [activeNode, setActiveNode] = useState(null);
+  const [activeNode, setActiveNode] = useState<string | null>(null);
+  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isLoaded, setIsLoaded] = useState(false);
-  const [hoveredNode, setHoveredNode] = useState(null);
 
   useEffect(() => {
     setTimeout(() => setIsLoaded(true), 100);
