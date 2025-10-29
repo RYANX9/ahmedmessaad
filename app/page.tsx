@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import type { Variants } from "framer-motion";
 import { Sparkles, Play, Mic, Mail, Linkedin, Github } from "lucide-react";
 
 declare global {
@@ -142,7 +143,7 @@ export default function Page() {
     }
   };
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -153,16 +154,15 @@ export default function Page() {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { y: 50, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { type: "spring", stiffness: 100 },
     },
   };
 
-  const orbitVariants = {
+  const orbitVariants: Variants = {
     initial: { rotate: 0 },
     animate: {
       rotate: 360,
@@ -209,6 +209,7 @@ export default function Page() {
           className="relative flex flex-col items-center text-center z-10"
           variants={itemVariants}
           style={{ perspective: "1000px" }}
+          transition={{ type: "spring", stiffness: 100 }}
         >
           <motion.div
             className="w-32 h-32 lg:w-48 lg:h-48 rounded-full overflow-hidden border-4 border-[#00ff88] shadow-[0_0_20px_#00ff88] neon relative"
@@ -318,6 +319,7 @@ export default function Page() {
         <motion.div
           className="flex flex-col items-center gap-6 lg:gap-8 z-10"
           variants={itemVariants}
+          transition={{ type: "spring", stiffness: 100 }}
         >
           {/* About Node */}
           <motion.div
