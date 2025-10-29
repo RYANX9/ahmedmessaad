@@ -4,6 +4,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Play, Mic, Mail, Linkedin, Github } from "lucide-react";
 
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
+
 interface Project {
   id: string;
   title: string;
@@ -56,7 +63,7 @@ const projects: Project[] = [
 export default function Page() {
   const [currentProject, setCurrentProject] = useState(0);
   const [isVoiceActive, setIsVoiceActive] = useState(false);
-  const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
+  const [recognition, setRecognition] = useState<any>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -64,13 +71,13 @@ export default function Page() {
     if (typeof window === "undefined") return;
 
     // Voice Recognition Setup
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (SpeechRecognition) {
-      const rec = new SpeechRecognition();
+    const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognitionAPI) {
+      const rec = new (SpeechRecognitionAPI as any)();
       rec.continuous = false;
       rec.interimResults = false;
       rec.lang = "en-US";
-      rec.onresult = (event: SpeechRecognitionEvent) => {
+      rec.onresult = (event: any) => {
         const command = event.results[0][0].transcript.toLowerCase();
         const projectIndex = projects.findIndex(p => command.includes(p.title.toLowerCase().split(' ')[0]));
         if (projectIndex !== -1) setCurrentProject(projectIndex);
