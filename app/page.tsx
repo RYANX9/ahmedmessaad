@@ -1,14 +1,9 @@
-// app/page.tsx
 "use client";
 
-import React from "react";
-import { motion, Variants } from "framer-motion";
-import { ArrowUpRight, Download } from "lucide-react";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 
-// =============================================================================
-// DATA (from your data.ts)
-// =============================================================================
-export interface Project {
+interface Project {
   id: string;
   name: string;
   context: string;
@@ -20,286 +15,556 @@ export interface Project {
   image: string;
 }
 
-export const projectsData: Project[] = [
-  {
-    id: "treatment-drl",
-    name: "Medical Treatment DRL",
-    context: "Sequential Decision-Making Research",
-    year: "2025",
-    description:
-      "ICU treatment timing system trained on MIMIC-III data. A2C agent achieved 99.5% clinical appropriateness with +76–145 reward improvement over baselines. Implemented rule-based safety filter boosting PPO/DQN appropriateness by 40 points. Custom 26D Gym environment with temporal lab trends and treatment effect simulation.",
-    tech: ["Stable-Baselines3", "Gym", "NumPy", "Pandas", "MIMIC-III"],
-    link: "https://github.com/RYANX9/medical-treatment-drl/",
-    linkText: "View Code",
-    image: "/clinrl.jpeg",
-  },
-  {
-    id: "airm",
-    name: "AIRM Brain Tumor System",
-    context: "Clinical AI Research",
-    year: "2024",
-    description:
-      "Clinical-grade diagnostic system achieving 99% four-class tumor classification with radiologist-validated interface. End-to-end DICOM pipeline development investigating optimal preprocessing strategies for limited medical imaging datasets. Deployment-ready architecture with clinical workflow integration.",
-    tech: ["EfficientNet-B7", "PyDICOM", "PyQt5", "SQL"],
-    link: "https://youtu.be/2OeqBKF3X_A",
-    linkText: "Watch Demo",
-    image: "/brain.jpg",
-  },
-  {
-    id: "hemavision",
-    name: "HemaVision",
-    context: "Medical Automation",
-    year: "2023–2024",
-    description:
-      "Automated hematology platform achieving 97% multi-class blood cell classification. Reduced diagnostic time from 45 minutes to 3 minutes through optimized detection pipeline. Research investigating efficient segmentation architectures for microscopy imaging in clinical workflows.",
-    tech: ["YOLOv8", "U-Net", "OpenCV", "PyTorch"],
-    link: "https://youtu.be/YxhA877Wyn0",
-    linkText: "Watch Demo",
-    image: "/blood.jpg",
-  },
-  {
-    id: "healthcost",
-    name: "Healthcare Cost Prediction",
-    context: "Deep Learning Methodology",
-    year: "2024",
-    description:
-      "Conv1D neural network achieving R² = 0.88 for insurance cost forecasting. Feature engineering with SHAP analysis identified key cost drivers. Systematic ablation study investigating optimal temporal convolution strategies for healthcare prediction tasks.",
-    tech: ["Conv1D", "SHAP", "Scikit-learn", "Plotly"],
-    link: "https://github.com/RYANX9/healthcare-cost-prediction",
-    linkText: "View Code",
-    image: "/healthcarecost.png",
-  },
-];
+export default function PortfolioDesign3() {
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
-// =============================================================================
-// ANIMATION VARIANTS
-// =============================================================================
-const gridContainerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
+  const projects: Project[] = [
+    {
+      id: "treatment-drl",
+      name: "Medical Treatment DRL",
+      context: "Sequential Decision-Making Research",
+      year: "2025",
+      description: "ICU treatment timing system trained on MIMIC-III data. A2C agent achieved 99.5% clinical appropriateness with +76–145 reward improvement over baselines.",
+      tech: ["Stable-Baselines3", "Gym", "NumPy", "Pandas", "MIMIC-III"],
+      link: "https://github.com/RYANX9/medical-treatment-drl/",
+      linkText: "View Code",
+      image: "/clinrl.jpeg",
     },
-  },
-};
-
-const gridItemVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 10,
+    {
+      id: "airm",
+      name: "AIRM Brain Tumor System",
+      context: "Clinical AI Research",
+      year: "2024",
+      description: "Clinical-grade diagnostic system achieving 99% four-class tumor classification with radiologist-validated interface. End-to-end DICOM pipeline development.",
+      tech: ["EfficientNet-B7", "PyDICOM", "PyQt5", "SQL"],
+      link: "https://youtu.be/2OeqBKF3X_A",
+      linkText: "Watch Demo",
+      image: "/brain.jpg",
     },
-  },
-};
-
-// =============================================================================
-// PAGE COMPONENT
-// =============================================================================
-export default function Page() {
-  // Filter out any empty projects just in case
-  const projects = projectsData.filter((p) => p.id);
+    {
+      id: "hemavision",
+      name: "HemaVision",
+      context: "Medical Automation",
+      year: "2023–2024",
+      description: "Automated hematology platform achieving 97% multi-class blood cell classification. Reduced diagnostic time from 45 minutes to 3 minutes.",
+      tech: ["YOLOv8", "U-Net", "OpenCV", "PyTorch"],
+      link: "https://youtu.be/YxhA877Wyn0",
+      linkText: "Watch Demo",
+      image: "/blood.jpg",
+    },
+    {
+      id: "healthcost",
+      name: "Healthcare Cost Prediction",
+      context: "Deep Learning Methodology",
+      year: "2024",
+      description: "Conv1D neural network achieving R² = 0.88 for insurance cost forecasting. Feature engineering with SHAP analysis identified key cost drivers.",
+      tech: ["Conv1D", "SHAP", "Scikit-learn", "Plotly"],
+      link: "https://github.com/RYANX9/healthcare-cost-prediction",
+      linkText: "View Code",
+      image: "/healthcarecost.png",
+    },
+  ];
 
   return (
-    <main className="min-h-screen w-full bg-[#0a0a0a] text-gray-100 font-sans p-3 md:p-4">
-      {/* This is the main grid layout.
-        - On desktop (md:): 3x2 grid, filling the screen, no scroll.
-        - On mobile: 1-column grid, which will scroll naturally.
-      */}
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-3 md:gap-4 md:h-[calc(100vh-2rem)]"
-        variants={gridContainerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* ======================= */}
-        {/* CELL 1: INTRO / NAME */}
-        {/* ======================= */}
-        <motion.div
-          variants={gridItemVariants}
-          className="row-span-1 flex flex-col justify-between p-6 md:p-8 border border-gray-800 rounded-xl bg-[#111111]"
-        >
-          {/* Top part for alignment */}
-          <div className="text-xs text-gray-600 font-mono tracking-widest">
-            AHMED MESSAAD
-          </div>
+    <main className="min-h-screen w-full bg-[#fafafa] text-black">
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap');
+        
+        * {
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .font-display {
+          font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .font-mono {
+          font-family: 'IBM Plex Mono', monospace;
+        }
 
-          {/* Bottom part with BIG/SMALL typo */}
-          <div className="mt-auto">
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter text-gray-50 leading-none">
-              AI Research
-              <br />
-              Engineer
-            </h1>
-            <p className="mt-4 text-sm md:text-base text-gray-400 max-w-md">
-              Specializing in clinically-deployable computer vision and
-              reinforcement learning systems.
-            </p>
-          </div>
-        </motion.div>
+        @media (max-width: 1023px) {
+          html {
+            scroll-behavior: smooth;
+          }
+        }
+      `}</style>
 
-        {/* ======================= */}
-        {/* CELL 2: PROJECT 1 */}
-        {/* ======================= */}
-        <motion.div variants={gridItemVariants}>
-          <ProjectCard project={projects[0]} />
-        </motion.div>
+      {/* DESKTOP: 3x3 Grid - No Scroll */}
+      <div className="hidden lg:block h-screen overflow-hidden">
+        <div className="h-full grid grid-cols-3 grid-rows-3 gap-[1px] bg-black p-[1px]">
+          
+          {/* TOP LEFT - Hero Name with Logo */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="bg-[#fafafa] p-10 flex flex-col justify-between"
+          >
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex items-center gap-2"
+            >
+              <motion.img
+                src="/noun.svg"
+                alt="Logo"
+                className="w-5 h-5"
+                animate={{ rotate: 360 }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+              />
+              <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
+                Portfolio 2025
+              </span>
+            </motion.div>
+            <motion.div
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.7, delay: 0.4 }}
+            >
+              <h1 className="font-display text-[64px] xl:text-[72px] leading-[0.85] font-bold tracking-tight">
+                AHMED<br/>MESSAAD
+              </h1>
+            </motion.div>
+          </motion.div>
 
-        {/* ======================= */}
-        {/* CELL 3: PROJECT 2 */}
-        {/* ======================= */}
-        <motion.div variants={gridItemVariants}>
-          <ProjectCard project={projects[1]} />
-        </motion.div>
+          {/* TOP MIDDLE - About */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="bg-[#fafafa] p-10 flex flex-col justify-between"
+          >
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400"
+            >
+              About
+            </motion.div>
+            <motion.p 
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.7, delay: 0.5 }}
+              className="font-mono text-[11px] leading-relaxed text-gray-700 tracking-wide"
+            >
+              AI Research Engineer specializing in clinically-deployable computer vision systems. Focused on transfer learning optimization and interpretable medical AI.
+            </motion.p>
+          </motion.div>
 
-        {/* ======================= */}
-        {/* CELL 4: PROJECT 3 */}
-        {/* ======================= */}
-        <motion.div variants={gridItemVariants}>
-          <ProjectCard project={projects[2]} />
-        </motion.div>
-
-        {/* ======================= */}
-        {/* CELL 5: PROJECT 4 */}
-        {/* ======================= */}
-        <motion.div variants={gridItemVariants}>
-          <ProjectCard project={projects[3]} />
-        </motion.div>
-
-        {/* ======================= */}
-        {/* CELL 6: LINKS / CV */}
-        {/* ======================= */}
-        <motion.div
-          variants={gridItemVariants}
-          className="row-span-1 flex flex-col p-6 md:p-8 border border-gray-800 rounded-xl bg-[#111111] space-y-4"
-        >
-          <div className="text-xs text-gray-600 font-mono tracking-widest">
-            CONNECT
-          </div>
-
-          {/* Links List */}
-          <div className="flex flex-col flex-1 justify-center space-y-3">
-            <LinkButton
-              href="/ahmed_messaad_cv.pdf"
-              title="Download CV"
-              icon={<Download className="w-4 h-4" />}
-              isDownload={true}
+          {/* TOP RIGHT - Profile Image */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="bg-[#fafafa] overflow-hidden relative"
+          >
+            <motion.img
+              initial={{ scale: 1.2, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 1, delay: 0.6 }}
+              src="/ahmed.jpg"
+              alt="Ahmed Messaad"
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
             />
-            <LinkButton
-              href="mailto:ahmed.messaad@outlook.com"
-              title="ahmed.messaad@outlook.com"
-              icon={<ArrowUpRight className="w-4 h-4" />}
+          </motion.div>
+
+          {/* MIDDLE ROW - Projects with Background Images */}
+          {projects.map((project, idx) => (
+            <motion.a
+              key={project.id}
+              href={project.link}
+              target="_blank"
+              rel="noreferrer"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 + idx * 0.1 }}
+              onMouseEnter={() => setHoveredCard(project.id)}
+              onMouseLeave={() => setHoveredCard(null)}
+              className="relative overflow-hidden group cursor-pointer"
+              style={{
+                backgroundImage: `url(${project.image})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-black/85 group-hover:from-black/70 group-hover:via-black/80 group-hover:to-black/90 transition-all duration-500" />
+              
+              {/* Content */}
+              <div className="relative z-10 p-10 h-full flex flex-col justify-between text-white">
+                <motion.div 
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.6 + idx * 0.1 }}
+                  className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-300"
+                >
+                  Project {String(idx + 1).padStart(2, '0')}
+                </motion.div>
+                
+                <motion.div
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.7, delay: 0.7 + idx * 0.1 }}
+                >
+                  <h3 className="font-display text-[18px] xl:text-[20px] leading-tight font-semibold mb-2 group-hover:text-gray-200 transition-colors duration-300">
+                    {project.name}
+                  </h3>
+                  <div className="flex justify-between items-end">
+                    <p className="font-mono text-[10px] text-gray-300 tracking-wide">
+                      {project.context}
+                    </p>
+                    <p className="font-mono text-[10px] text-gray-400">
+                      {project.year}
+                    </p>
+                  </div>
+                </motion.div>
+
+                {/* Hover indicator */}
+                <motion.div 
+                  initial={{ opacity: 0, x: -5 }}
+                  animate={{ 
+                    opacity: hoveredCard === project.id ? 1 : 0,
+                    x: hoveredCard === project.id ? 0 : -5
+                  }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute top-10 right-10 font-mono text-[9px] text-gray-300 tracking-wider"
+                >
+                  VIEW →
+                </motion.div>
+              </div>
+            </motion.a>
+          ))}
+
+          {/* BOTTOM LEFT - Recognition */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="bg-[#fafafa] p-10 flex flex-col justify-between"
+          >
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 1 }}
+              className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400"
+            >
+              Recognition
+            </motion.div>
+            <motion.div
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.7, delay: 1.1 }}
+            >
+              <h3 className="font-display text-[18px] leading-tight font-semibold mb-3">
+                ICSTEM 2023<br/>Outstanding Research
+              </h3>
+              <p className="font-mono text-[10px] text-gray-500 tracking-wide">
+                Istanbul, Turkey
+              </p>
+            </motion.div>
+          </motion.div>
+
+          {/* BOTTOM MIDDLE - CV Download */}
+          <motion.a
+            href="/ahmed_messaad_cv.pdf"
+            download
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.9 }}
+            className="bg-[#fafafa] p-10 flex flex-col justify-between group cursor-pointer hover:bg-[#f5f5f5] transition-colors duration-300"
+          >
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 1.1 }}
+              className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400"
+            >
+              Curriculum Vitae
+            </motion.div>
+            <motion.div
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.7, delay: 1.2 }}
+              className="flex items-end justify-between"
+            >
+              <h3 className="font-display text-[18px] leading-tight font-semibold group-hover:text-gray-600 transition-colors duration-300">
+                DOWNLOAD<br/>RÉSUMÉ
+              </h3>
+              <svg 
+                className="w-6 h-6 text-gray-400 group-hover:text-gray-600 transition-all duration-300 group-hover:translate-y-1" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 5v14M19 12l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </motion.div>
+          </motion.a>
+
+          {/* BOTTOM RIGHT - Contact */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 1 }}
+            onClick={() => window.location.href = 'mailto:ahmed.messaad@outlook.com'}
+            className="bg-black text-white p-10 flex flex-col justify-between cursor-pointer group relative overflow-hidden"
+          >
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 1.2 }}
+              className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400 relative z-10"
+            >
+              Get in Touch
+            </motion.div>
+            
+            <motion.div
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.7, delay: 1.3 }}
+              className="relative z-10"
+            >
+              <h3 className="font-display text-[38px] xl:text-[42px] leading-[0.9] font-bold mb-4">
+                CONTACT
+              </h3>
+              <div className="space-y-1">
+                <p className="font-mono text-[9px] text-gray-300 tracking-wider">
+                  ahmed.messaad@outlook.com
+                </p>
+                <p className="font-mono text-[9px] text-gray-400 tracking-wider">
+                  LinkedIn • GitHub
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Hover effect */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileHover={{ opacity: 0.05 }}
+              transition={{ duration: 0.3 }}
+              className="absolute inset-0 bg-white"
             />
-            <LinkButton
-              href="https://linkedin.com/in/ahmedmessaad"
-              title="LinkedIn"
-              icon={<ArrowUpRight className="w-4 h-4" />}
-            />
-            <LinkButton
-              href="https://github.com/RYANX9"
-              title="GitHub"
-              icon={<ArrowUpRight className="w-4 h-4" />}
-            />
-          </div>
-          <div className="text-xs text-gray-700 font-mono mt-auto pt-4">
-            M'sila, Algeria
-          </div>
-        </motion.div>
-      </motion.div>
-    </main>
-  );
-}
+          </motion.div>
 
-// =============================================================================
-// SUB-COMPONENTS
-// =============================================================================
-
-/**
- * ProjectCard Component
- * This is the equal-sized card for the grid.
- */
-interface ProjectCardProps {
-  project: Project;
-}
-
-function ProjectCard({ project }: ProjectCardProps) {
-  if (!project) return null; // Handle cases with fewer than 4 projects
-
-  return (
-    <motion.a
-      href={project.link}
-      target="_blank"
-      rel="noreferrer"
-      className="h-full min-h-[40vh] md:min-h-0 w-full p-6 md:p-7 flex flex-col justify-between border border-gray-800 rounded-xl relative overflow-hidden group"
-      style={{
-        backgroundImage: `url(${project.image})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-      initial={{ scale: 1 }}
-      whileHover={{
-        scale: 1.03,
-        transition: {
-          type: "spring",
-          stiffness: 300,
-          damping: 15,
-        },
-      }}
-    >
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-300 z-0" />
-
-      {/* Content */}
-      <div className="relative z-10 flex justify-between text-gray-300">
-        <span className="text-xs font-mono uppercase tracking-widest">
-          {project.context}
-        </span>
-        <span className="text-xs font-mono">{project.year}</span>
-      </div>
-
-      <div className="relative z-10">
-        <h3 className="text-xl md:text-2xl font-bold text-gray-50">
-          {project.name}
-        </h3>
-        <div className="flex items-center space-x-2 mt-2 text-sm text-cyan-400">
-          <span>{project.linkText}</span>
-          <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
         </div>
       </div>
-    </motion.a>
-  );
-}
 
-/**
- * LinkButton Component
- * A reusable component for the links in the 6th grid cell.
- */
-interface LinkButtonProps {
-  href: string;
-  title: string;
-  icon: React.ReactNode;
-  isDownload?: boolean;
-}
+      {/* MOBILE & TABLET: Vertical Scrollable */}
+      <div className="lg:hidden">
+        <div className="flex flex-col gap-[1px] bg-black p-[1px]">
+          
+          {/* Hero Name with Logo */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-[#fafafa] p-8 md:p-12 min-h-[50vh] flex flex-col justify-between"
+          >
+            <div className="flex items-center gap-2">
+              <motion.img
+                src="/noun.svg"
+                alt="Logo"
+                className="w-4 h-4"
+                animate={{ rotate: 360 }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+              />
+              <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
+                Portfolio 2025
+              </span>
+            </div>
+            <div>
+              <h1 className="font-display text-[56px] md:text-[80px] leading-[0.85] font-bold tracking-tight">
+                AHMED<br/>MESSAAD
+              </h1>
+            </div>
+          </motion.div>
 
-function LinkButton({ href, title, icon, isDownload = false }: LinkButtonProps) {
-  return (
-    <motion.a
-      href={href}
-      target={isDownload ? undefined : "_blank"}
-      download={isDownload ? true : undefined}
-      rel={isDownload ? undefined : "noreferrer"}
-      className="flex items-center justify-between p-4 bg-gray-900/50 border border-gray-800 rounded-lg text-gray-200 group hover:border-gray-600 transition-colors duration-200"
-      whileHover={{ scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 400, damping: 15 }}
-    >
-      <span className="text-sm font-medium">{title}</span>
-      <div className="text-gray-500 group-hover:text-gray-200 transition-colors duration-200">
-        {icon}
+          {/* Profile Image */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="bg-[#fafafa] overflow-hidden h-[60vh] md:h-[70vh]"
+          >
+            <img
+              src="/ahmed.jpg"
+              alt="Ahmed Messaad"
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+
+          {/* About */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-[#fafafa] p-8 md:p-12 min-h-[40vh] flex flex-col justify-between"
+          >
+            <div className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
+              About
+            </div>
+            <p className="font-mono text-[12px] md:text-[13px] leading-relaxed text-gray-700 tracking-wide">
+              AI Research Engineer specializing in clinically-deployable computer vision systems. Focused on transfer learning optimization and interpretable medical AI for resource-constrained environments.
+            </p>
+          </motion.div>
+
+          {/* Projects with Background Images */}
+          {projects.map((project, idx) => (
+            <motion.a
+              key={project.id}
+              href={project.link}
+              target="_blank"
+              rel="noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: idx * 0.05 }}
+              className="relative min-h-[45vh] overflow-hidden active:opacity-90 transition-opacity duration-200"
+              style={{
+                backgroundImage: `url(${project.image})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-black/85" />
+              
+              {/* Content */}
+              <div className="relative z-10 p-8 md:p-12 h-full flex flex-col justify-between text-white">
+                <div className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-300">
+                  Project {String(idx + 1).padStart(2, '0')}
+                </div>
+                
+                <div>
+                  <h3 className="font-display text-[24px] md:text-[28px] leading-tight font-semibold mb-3">
+                    {project.name}
+                  </h3>
+                  <div className="flex justify-between items-end">
+                    <p className="font-mono text-[11px] text-gray-200 tracking-wide">
+                      {project.context}
+                    </p>
+                    <p className="font-mono text-[11px] text-gray-400">
+                      {project.year}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.a>
+          ))}
+
+          {/* Recognition */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-[#fafafa] p-8 md:p-12 min-h-[30vh] flex flex-col justify-between"
+          >
+            <div className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
+              Recognition
+            </div>
+            <div>
+              <h3 className="font-display text-[22px] md:text-[26px] leading-tight font-semibold mb-3">
+                ICSTEM 2023<br/>Outstanding Research
+              </h3>
+              <p className="font-mono text-[11px] text-gray-500 tracking-wide">
+                Istanbul, Turkey
+              </p>
+            </div>
+          </motion.div>
+
+          {/* CV Download */}
+          <motion.a
+            href="/ahmed_messaad_cv.pdf"
+            download
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-[#fafafa] p-8 md:p-12 min-h-[30vh] flex flex-col justify-between active:bg-[#f5f5f5] transition-colors duration-200"
+          >
+            <div className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
+              Curriculum Vitae
+            </div>
+            <div className="flex items-end justify-between">
+              <h3 className="font-display text-[22px] md:text-[26px] leading-tight font-semibold">
+                DOWNLOAD<br/>RÉSUMÉ
+              </h3>
+              <svg 
+                className="w-6 h-6 md:w-7 md:h-7 text-gray-400" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 5v14M19 12l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          </motion.a>
+
+          {/* Contact */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            onClick={() => window.location.href = 'mailto:ahmed.messaad@outlook.com'}
+            className="bg-black text-white p-8 md:p-12 min-h-[45vh] flex flex-col justify-between cursor-pointer active:bg-[#1a1a1a] transition-colors duration-200"
+          >
+            <div className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
+              Get in Touch
+            </div>
+            
+            <div>
+              <h3 className="font-display text-[48px] md:text-[64px] leading-[0.9] font-bold mb-6">
+                CONTACT
+              </h3>
+              <div className="space-y-2">
+                <p className="font-mono text-[10px] md:text-[11px] text-gray-300 tracking-wider">
+                  ahmed.messaad@outlook.com
+                </p>
+                <div className="flex gap-4">
+                  <a 
+                    href="https://linkedin.com/in/ahmedmessaad"
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="font-mono text-[10px] md:text-[11px] text-gray-400 tracking-wider hover:text-white transition-colors"
+                  >
+                    LinkedIn
+                  </a>
+                  <span className="text-gray-600">•</span>
+                  <a 
+                    href="https://github.com/RYANX9"
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="font-mono text-[10px] md:text-[11px] text-gray-400 tracking-wider hover:text-white transition-colors"
+                  >
+                    GitHub
+                  </a>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+        </div>
       </div>
-    </motion.a>
+    </main>
   );
 }
