@@ -94,7 +94,7 @@ export default function PortfolioDesign3() {
       <div className="hidden lg:block h-screen overflow-hidden">
         <div className="h-full grid grid-cols-3 grid-rows-3 gap-[1px] bg-black p-[1px]">
           
-          {/* TOP LEFT - Hero Name */}
+          {/* TOP LEFT - Hero Name with Logo */}
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -105,9 +105,22 @@ export default function PortfolioDesign3() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400"
+              className="flex items-center gap-2"
             >
-              Portfolio 2025
+              <motion.img
+                src="/noun.svg"
+                alt="Logo"
+                className="w-5 h-5"
+                animate={{ rotate: 360 }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+              />
+              <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
+                Portfolio 2025
+              </span>
             </motion.div>
             <motion.div
               initial={{ y: 30, opacity: 0 }}
@@ -348,7 +361,7 @@ export default function PortfolioDesign3() {
       <div className="lg:hidden">
         <div className="flex flex-col gap-[1px] bg-black p-[1px]">
           
-          {/* Hero Name */}
+          {/* Hero Name with Logo */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -356,8 +369,21 @@ export default function PortfolioDesign3() {
             transition={{ duration: 0.6 }}
             className="bg-[#fafafa] p-8 md:p-12 min-h-[50vh] flex flex-col justify-between"
           >
-            <div className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
-              Portfolio 2025
+            <div className="flex items-center gap-2">
+              <motion.img
+                src="/noun.svg"
+                alt="Logo"
+                className="w-4 h-4"
+                animate={{ rotate: 360 }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+              />
+              <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
+                Portfolio 2025
+              </span>
             </div>
             <div>
               <h1 className="font-display text-[56px] md:text-[80px] leading-[0.85] font-bold tracking-tight">
