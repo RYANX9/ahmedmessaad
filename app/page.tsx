@@ -1,74 +1,74 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 interface Project {
   id: string;
   name: string;
   context: string;
   year: string;
-  description: string;
-  tech: string[];
-  link: string;
-  linkText: string;
   image: string;
+  link: string;
 }
 
-export default function PortfolioDesign3() {
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+export default function PortfolioDesign4() {
+  const [activeProject, setActiveProject] = useState<string | null>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { scrollYProgress } = useScroll();
+  
+  const logoRotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: (e.clientX / window.innerWidth - 0.5) * 20,
+        y: (e.clientY / window.innerHeight - 0.5) * 20,
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   const projects: Project[] = [
     {
       id: "treatment-drl",
       name: "Medical Treatment DRL",
-      context: "Sequential Decision-Making Research",
+      context: "Sequential Decision-Making",
       year: "2025",
-      description: "ICU treatment timing system trained on MIMIC-III data. A2C agent achieved 99.5% clinical appropriateness with +76–145 reward improvement over baselines.",
-      tech: ["Stable-Baselines3", "Gym", "NumPy", "Pandas", "MIMIC-III"],
-      link: "https://github.com/RYANX9/medical-treatment-drl/",
-      linkText: "View Code",
       image: "/clinrl.jpeg",
+      link: "https://github.com/RYANX9/medical-treatment-drl/",
     },
     {
       id: "airm",
       name: "AIRM Brain Tumor System",
       context: "Clinical AI Research",
       year: "2024",
-      description: "Clinical-grade diagnostic system achieving 99% four-class tumor classification with radiologist-validated interface. End-to-end DICOM pipeline development.",
-      tech: ["EfficientNet-B7", "PyDICOM", "PyQt5", "SQL"],
-      link: "https://youtu.be/2OeqBKF3X_A",
-      linkText: "Watch Demo",
       image: "/brain.jpg",
+      link: "https://youtu.be/2OeqBKF3X_A",
     },
     {
       id: "hemavision",
       name: "HemaVision",
       context: "Medical Automation",
-      year: "2023–2024",
-      description: "Automated hematology platform achieving 97% multi-class blood cell classification. Reduced diagnostic time from 45 minutes to 3 minutes.",
-      tech: ["YOLOv8", "U-Net", "OpenCV", "PyTorch"],
-      link: "https://youtu.be/YxhA877Wyn0",
-      linkText: "Watch Demo",
+      year: "2023",
       image: "/blood.jpg",
+      link: "https://youtu.be/YxhA877Wyn0",
     },
     {
       id: "healthcost",
       name: "Healthcare Cost Prediction",
       context: "Deep Learning Methodology",
       year: "2024",
-      description: "Conv1D neural network achieving R² = 0.88 for insurance cost forecasting. Feature engineering with SHAP analysis identified key cost drivers.",
-      tech: ["Conv1D", "SHAP", "Scikit-learn", "Plotly"],
-      link: "https://github.com/RYANX9/healthcare-cost-prediction",
-      linkText: "View Code",
       image: "/healthcarecost.png",
+      link: "https://github.com/RYANX9/healthcare-cost-prediction",
     },
   ];
 
   return (
-    <main className="min-h-screen w-full bg-[#fafafa] text-black">
+    <main className="min-h-screen bg-white text-black overflow-x-hidden">
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
         
         * {
           -webkit-font-smoothing: antialiased;
@@ -76,494 +76,459 @@ export default function PortfolioDesign3() {
         }
         
         .font-display {
-          font-family: 'Space Grotesk', sans-serif;
+          font-family: 'Playfair Display', serif;
         }
         
-        .font-mono {
-          font-family: 'IBM Plex Mono', monospace;
+        .font-sans {
+          font-family: 'Inter', sans-serif;
         }
 
-        @media (max-width: 1023px) {
-          html {
-            scroll-behavior: smooth;
-          }
+        body {
+          overflow-x: hidden;
         }
       `}</style>
 
-      {/* DESKTOP: 3x3 Grid - No Scroll */}
-      <div className="hidden lg:block h-screen overflow-hidden">
-        <div className="h-full grid grid-cols-3 grid-rows-3 gap-[1px] bg-black p-[1px]">
-          
-          {/* TOP LEFT - Hero Name with Logo */}
+      {/* DESKTOP LAYOUT */}
+      <div className="hidden lg:block relative min-h-screen">
+        
+        {/* Floating Navigation */}
+        <motion.nav
+          initial={{ y: -100 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="fixed top-8 left-0 right-0 z-50 flex justify-between items-center px-12 pointer-events-none"
+        >
           <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="bg-[#fafafa] p-10 flex flex-col justify-between"
-          >
-            <motion.div 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex items-center gap-2"
-            >
-              <motion.img
-                src="/noun.svg"
-                alt="Logo"
-                className="w-5 h-5"
-                animate={{ rotate: 360 }}
-                transition={{
-                  duration: 20,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-              />
-              <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
-                Portfolio 2025
-              </span>
-            </motion.div>
-            <motion.div
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
-            >
-              <h1 className="font-display text-[64px] xl:text-[72px] leading-[0.85] font-bold tracking-tight">
-                AHMED<br/>MESSAAD
-              </h1>
-            </motion.div>
-          </motion.div>
-
-          {/* TOP MIDDLE - About */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="bg-[#fafafa] p-10 flex flex-col justify-between"
-          >
-            <motion.div 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400"
-            >
-              About
-            </motion.div>
-            <motion.p 
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.5 }}
-              className="font-mono text-[11px] leading-relaxed text-gray-700 tracking-wide"
-            >
-              AI Research Engineer specializing in clinically-deployable computer vision systems. Focused on transfer learning optimization and interpretable medical AI.
-            </motion.p>
-          </motion.div>
-
-          {/* TOP RIGHT - Profile Image */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="bg-[#fafafa] overflow-hidden relative"
+            className="pointer-events-auto"
+            whileHover={{ scale: 1.1 }}
           >
             <motion.img
-              initial={{ scale: 1.2, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1, delay: 0.6 }}
-              src="/ahmed.jpg"
-              alt="Ahmed Messaad"
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+              src="/noun.svg"
+              alt="Logo"
+              className="w-8 h-8"
+              style={{ rotate: logoRotate }}
             />
           </motion.div>
-
-          {/* MIDDLE ROW - Projects with Background Images */}
-          {projects.map((project, idx) => (
-            <motion.a
-              key={project.id}
-              href={project.link}
-              target="_blank"
-              rel="noreferrer"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 + idx * 0.1 }}
-              onMouseEnter={() => setHoveredCard(project.id)}
-              onMouseLeave={() => setHoveredCard(null)}
-              className="relative overflow-hidden group cursor-pointer"
-              style={{
-                backgroundImage: `url(${project.image})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            >
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-black/85 group-hover:from-black/70 group-hover:via-black/80 group-hover:to-black/90 transition-all duration-500" />
-              
-              {/* Content */}
-              <div className="relative z-10 p-10 h-full flex flex-col justify-between text-white">
-                <motion.div 
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.6, delay: 0.6 + idx * 0.1 }}
-                  className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-300"
-                >
-                  Project {String(idx + 1).padStart(2, '0')}
-                </motion.div>
-                
-                <motion.div
-                  initial={{ y: 30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.7, delay: 0.7 + idx * 0.1 }}
-                >
-                  <h3 className="font-display text-[18px] xl:text-[20px] leading-tight font-semibold mb-2 group-hover:text-gray-200 transition-colors duration-300">
-                    {project.name}
-                  </h3>
-                  <div className="flex justify-between items-end">
-                    <p className="font-mono text-[10px] text-gray-300 tracking-wide">
-                      {project.context}
-                    </p>
-                    <p className="font-mono text-[10px] text-gray-400">
-                      {project.year}
-                    </p>
-                  </div>
-                </motion.div>
-
-                {/* Hover indicator */}
-                <motion.div 
-                  initial={{ opacity: 0, x: -5 }}
-                  animate={{ 
-                    opacity: hoveredCard === project.id ? 1 : 0,
-                    x: hoveredCard === project.id ? 0 : -5
-                  }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute top-10 right-10 font-mono text-[9px] text-gray-300 tracking-wider"
-                >
-                  VIEW →
-                </motion.div>
-              </div>
-            </motion.a>
-          ))}
-
-          {/* BOTTOM LEFT - Recognition */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="bg-[#fafafa] p-10 flex flex-col justify-between"
-          >
-            <motion.div 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 1 }}
-              className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400"
-            >
-              Recognition
-            </motion.div>
-            <motion.div
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.7, delay: 1.1 }}
-            >
-              <h3 className="font-display text-[18px] leading-tight font-semibold mb-3">
-                ICSTEM 2023<br/>Outstanding Research
-              </h3>
-              <p className="font-mono text-[10px] text-gray-500 tracking-wide">
-                Istanbul, Turkey
-              </p>
-            </motion.div>
-          </motion.div>
-
-          {/* BOTTOM MIDDLE - CV Download */}
+          
           <motion.a
             href="/ahmed_messaad_cv.pdf"
             download
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.9 }}
-            className="bg-[#fafafa] p-10 flex flex-col justify-between group cursor-pointer hover:bg-[#f5f5f5] transition-colors duration-300"
+            className="pointer-events-auto text-sm tracking-[0.2em] uppercase font-sans font-light hover:font-normal transition-all duration-300 relative group"
+            whileHover={{ x: -5 }}
           >
-            <motion.div 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 1.1 }}
-              className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400"
-            >
-              Curriculum Vitae
-            </motion.div>
-            <motion.div
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.7, delay: 1.2 }}
-              className="flex items-end justify-between"
-            >
-              <h3 className="font-display text-[18px] leading-tight font-semibold group-hover:text-gray-600 transition-colors duration-300">
-                DOWNLOAD<br/>RÉSUMÉ
-              </h3>
-              <svg 
-                className="w-6 h-6 text-gray-400 group-hover:text-gray-600 transition-all duration-300 group-hover:translate-y-1" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 5v14M19 12l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </motion.div>
+            Download CV
+            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-black group-hover:w-full transition-all duration-500" />
           </motion.a>
+        </motion.nav>
 
-          {/* BOTTOM RIGHT - Contact */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1 }}
-            onClick={() => window.location.href = 'mailto:ahmed.messaad@outlook.com'}
-            className="bg-black text-white p-10 flex flex-col justify-between cursor-pointer group relative overflow-hidden"
-          >
-            <motion.div 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 1.2 }}
-              className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400 relative z-10"
-            >
-              Get in Touch
-            </motion.div>
-            
-            <motion.div
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.7, delay: 1.3 }}
-              className="relative z-10"
-            >
-              <h3 className="font-display text-[38px] xl:text-[42px] leading-[0.9] font-bold mb-4">
-                CONTACT
-              </h3>
-              <div className="space-y-1">
-                <p className="font-mono text-[9px] text-gray-300 tracking-wider">
-                  ahmed.messaad@outlook.com
-                </p>
-                <p className="font-mono text-[9px] text-gray-400 tracking-wider">
-                  LinkedIn • GitHub
-                </p>
+        {/* Hero Section - Left Aligned */}
+        <div className="relative pt-32 pb-20 px-12">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-12 gap-16">
+              
+              {/* Left - Main Content */}
+              <div className="col-span-7 relative">
+                <motion.div
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 1, delay: 0.3 }}
+                >
+                  <motion.div 
+                    className="text-sm tracking-[0.3em] uppercase font-sans font-light mb-6 flex items-center gap-3"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    <span className="w-12 h-[1px] bg-black" />
+                    AI Research Engineer
+                  </motion.div>
+                  
+                  <h1 className="font-display text-[120px] leading-[0.9] font-bold tracking-tight mb-8">
+                    Ahmed<br/>
+                    <span className="italic font-light">Messaad</span>
+                  </h1>
+                  
+                  <motion.p 
+                    className="text-lg font-sans font-light leading-relaxed max-w-lg text-gray-700"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 }}
+                  >
+                    Specializing in clinically-deployable computer vision systems. 
+                    Focused on transfer learning optimization and interpretable 
+                    medical AI for resource-constrained environments.
+                  </motion.p>
+
+                  <motion.div
+                    className="mt-12 flex gap-6"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.9 }}
+                  >
+                    <motion.a
+                      href="mailto:ahmed.messaad@outlook.com"
+                      className="px-8 py-4 bg-black text-white text-sm tracking-wider uppercase font-sans relative overflow-hidden group"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <span className="relative z-10">Get in Touch</span>
+                      <motion.div
+                        className="absolute inset-0 bg-gray-800"
+                        initial={{ x: '-100%' }}
+                        whileHover={{ x: 0 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    </motion.a>
+                    
+                    <motion.a
+                      href="https://linkedin.com/in/ahmedmessaad"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="px-8 py-4 border border-black text-sm tracking-wider uppercase font-sans hover:bg-black hover:text-white transition-all duration-300"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      LinkedIn
+                    </motion.a>
+                  </motion.div>
+                </motion.div>
+
+                {/* Recognition Badge */}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.1 }}
+                  className="mt-20 p-6 border-l-2 border-black"
+                >
+                  <div className="text-xs tracking-[0.3em] uppercase font-sans font-light mb-2 text-gray-500">
+                    International Recognition
+                  </div>
+                  <h3 className="font-display text-2xl font-semibold mb-1">
+                    ICSTEM 2023
+                  </h3>
+                  <p className="text-sm font-sans text-gray-600">
+                    Outstanding Research • Istanbul, Turkey
+                  </p>
+                </motion.div>
               </div>
+
+              {/* Right - Profile Image with Parallax */}
+              <div className="col-span-5 relative">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                  style={{
+                    x: mousePosition.x,
+                    y: mousePosition.y,
+                  }}
+                  className="sticky top-32"
+                >
+                  <div className="relative overflow-hidden">
+                    <img
+                      src="/ahmed.jpg"
+                      alt="Ahmed Messaad"
+                      className="w-full h-[600px] object-cover"
+                    />
+                    <motion.div
+                      className="absolute inset-0 bg-black"
+                      initial={{ scaleX: 1 }}
+                      animate={{ scaleX: 0 }}
+                      transition={{ duration: 1, delay: 0.8 }}
+                      style={{ originX: 1 }}
+                    />
+                  </div>
+                  
+                  {/* Floating Stats */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.3 }}
+                    className="absolute -bottom-8 -right-8 bg-white p-6 shadow-2xl"
+                  >
+                    <div className="text-5xl font-display font-bold">4</div>
+                    <div className="text-xs tracking-[0.2em] uppercase font-sans font-light mt-1">
+                      Major Projects
+                    </div>
+                  </motion.div>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Projects Section - Staggered Layout */}
+        <div className="py-32 px-12 bg-gray-50">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="mb-20"
+            >
+              <h2 className="font-display text-7xl font-bold mb-4">
+                Selected <span className="italic font-light">Work</span>
+              </h2>
+              <p className="text-sm tracking-[0.3em] uppercase font-sans font-light text-gray-500">
+                2023 — Present
+              </p>
             </motion.div>
 
-            {/* Hover effect */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              whileHover={{ opacity: 0.05 }}
-              transition={{ duration: 0.3 }}
-              className="absolute inset-0 bg-white"
-            />
-          </motion.div>
+            <div className="space-y-32">
+              {projects.map((project, idx) => (
+                <motion.a
+                  key={project.id}
+                  href={project.link}
+                  target="_blank"
+                  rel="noreferrer"
+                  initial={{ opacity: 0, y: 100 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, delay: idx * 0.1 }}
+                  onMouseEnter={() => setActiveProject(project.id)}
+                  onMouseLeave={() => setActiveProject(null)}
+                  className={`grid grid-cols-12 gap-12 items-center ${
+                    idx % 2 === 0 ? "" : "direction-rtl"
+                  }`}
+                >
+                  <motion.div 
+                    className={`col-span-6 relative overflow-hidden ${
+                      idx % 2 === 0 ? "" : "order-2"
+                    }`}
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <img
+                      src={project.image}
+                      alt={project.name}
+                      className="w-full h-[500px] object-cover"
+                    />
+                    <motion.div
+                      className="absolute inset-0 bg-black/20"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: activeProject === project.id ? 1 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </motion.div>
 
+                  <div className={`col-span-6 ${idx % 2 === 0 ? "" : "order-1"}`}>
+                    <div className="text-xs tracking-[0.3em] uppercase font-sans font-light mb-4 text-gray-500">
+                      {String(idx + 1).padStart(2, '0')} / {project.year}
+                    </div>
+                    <h3 className="font-display text-5xl font-bold mb-6 leading-tight">
+                      {project.name}
+                    </h3>
+                    <p className="text-lg font-sans font-light text-gray-600 mb-8">
+                      {project.context}
+                    </p>
+                    <motion.div
+                      className="flex items-center gap-3 text-sm tracking-[0.2em] uppercase font-sans"
+                      animate={{ x: activeProject === project.id ? 10 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      View Project
+                      <motion.span
+                        animate={{ x: activeProject === project.id ? 5 : 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        →
+                      </motion.span>
+                    </motion.div>
+                  </div>
+                </motion.a>
+              ))}
+            </div>
+          </div>
         </div>
+
+        {/* Contact Footer */}
+        <motion.footer
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="py-32 px-12 bg-black text-white"
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-12 gap-16">
+              <div className="col-span-7">
+                <h2 className="font-display text-8xl font-bold mb-12 leading-tight">
+                  Let's create<br/>
+                  <span className="italic font-light">something</span>
+                </h2>
+                <motion.a
+                  href="mailto:ahmed.messaad@outlook.com"
+                  className="text-3xl font-sans font-light hover:italic transition-all duration-300"
+                  whileHover={{ x: 10 }}
+                >
+                  ahmed.messaad@outlook.com
+                </motion.a>
+              </div>
+              
+              <div className="col-span-5 flex flex-col justify-between">
+                <div className="space-y-6">
+                  <div>
+                    <div className="text-xs tracking-[0.3em] uppercase font-sans font-light mb-2 text-gray-400">
+                      Connect
+                    </div>
+                    <div className="space-y-2">
+                      <a 
+                        href="https://linkedin.com/in/ahmedmessaad"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="block text-lg font-sans hover:translate-x-2 transition-transform duration-300"
+                      >
+                        LinkedIn
+                      </a>
+                      <a 
+                        href="https://github.com/RYANX9"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="block text-lg font-sans hover:translate-x-2 transition-transform duration-300"
+                      >
+                        GitHub
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="text-xs tracking-[0.2em] uppercase font-sans font-light text-gray-500 mt-12">
+                  © 2025 Ahmed Messaad
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.footer>
       </div>
 
-      {/* MOBILE & TABLET: Vertical Scrollable */}
-      <div className="lg:hidden">
-        <div className="flex flex-col gap-[1px] bg-black p-[1px]">
+      {/* MOBILE LAYOUT */}
+      <div className="lg:hidden px-6 py-12">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.img
+            src="/noun.svg"
+            alt="Logo"
+            className="w-8 h-8 mb-8"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          />
           
-          {/* Hero Name with Logo */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-[#fafafa] p-8 md:p-12 min-h-[50vh] flex flex-col justify-between"
-          >
-            <div className="flex items-center gap-2">
-              <motion.img
-                src="/noun.svg"
-                alt="Logo"
-                className="w-4 h-4"
-                animate={{ rotate: 360 }}
-                transition={{
-                  duration: 20,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-              />
-              <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
-                Portfolio 2025
-              </span>
-            </div>
-            <div>
-              <h1 className="font-display text-[56px] md:text-[80px] leading-[0.85] font-bold tracking-tight">
-                AHMED<br/>MESSAAD
-              </h1>
-            </div>
-          </motion.div>
+          <div className="text-xs tracking-[0.3em] uppercase font-sans font-light mb-6">
+            AI Research Engineer
+          </div>
+          
+          <h1 className="font-display text-[60px] leading-[0.9] font-bold mb-8">
+            Ahmed<br/>
+            <span className="italic font-light">Messaad</span>
+          </h1>
+          
+          <img
+            src="/ahmed.jpg"
+            alt="Ahmed Messaad"
+            className="w-full h-[500px] object-cover mb-8"
+          />
+          
+          <p className="text-base font-sans font-light leading-relaxed mb-8 text-gray-700">
+            Specializing in clinically-deployable computer vision systems. 
+            Focused on transfer learning optimization and interpretable medical AI.
+          </p>
 
-          {/* Profile Image */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="bg-[#fafafa] overflow-hidden h-[60vh] md:h-[70vh]"
-          >
-            <img
-              src="/ahmed.jpg"
-              alt="Ahmed Messaad"
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
-
-          {/* About */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-[#fafafa] p-8 md:p-12 min-h-[40vh] flex flex-col justify-between"
-          >
-            <div className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
-              About
-            </div>
-            <p className="font-mono text-[12px] md:text-[13px] leading-relaxed text-gray-700 tracking-wide">
-              AI Research Engineer specializing in clinically-deployable computer vision systems. Focused on transfer learning optimization and interpretable medical AI for resource-constrained environments.
-            </p>
-          </motion.div>
-
-          {/* Projects with Background Images */}
-          {projects.map((project, idx) => (
-            <motion.a
-              key={project.id}
-              href={project.link}
-              target="_blank"
-              rel="noreferrer"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: idx * 0.05 }}
-              className="relative min-h-[45vh] overflow-hidden active:opacity-90 transition-opacity duration-200"
-              style={{
-                backgroundImage: `url(${project.image})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
+          <div className="flex flex-col gap-4 mb-16">
+            <a
+              href="mailto:ahmed.messaad@outlook.com"
+              className="w-full py-4 bg-black text-white text-center text-sm tracking-wider uppercase font-sans"
             >
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-black/85" />
-              
-              {/* Content */}
-              <div className="relative z-10 p-8 md:p-12 h-full flex flex-col justify-between text-white">
-                <div className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-300">
-                  Project {String(idx + 1).padStart(2, '0')}
-                </div>
-                
-                <div>
-                  <h3 className="font-display text-[24px] md:text-[28px] leading-tight font-semibold mb-3">
-                    {project.name}
-                  </h3>
-                  <div className="flex justify-between items-end">
-                    <p className="font-mono text-[11px] text-gray-200 tracking-wide">
-                      {project.context}
-                    </p>
-                    <p className="font-mono text-[11px] text-gray-400">
-                      {project.year}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.a>
-          ))}
+              Get in Touch
+            </a>
+            <a
+              href="/ahmed_messaad_cv.pdf"
+              download
+              className="w-full py-4 border border-black text-center text-sm tracking-wider uppercase font-sans"
+            >
+              Download CV
+            </a>
+          </div>
 
-          {/* Recognition */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-[#fafafa] p-8 md:p-12 min-h-[30vh] flex flex-col justify-between"
-          >
-            <div className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
+          <div className="mb-16 p-6 border-l-2 border-black">
+            <div className="text-xs tracking-[0.3em] uppercase font-sans font-light mb-2 text-gray-500">
               Recognition
             </div>
-            <div>
-              <h3 className="font-display text-[22px] md:text-[26px] leading-tight font-semibold mb-3">
-                ICSTEM 2023<br/>Outstanding Research
-              </h3>
-              <p className="font-mono text-[11px] text-gray-500 tracking-wide">
-                Istanbul, Turkey
-              </p>
-            </div>
-          </motion.div>
+            <h3 className="font-display text-2xl font-semibold mb-1">
+              ICSTEM 2023
+            </h3>
+            <p className="text-sm font-sans text-gray-600">
+              Outstanding Research • Istanbul
+            </p>
+          </div>
 
-          {/* CV Download */}
-          <motion.a
-            href="/ahmed_messaad_cv.pdf"
-            download
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-[#fafafa] p-8 md:p-12 min-h-[30vh] flex flex-col justify-between active:bg-[#f5f5f5] transition-colors duration-200"
-          >
-            <div className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
-              Curriculum Vitae
-            </div>
-            <div className="flex items-end justify-between">
-              <h3 className="font-display text-[22px] md:text-[26px] leading-tight font-semibold">
-                DOWNLOAD<br/>RÉSUMÉ
-              </h3>
-              <svg 
-                className="w-6 h-6 md:w-7 md:h-7 text-gray-400" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                viewBox="0 0 24 24"
+          <h2 className="font-display text-5xl font-bold mb-8">
+            Selected <span className="italic font-light">Work</span>
+          </h2>
+
+          <div className="space-y-16">
+            {projects.map((project, idx) => (
+              <a
+                key={project.id}
+                href={project.link}
+                target="_blank"
+                rel="noreferrer"
+                className="block"
               >
-                <path d="M12 5v14M19 12l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-          </motion.a>
-
-          {/* Contact */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            onClick={() => window.location.href = 'mailto:ahmed.messaad@outlook.com'}
-            className="bg-black text-white p-8 md:p-12 min-h-[45vh] flex flex-col justify-between cursor-pointer active:bg-[#1a1a1a] transition-colors duration-200"
-          >
-            <div className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
-              Get in Touch
-            </div>
-            
-            <div>
-              <h3 className="font-display text-[48px] md:text-[64px] leading-[0.9] font-bold mb-6">
-                CONTACT
-              </h3>
-              <div className="space-y-2">
-                <p className="font-mono text-[10px] md:text-[11px] text-gray-300 tracking-wider">
-                  ahmed.messaad@outlook.com
-                </p>
-                <div className="flex gap-4">
-                  <a 
-                    href="https://linkedin.com/in/ahmedmessaad"
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="font-mono text-[10px] md:text-[11px] text-gray-400 tracking-wider hover:text-white transition-colors"
-                  >
-                    LinkedIn
-                  </a>
-                  <span className="text-gray-600">•</span>
-                  <a 
-                    href="https://github.com/RYANX9"
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="font-mono text-[10px] md:text-[11px] text-gray-400 tracking-wider hover:text-white transition-colors"
-                  >
-                    GitHub
-                  </a>
+                <img
+                  src={project.image}
+                  alt={project.name}
+                  className="w-full h-[300px] object-cover mb-4"
+                />
+                <div className="text-xs tracking-[0.3em] uppercase font-sans font-light mb-2 text-gray-500">
+                  {String(idx + 1).padStart(2, '0')} / {project.year}
                 </div>
-              </div>
-            </div>
-          </motion.div>
+                <h3 className="font-display text-3xl font-bold mb-3">
+                  {project.name}
+                </h3>
+                <p className="text-base font-sans font-light text-gray-600">
+                  {project.context}
+                </p>
+              </a>
+            ))}
+          </div>
 
-        </div>
+          <footer className="mt-24 py-16 -mx-6 px-6 bg-black text-white">
+            <h2 className="font-display text-5xl font-bold mb-8">
+              Let's create<br/>
+              <span className="italic font-light">something</span>
+            </h2>
+            <a
+              href="mailto:ahmed.messaad@outlook.com"
+              className="text-xl font-sans font-light mb-8 block"
+            >
+              ahmed.messaad@outlook.com
+            </a>
+            <div className="space-y-4 mb-12">
+              <a 
+                href="https://linkedin.com/in/ahmedmessaad"
+                target="_blank"
+                rel="noreferrer"
+                className="block text-lg font-sans"
+              >
+                LinkedIn
+              </a>
+              <a 
+                href="https://github.com/RYANX9"
+                target="_blank"
+                rel="noreferrer"
+                className="block text-lg font-sans"
+              >
+                GitHub
+              </a>
+            </div>
+            <div className="text-xs tracking-[0.2em] uppercase font-sans font-light text-gray-500">
+              © 2025 Ahmed Messaad
+            </div>
+          </footer>
+        </motion.div>
       </div>
     </main>
   );
