@@ -5,20 +5,64 @@ import { motion } from "framer-motion";
 
 interface Project {
   id: string;
-  title: string;
+  name: string;
+  context: string;
   year: string;
-  category: string;
+  description: string;
+  tech: string[];
   link: string;
+  linkText: string;
+  image: string;
 }
 
 export default function PortfolioDesign3() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   const projects: Project[] = [
-    { id: "1", title: "AIRM Brain Tumor System", year: "2024", category: "Medical AI", link: "https://youtu.be/2OeqBKF3X_A" },
-    { id: "2", title: "HemaVision", year: "2023", category: "Hematology Platform", link: "https://youtu.be/YxhA877Wyn0" },
-    { id: "3", title: "My Daily Health", year: "2023", category: "Multi-Disease Diagnostic", link: "https://youtu.be/kh7WBjNPpEM" },
-    { id: "4", title: "Healthcare Cost Prediction", year: "2024", category: "Neural Networks", link: "https://www.kaggle.com/code/ahmedmessaad/healthcare-cost-prediction-using-neural-networks" },
+    {
+      id: "treatment-drl",
+      name: "Medical Treatment DRL",
+      context: "Sequential Decision-Making Research",
+      year: "2025",
+      description: "ICU treatment timing system trained on MIMIC-III data. A2C agent achieved 99.5% clinical appropriateness with +76–145 reward improvement over baselines.",
+      tech: ["Stable-Baselines3", "Gym", "NumPy", "Pandas", "MIMIC-III"],
+      link: "https://github.com/RYANX9/medical-treatment-drl/",
+      linkText: "View Code",
+      image: "/clinrl.jpeg",
+    },
+    {
+      id: "airm",
+      name: "AIRM Brain Tumor System",
+      context: "Clinical AI Research",
+      year: "2024",
+      description: "Clinical-grade diagnostic system achieving 99% four-class tumor classification with radiologist-validated interface. End-to-end DICOM pipeline development.",
+      tech: ["EfficientNet-B7", "PyDICOM", "PyQt5", "SQL"],
+      link: "https://youtu.be/2OeqBKF3X_A",
+      linkText: "Watch Demo",
+      image: "/brain.jpg",
+    },
+    {
+      id: "hemavision",
+      name: "HemaVision",
+      context: "Medical Automation",
+      year: "2023–2024",
+      description: "Automated hematology platform achieving 97% multi-class blood cell classification. Reduced diagnostic time from 45 minutes to 3 minutes.",
+      tech: ["YOLOv8", "U-Net", "OpenCV", "PyTorch"],
+      link: "https://youtu.be/YxhA877Wyn0",
+      linkText: "Watch Demo",
+      image: "/blood.jpg",
+    },
+    {
+      id: "healthcost",
+      name: "Healthcare Cost Prediction",
+      context: "Deep Learning Methodology",
+      year: "2024",
+      description: "Conv1D neural network achieving R² = 0.88 for insurance cost forecasting. Feature engineering with SHAP analysis identified key cost drivers.",
+      tech: ["Conv1D", "SHAP", "Scikit-learn", "Plotly"],
+      link: "https://github.com/RYANX9/healthcare-cost-prediction",
+      linkText: "View Code",
+      image: "/healthcarecost.png",
+    },
   ];
 
   return (
@@ -118,7 +162,7 @@ export default function PortfolioDesign3() {
             />
           </motion.div>
 
-          {/* MIDDLE ROW - Projects */}
+          {/* MIDDLE ROW - Projects with Background Images */}
           {projects.map((project, idx) => (
             <motion.a
               key={project.id}
@@ -130,47 +174,58 @@ export default function PortfolioDesign3() {
               transition={{ duration: 0.8, delay: 0.4 + idx * 0.1 }}
               onMouseEnter={() => setHoveredCard(project.id)}
               onMouseLeave={() => setHoveredCard(null)}
-              className="bg-[#fafafa] p-10 flex flex-col justify-between relative group cursor-pointer hover:bg-[#f5f5f5] transition-colors duration-300"
+              className="relative overflow-hidden group cursor-pointer"
+              style={{
+                backgroundImage: `url(${project.image})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
             >
-              <motion.div 
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.6 + idx * 0.1 }}
-                className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400"
-              >
-                Project {String(idx + 1).padStart(2, '0')}
-              </motion.div>
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-black/85 group-hover:from-black/70 group-hover:via-black/80 group-hover:to-black/90 transition-all duration-500" />
               
-              <motion.div
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.7, delay: 0.7 + idx * 0.1 }}
-              >
-                <h3 className="font-display text-[18px] xl:text-[20px] leading-tight font-semibold mb-2 group-hover:text-gray-600 transition-colors duration-300">
-                  {project.title}
-                </h3>
-                <div className="flex justify-between items-end">
-                  <p className="font-mono text-[10px] text-gray-500 tracking-wide">
-                    {project.category}
-                  </p>
-                  <p className="font-mono text-[10px] text-gray-400">
-                    {project.year}
-                  </p>
-                </div>
-              </motion.div>
+              {/* Content */}
+              <div className="relative z-10 p-10 h-full flex flex-col justify-between text-white">
+                <motion.div 
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.6 + idx * 0.1 }}
+                  className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-300"
+                >
+                  Project {String(idx + 1).padStart(2, '0')}
+                </motion.div>
+                
+                <motion.div
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.7, delay: 0.7 + idx * 0.1 }}
+                >
+                  <h3 className="font-display text-[18px] xl:text-[20px] leading-tight font-semibold mb-2 group-hover:text-gray-200 transition-colors duration-300">
+                    {project.name}
+                  </h3>
+                  <div className="flex justify-between items-end">
+                    <p className="font-mono text-[10px] text-gray-300 tracking-wide">
+                      {project.context}
+                    </p>
+                    <p className="font-mono text-[10px] text-gray-400">
+                      {project.year}
+                    </p>
+                  </div>
+                </motion.div>
 
-              {/* Hover indicator */}
-              <motion.div 
-                initial={{ opacity: 0, x: -5 }}
-                animate={{ 
-                  opacity: hoveredCard === project.id ? 1 : 0,
-                  x: hoveredCard === project.id ? 0 : -5
-                }}
-                transition={{ duration: 0.3 }}
-                className="absolute top-10 right-10 font-mono text-[9px] text-gray-400 tracking-wider"
-              >
-                VIEW →
-              </motion.div>
+                {/* Hover indicator */}
+                <motion.div 
+                  initial={{ opacity: 0, x: -5 }}
+                  animate={{ 
+                    opacity: hoveredCard === project.id ? 1 : 0,
+                    x: hoveredCard === project.id ? 0 : -5
+                  }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute top-10 right-10 font-mono text-[9px] text-gray-300 tracking-wider"
+                >
+                  VIEW →
+                </motion.div>
+              </div>
             </motion.a>
           ))}
 
@@ -203,12 +258,14 @@ export default function PortfolioDesign3() {
             </motion.div>
           </motion.div>
 
-          {/* BOTTOM MIDDLE - Education */}
-          <motion.div 
+          {/* BOTTOM MIDDLE - CV Download */}
+          <motion.a
+            href="/ahmed_messaad_cv.pdf"
+            download
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.9 }}
-            className="bg-[#fafafa] p-10 flex flex-col justify-between"
+            className="bg-[#fafafa] p-10 flex flex-col justify-between group cursor-pointer hover:bg-[#f5f5f5] transition-colors duration-300"
           >
             <motion.div 
               initial={{ y: 20, opacity: 0 }}
@@ -216,21 +273,28 @@ export default function PortfolioDesign3() {
               transition={{ duration: 0.6, delay: 1.1 }}
               className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400"
             >
-              Education
+              Curriculum Vitae
             </motion.div>
             <motion.div
               initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.7, delay: 1.2 }}
+              className="flex items-end justify-between"
             >
-              <h3 className="font-display text-[18px] leading-tight font-semibold mb-3">
-                M.Sc. Embedded<br/>Systems Electronics
+              <h3 className="font-display text-[18px] leading-tight font-semibold group-hover:text-gray-600 transition-colors duration-300">
+                DOWNLOAD<br/>RÉSUMÉ
               </h3>
-              <p className="font-mono text-[10px] text-gray-500 tracking-wide">
-                University Mohamed Boudiaf
-              </p>
+              <svg 
+                className="w-6 h-6 text-gray-400 group-hover:text-gray-600 transition-all duration-300 group-hover:translate-y-1" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 5v14M19 12l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </motion.div>
-          </motion.div>
+          </motion.a>
 
           {/* BOTTOM RIGHT - Contact */}
           <motion.div 
@@ -333,7 +397,7 @@ export default function PortfolioDesign3() {
             </p>
           </motion.div>
 
-          {/* Projects */}
+          {/* Projects with Background Images */}
           {projects.map((project, idx) => (
             <motion.a
               key={project.id}
@@ -344,23 +408,34 @@ export default function PortfolioDesign3() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: idx * 0.05 }}
-              className="bg-[#fafafa] p-8 md:p-12 min-h-[35vh] flex flex-col justify-between active:bg-[#f5f5f5] transition-colors duration-200"
+              className="relative min-h-[45vh] overflow-hidden active:opacity-90 transition-opacity duration-200"
+              style={{
+                backgroundImage: `url(${project.image})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
             >
-              <div className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
-                Project {String(idx + 1).padStart(2, '0')}
-              </div>
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-black/85" />
               
-              <div>
-                <h3 className="font-display text-[24px] md:text-[28px] leading-tight font-semibold mb-3">
-                  {project.title}
-                </h3>
-                <div className="flex justify-between items-end">
-                  <p className="font-mono text-[11px] text-gray-500 tracking-wide">
-                    {project.category}
-                  </p>
-                  <p className="font-mono text-[11px] text-gray-400">
-                    {project.year}
-                  </p>
+              {/* Content */}
+              <div className="relative z-10 p-8 md:p-12 h-full flex flex-col justify-between text-white">
+                <div className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-300">
+                  Project {String(idx + 1).padStart(2, '0')}
+                </div>
+                
+                <div>
+                  <h3 className="font-display text-[24px] md:text-[28px] leading-tight font-semibold mb-3">
+                    {project.name}
+                  </h3>
+                  <div className="flex justify-between items-end">
+                    <p className="font-mono text-[11px] text-gray-200 tracking-wide">
+                      {project.context}
+                    </p>
+                    <p className="font-mono text-[11px] text-gray-400">
+                      {project.year}
+                    </p>
+                  </div>
                 </div>
               </div>
             </motion.a>
@@ -387,26 +462,34 @@ export default function PortfolioDesign3() {
             </div>
           </motion.div>
 
-          {/* Education */}
-          <motion.div 
+          {/* CV Download */}
+          <motion.a
+            href="/ahmed_messaad_cv.pdf"
+            download
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-[#fafafa] p-8 md:p-12 min-h-[30vh] flex flex-col justify-between"
+            className="bg-[#fafafa] p-8 md:p-12 min-h-[30vh] flex flex-col justify-between active:bg-[#f5f5f5] transition-colors duration-200"
           >
             <div className="font-mono text-[9px] tracking-[0.3em] uppercase text-gray-400">
-              Education
+              Curriculum Vitae
             </div>
-            <div>
-              <h3 className="font-display text-[22px] md:text-[26px] leading-tight font-semibold mb-3">
-                M.Sc. Embedded<br/>Systems Electronics
+            <div className="flex items-end justify-between">
+              <h3 className="font-display text-[22px] md:text-[26px] leading-tight font-semibold">
+                DOWNLOAD<br/>RÉSUMÉ
               </h3>
-              <p className="font-mono text-[11px] text-gray-500 tracking-wide">
-                University Mohamed Boudiaf
-              </p>
+              <svg 
+                className="w-6 h-6 md:w-7 md:h-7 text-gray-400" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 5v14M19 12l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </div>
-          </motion.div>
+          </motion.a>
 
           {/* Contact */}
           <motion.div 
