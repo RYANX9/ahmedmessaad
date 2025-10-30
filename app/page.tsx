@@ -97,20 +97,6 @@ const gridItemVariants: Variants = {
   },
 };
 
-const cardHoverVariants = {
-  hover: {
-    scale: 1.03,
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 15,
-    },
-  },
-  initial: {
-    scale: 1,
-  },
-};
-
 // =============================================================================
 // PAGE COMPONENT
 // =============================================================================
@@ -254,9 +240,15 @@ function ProjectCard({ project }: ProjectCardProps) {
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
-      variants={cardHoverVariants}
-      initial="initial"
-      whileHover="hover"
+      initial={{ scale: 1 }}
+      whileHover={{
+        scale: 1.03,
+        transition: {
+          type: "spring",
+          stiffness: 300,
+          damping: 15,
+        },
+      }}
     >
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-300 z-0" />
