@@ -77,7 +77,7 @@ export default function SwissPortfolio() {
   const [darkMode, setDarkMode] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const projectRefs = useRef([]);
+  const projectRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     // Trigger initial animation
