@@ -361,7 +361,7 @@ export default function SwissPortfolio() {
               </button>
             ))}
             
-            
+            <a
               href="/resume.pdf"
               download
               className={`px-4 py-2 border transition-all duration-300 text-xs uppercase tracking-widest ${
@@ -430,7 +430,7 @@ export default function SwissPortfolio() {
               </button>
             ))}
             
-            
+            <a
               href="/resume.pdf"
               download
               className={`block w-full text-left px-4 py-2 border transition-all text-xs uppercase tracking-widest ${
@@ -488,7 +488,7 @@ export default function SwissPortfolio() {
               Specializing in deep reinforcement learning and clinical AI systems. Building production-grade diagnostic tools and sequential decision-making agents for healthcare applications.
             </p>
             
-            <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 pt-8 md:pt-12 line-draw ${darkMode ? 'border-t border-white' : 'border-t border-black'}`}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 pt-8 md:pt-12">
               <div className="animate-fade" style={{ animationDelay: '0.2s' }}>
                 <h3 className={`text-xs uppercase tracking-widest mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Core Expertise</h3>
                 <ul className="space-y-2 text-sm">
@@ -537,6 +537,7 @@ export default function SwissPortfolio() {
           {/* Projects with Staggered Animations */}
           <div className="space-y-0">
             {projects.map((project, index) => (
+          
               <div 
                 key={project.id} 
                 ref={(el) => { projectRefs.current[index] = el; }}
@@ -561,7 +562,7 @@ export default function SwissPortfolio() {
                     ))}
                   </div>
 
-                  
+                  <a
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
