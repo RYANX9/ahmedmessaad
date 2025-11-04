@@ -372,7 +372,7 @@ export default function SwissPortfolio() {
             {projects.map((project, index) => (
               <div 
                 key={project.id} 
-                ref={el => projectRefs.current[index] = el}
+                ref={(el) => { projectRefs.current[index] = el; }}
                 className={`project-item ${darkMode ? 'border-t border-white hover:bg-white/5' : 'border-t border-black hover:bg-gray-50'} py-12 md:py-16 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 transition-colors`}
               >
                 <div className="md:col-span-2 flex md:block justify-between items-start">
