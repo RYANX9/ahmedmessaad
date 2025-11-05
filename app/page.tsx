@@ -58,17 +58,7 @@ const projects = [
     metrics: { r2: "0.88", method: "SHAP", type: "Conv1D" },
     link: "https://github.com/RYANX9/healthcare-cost-prediction"
   },
-  {
-    id: "mydailyhealth",
-    name: "Multi-Disease Diagnostic System",
-    category: "Transfer Learning",
-    year: "2023",
-    tagline: "One model, five domains",
-    description: "Multi-domain diagnostic platform with 90-99% accuracy across five disease categories. Comparative evaluation of 12 architectures using stratified cross-validation. Transfer learning investigation for efficient multi-task medical classification.",
-    tech: ["TensorFlow", "ResNet", "EfficientNet", "Flask"],
-    metrics: { accuracy: "90-99%", domains: "5", models: "12" },
-    link: "https://youtu.be/kh7WBjNPpEM"
-  }
+
 ];
 
 export default function SwissPortfolio() {
