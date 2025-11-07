@@ -453,42 +453,50 @@ export default function SwissPortfolio() {
         </div>
 
         {/* Mobile Menu */}
-        <div className={`md:hidden overflow-hidden transition-all duration-300 ${
-          mobileMenuOpen ? 'max-h-96' : 'max-h-0'
-        } ${darkMode ? 'border-t border-white bg-black' : 'border-t border-black bg-white'}`}>
-          <div className="px-6 py-6 space-y-4">
-            {['about', 'work', 'contact'].map(section => (
-              <button
-                key={section}
-                onClick={() => scrollToSection(section)}
-                className={`block w-full text-left text-xs uppercase tracking-widest transition-colors ${
-                  activeSection === section 
-                    ? 'font-medium' 
-                    : darkMode ? 'text-gray-400' : 'text-gray-500'
+        <div
+        className={`md:hidden absolute left-0 right-0 top-full z-40 overflow-hidden transition-all duration-300
+            ${mobileMenuOpen
+            ? 'max-h-96 border-t border-b'
+            : 'max-h-0 border-0 pointer-events-none'}
+            ${darkMode
+            ? (mobileMenuOpen ? 'border-white bg-black' : 'bg-black')
+            : (mobileMenuOpen ? 'border-black bg-white' : 'bg-white')
+            }`}
+        aria-hidden={!mobileMenuOpen}
+        >
+            <div className="px-6 py-6 space-y-4">
+                {['about', 'work', 'contact'].map(section => (
+                <button
+                    key={section}
+                    onClick={() => scrollToSection(section)}
+                    className={`block w-full text-left text-xs uppercase tracking-widest transition-colors ${
+                    activeSection === section
+                        ? 'font-medium'
+                        : darkMode ? 'text-gray-400' : 'text-gray-500'
+                    }`}
+                >
+                    {section}
+                </button>
+                ))}
+                
+                <a
+                href="/resume.pdf"
+                download
+                className={`block w-full text-left px-4 py-2 border transition-all text-xs uppercase tracking-widest ${
+                    darkMode 
+                    ? 'border-white hover:bg-white hover:text-black'
+                    : 'border-black hover:bg-black hover:text-white'
                 }`}
-              >
-                {section}
-              </button>
-            ))}
-            
-            <a
-              href="/resume.pdf"
-              download
-              className={`block w-full text-left px-4 py-2 border transition-all text-xs uppercase tracking-widest ${
-                darkMode 
-                  ? 'border-white hover:bg-white hover:text-black' 
-                  : 'border-black hover:bg-black hover:text-white'
-              }`}
-            >
-              Download Resume
-            </a>
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="flex items-center gap-3 text-xs uppercase tracking-widest"
-            >
-              {darkMode ? 'Light Mode' : 'Dark Mode'}
-            </button>
-          </div>
+                >
+                Download Resume
+                </a>
+                <button
+                onClick={() => setDarkMode(!darkMode)}
+                className="flex items-center gap-3 text-xs uppercase tracking-widest"
+                >
+                {darkMode ? 'Light Mode' : 'Dark Mode'}
+                </button>
+            </div>
         </div>
       </nav>
 
