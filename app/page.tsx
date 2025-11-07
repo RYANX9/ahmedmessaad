@@ -465,9 +465,10 @@ export default function SwissPortfolio() {
 
         {/* Mobile Menu */}
         <div className={`md:hidden overflow-hidden transition-all duration-300 ${
-          mobileMenuOpen ? 'max-h-96' : 'max-h-0'
-        } ${darkMode ? 'border-t border-white bg-black' : 'border-t border-black bg-white'}`}>
-          <div className="px-6 py-6 space-y-4">
+          mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        } ${darkMode ? 'border-t border-white bg-black' : 'border-t border-black bg-white'}`>
+          
+        <div className="px-6 py-6 space-y-4">
             {['about', 'work', 'contact'].map(section => (
               <button
                 key={section}
@@ -495,7 +496,7 @@ export default function SwissPortfolio() {
             </a>
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="flex items-center gap-3 text-xs uppercase tracking-widest"
+             className="flex items-center gap-3 text-xs uppercase tracking-widest"
             >
               {darkMode ? 'Light Mode' : 'Dark Mode'}
             </button>
