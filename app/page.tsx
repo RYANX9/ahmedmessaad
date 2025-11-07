@@ -1,4 +1,3 @@
-
 'use client'; 
 
 import { useState, useEffect, useRef } from 'react';
@@ -189,12 +188,11 @@ export default function SwissPortfolio() {
   return (
     <div className={`${darkMode ? 'bg-black text-white' : 'bg-white text-black'} min-h-screen transition-colors duration-500`}>
       <style>{`
-        /* === TYPOGRAPHY SYSTEM: Lora + Space Grotesk === */
         /* === TYPOGRAPHY SYSTEM: Lora + Space Grotesk + Elms Sans === */
         
         /* Import Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Elmessans:wght@400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Elms+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
         
         /* Base Typography */
         * { 
@@ -226,14 +224,14 @@ export default function SwissPortfolio() {
         
         /* Body Text - Elms Sans Regular */
         .body-text {
-          font-family: 'Elmessans', sans-serif;
+          font-family: 'Elms Sans', sans-serif;
           font-weight: 400;
           line-height: 1.7;
         }
       
         /* Taglines - Elms Sans Italic */
         .tagline {
-          font-family: 'Elmessans', sans-serif;
+          font-family: 'Elms Sans', sans-serif;
           font-weight: 400;
           font-style: italic;
         }
@@ -319,11 +317,8 @@ export default function SwissPortfolio() {
           opacity: 0;
           transform: translateY(30px);
           transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
-                      transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-                      box-shadow 0.3s ease;
+                      transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        /* Removed desktop hover effect */
         
         .dark-mode-toggle {
           transition: all 0.3s ease;
@@ -371,12 +366,6 @@ export default function SwissPortfolio() {
           background: currentColor;
           animation: drawLine 1s ease-out forwards;
         }
-        
-        @media (max-width: 768px) {
-          .project-item:hover {
-            transform: translateY(0);
-          }
-        }
       `}</style>
           
       {/* Fixed Navigation */}
@@ -386,7 +375,7 @@ export default function SwissPortfolio() {
           : 'bg-transparent'
       }`}>
         <div className={`max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center transition-all duration-300 ${
-          scrolled ? 'py-3' : 'py-4 md:py-6'
+          scrolled ? 'py-4' : 'py-6 md:py-8'
         }`}>
           <button 
             onClick={() => scrollToSection('hero')} 
@@ -465,10 +454,9 @@ export default function SwissPortfolio() {
 
         {/* Mobile Menu */}
         <div className={`md:hidden overflow-hidden transition-all duration-300 ${
-          mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-        } ${darkMode ? 'border-t border-white bg-black' : 'border-t border-black bg-white'}`>
-          
-        <div className="px-6 py-6 space-y-4">
+          mobileMenuOpen ? 'max-h-96' : 'max-h-0'
+        } ${darkMode ? 'border-t border-white bg-black' : 'border-t border-black bg-white'}`}>
+          <div className="px-6 py-6 space-y-4">
             {['about', 'work', 'contact'].map(section => (
               <button
                 key={section}
@@ -496,7 +484,7 @@ export default function SwissPortfolio() {
             </a>
             <button
               onClick={() => setDarkMode(!darkMode)}
-             className="flex items-center gap-3 text-xs uppercase tracking-widest"
+              className="flex items-center gap-3 text-xs uppercase tracking-widest"
             >
               {darkMode ? 'Light Mode' : 'Dark Mode'}
             </button>
@@ -528,7 +516,7 @@ export default function SwissPortfolio() {
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-32 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
           <div className="md:col-span-3">
             <div className="flex items-center gap-3 mb-4 md:mb-8 animate-slide">
-              <h2 className={`text-xs uppercase tracking-widest ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>About</h2>
+              <h2 className={`section-title text-xs uppercase tracking-widest ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>About</h2>
               <img 
                 src="/noun.svg" 
                 alt="About icon" 
@@ -537,7 +525,7 @@ export default function SwissPortfolio() {
             </div>
           </div>
           <div className="md:col-span-9">
-            <p className="text-xl md:text-3xl font-light leading-relaxed mb-8 md:mb-12 animate-fade" style={{ animationDelay: '0.1s' }}>
+            <p className="body-text text-xl md:text-3xl font-light leading-relaxed mb-8 md:mb-12 animate-fade" style={{ animationDelay: '0.1s' }}>
               Specializing in deep reinforcement learning and clinical AI systems. Building production-grade diagnostic tools and sequential decision-making agents for healthcare applications.
             </p>
             
@@ -578,10 +566,10 @@ export default function SwissPortfolio() {
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-32">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 mb-12 md:mb-24">
             <div className="md:col-span-3">
-              <h2 className={`text-xs uppercase tracking-widest ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Selected Work</h2>
+              <h2 className={`section-title text-xs uppercase tracking-widest ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Selected Work</h2>
             </div>
             <div className="md:col-span-9">
-              <p className={`text-lg md:text-xl font-light ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className={`body-text text-lg md:text-xl font-light ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                 Research and production systems spanning reinforcement learning, medical imaging, and healthcare analytics.
               </p>
             </div>
@@ -594,7 +582,7 @@ export default function SwissPortfolio() {
               <div 
                 key={project.id} 
                 ref={(el) => { projectRefs.current[index] = el; }}
-                className={`project-item ${darkMode ? 'border-t border-white hover:bg-white/5' : 'border-t border-black hover:bg-gray-50'} py-12 md:py-16 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 transition-all duration-300`}
+                className={`project-item ${darkMode ? 'border-t border-white' : 'border-t border-black'} py-12 md:py-16 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 transition-all duration-300`}
               >
                 <div className="md:col-span-2 flex md:block justify-between items-start">
                   <div className={`text-xs uppercase tracking-widest ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{project.year}</div>
@@ -602,10 +590,10 @@ export default function SwissPortfolio() {
                 </div>
                 
                 <div className="md:col-span-7">
-                  <div className={`text-xs uppercase tracking-widest mb-2 md:mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{project.category}</div>
-                  <h3 className="text-2xl md:text-3xl font-light mb-3 md:mb-4">{project.name}</h3>
-                  <p className={`text-sm italic mb-4 md:mb-6 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{project.tagline}</p>
-                  <p className="text-sm leading-relaxed mb-6 md:mb-8">{project.description}</p>
+                  <div className={`category-tag text-xs uppercase tracking-widest mb-2 md:mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{project.category}</div>
+                  <h3 className="project-title text-2xl md:text-3xl font-light mb-3 md:mb-4">{project.name}</h3>
+                  <p className="tagline text-sm mb-4 md:mb-6">{project.tagline}</p>
+                  <p className="body-text text-sm leading-relaxed mb-6 md:mb-8">{project.description}</p>
                   
                   <div className="flex flex-wrap gap-2 mb-6">
                     {project.tech.map(tech => (
@@ -652,7 +640,7 @@ export default function SwissPortfolio() {
         className="min-h-screen flex items-center justify-center section-fade">
         <div className="text-center px-6 md:px-12">
           <h2 className={`text-xs uppercase tracking-widest mb-6 md:mb-8 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Get In Touch</h2>
-          <p className="text-3xl md:text-5xl font-light mb-8 md:mb-12 contact-pulse">Let's collaborate</p>
+          <p className="text-3xl md:text-5xl font-light mb-8 md:mb-12">Let's collaborate</p>
           <div className="flex flex-col md:flex-row gap-6 md:gap-12 justify-center text-sm">
             <a 
               href="https://github.com/RYANX9" 
