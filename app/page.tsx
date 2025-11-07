@@ -192,8 +192,8 @@ export default function SwissPortfolio() {
         /* === TYPOGRAPHY SYSTEM: Lora + Space Grotesk === */
         
         /* Import Fonts */
-        @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-        
+        @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Space+Grotesk:wght@400;500;600;700&family=Elmess:ital,wght@0,400;0,500;1,400&display=swap');
+
         /* Base Typography */
         * { 
           font-family: 'Lora', Georgia, serif;
@@ -222,17 +222,16 @@ export default function SwissPortfolio() {
           font-weight: 600;
         }
         
-        /* Body Text - Lora Regular */
+        /* Body Text - Elms Sans Regular */
         .body-text {
-          font-family: 'Space Grotesk', sans-serif;
+          font-family: 'Elms Sans', sans-serif;
           font-weight: 400;
           line-height: 1.7;
         }
 
-        
-        /* Taglines - Lora Italic */
+        /* Taglines - Elms Sans Italic */
         .tagline {
-          font-family: 'Lora', serif;
+          font-family: 'Elms Sans', sans-serif;
           font-weight: 400;
           font-style: italic;
         }
@@ -322,6 +321,11 @@ export default function SwissPortfolio() {
                       box-shadow 0.3s ease;
         }
         
+        /* Desktop hover effect (restored) */
+        .project-item:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
         
         .dark-mode-toggle {
           transition: all 0.3s ease;
