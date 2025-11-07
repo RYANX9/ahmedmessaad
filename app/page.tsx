@@ -192,8 +192,9 @@ export default function SwissPortfolio() {
         /* === TYPOGRAPHY SYSTEM: Lora + Space Grotesk === */
         
         /* Import Fonts */
+        /* Import Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Space+Grotesk:wght@400;500;600;700&family=Elmess:ital,wght@0,400;0,500;1,400&display=swap');
-
+        
         /* Base Typography */
         * { 
           font-family: 'Lora', Georgia, serif;
@@ -228,7 +229,7 @@ export default function SwissPortfolio() {
           font-weight: 400;
           line-height: 1.7;
         }
-
+        
         /* Taglines - Elms Sans Italic */
         .tagline {
           font-family: 'Elms Sans', sans-serif;
@@ -313,6 +314,7 @@ export default function SwissPortfolio() {
           animation: slideInFromLeft 0.6s ease-out forwards;
         }
         
+        /* Project Items — Fade-in default */
         .project-item {
           opacity: 0;
           transform: translateY(30px);
@@ -325,6 +327,18 @@ export default function SwissPortfolio() {
         .project-item:hover {
           transform: translateY(-5px);
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark .project-item:hover {
+          box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Disable hover effect on mobile */
+        @media (max-width: 768px) {
+          .project-item:hover {
+            transform: translateY(0);
+            box-shadow: none;
+          }
         }
         
         .dark-mode-toggle {
@@ -373,7 +387,7 @@ export default function SwissPortfolio() {
           background: currentColor;
           animation: drawLine 1s ease-out forwards;
         }
-        
+
         @media (max-width: 768px) {
           .project-item:hover {
             transform: translateY(0);
