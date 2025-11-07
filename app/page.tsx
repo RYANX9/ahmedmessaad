@@ -224,10 +224,11 @@ export default function SwissPortfolio() {
         
         /* Body Text - Lora Regular */
         .body-text {
-          font-family: 'Lora', serif;
+          font-family: 'Space Grotesk', sans-serif;
           font-weight: 400;
           line-height: 1.7;
         }
+
         
         /* Taglines - Lora Italic */
         .tagline {
