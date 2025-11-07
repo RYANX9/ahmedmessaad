@@ -679,7 +679,7 @@ export default function SwissPortfolio() {
       {/* Footer */}
       <footer className={darkMode ? 'border-t border-white py-8' : 'border-t border-black py-8'}>
         <div className={`max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-          <div>© 2025 Ahmed Messaad</div>
+          <div>© 2025 Developed by Ahmed Messaad</div>
           <div className="uppercase tracking-widest">ML Engineer</div>
         </div>
       </footer>
