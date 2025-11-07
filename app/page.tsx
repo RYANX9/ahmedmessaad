@@ -373,9 +373,9 @@ export default function SwissPortfolio() {
         scrolled 
           ? `${darkMode ? 'bg-black border-b border-white' : 'bg-white border-b border-black'} ${scrolled ? 'nav-shrink' : ''}`
           : 'bg-transparent'
-      }`}>
+      }py-3 md:py-1`}>
         <div className={`max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center transition-all duration-300 ${
-          scrolled ? 'py-4' : 'py-6 md:py-8'
+          scrolled ? 'py-3' : 'py-6 md:py-8'
         }`}>
           <button 
             onClick={() => scrollToSection('hero')} 
