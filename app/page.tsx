@@ -189,47 +189,73 @@ export default function SwissPortfolio() {
   return (
     <div className={`${darkMode ? 'bg-black text-white' : 'bg-white text-black'} min-h-screen transition-colors duration-500`}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&display=swap');
-        @import url('https://fonts.cdnfonts.com/css/suisse-intl');
+        /* === TYPOGRAPHY SYSTEM: Lora + Space Grotesk === */
         
+        /* Import Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+        
+        /* Base Typography */
         * { 
-          font-family: 'Suisse Intl', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; 
+          font-family: 'Lora', Georgia, serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
         }
         
-        h1, h2, h3, .serif-font { 
-          font-family: 'Cormorant Garamond', serif; 
-        }
-        
+        /* Hero Title - Lora ExtraBold */
         .hero-title {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: 'Lora', serif;
           font-weight: 700;
+          letter-spacing: -0.02em;
         }
         
+        /* Section Titles - Space Grotesk Medium */
         .section-title {
-          font-family: 'Cormorant Garamond', serif;
-          font-weight: 600;
+          font-family: 'Space Grotesk', sans-serif;
+          font-weight: 500;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
         }
         
+        /* Project Titles - Lora SemiBold */
         .project-title {
-          font-family: 'Cormorant Garamond', serif;
+          font-family: 'Lora', serif;
           font-weight: 600;
         }
         
+        /* Body Text - Lora Regular */
+        .body-text {
+          font-family: 'Lora', serif;
+          font-weight: 400;
+          line-height: 1.7;
+        }
+        
+        /* Taglines - Lora Italic */
         .tagline {
-          font-family: 'Cormorant Garamond', serif;
-          font-weight: 300;
+          font-family: 'Lora', serif;
+          font-weight: 400;
           font-style: italic;
         }
         
-        .metric-value {
-          font-family: 'Suisse Intl', sans-serif;
+        /* UI Elements (Nav, Buttons, Labels) - Space Grotesk */
+        nav, button, .ui-text, .label-text {
+          font-family: 'Space Grotesk', sans-serif;
           font-weight: 500;
         }
         
-        .body-text {
-          font-family: 'Cormorant Garamond', serif;
-          font-weight: 400;
+        /* Metrics/Numbers - Space Grotesk SemiBold */
+        .metric-value {
+          font-family: 'Space Grotesk', sans-serif;
+          font-weight: 600;
         }
+        
+        /* Category Tags - Space Grotesk */
+        .category-tag {
+          font-family: 'Space Grotesk', sans-serif;
+          font-weight: 400;
+          letter-spacing: 0.08em;
+        }
+        
+        /* === ANIMATIONS === */
         
         html { scroll-behavior: smooth; }
         
@@ -358,6 +384,7 @@ export default function SwissPortfolio() {
         }
       `}</style>
 
+      
       {/* Fixed Navigation */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled 
