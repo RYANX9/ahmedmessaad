@@ -1,3 +1,4 @@
+
 'use client'; 
 
 import { useState, useEffect, useRef } from 'react';
@@ -188,8 +189,48 @@ export default function SwissPortfolio() {
   return (
     <div className={`${darkMode ? 'bg-black text-white' : 'bg-white text-black'} min-h-screen transition-colors duration-500`}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
-        * { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.cdnfonts.com/css/suisse-intl');
+        
+        * { 
+          font-family: 'Suisse Intl', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; 
+        }
+        
+        h1, h2, h3, .serif-font { 
+          font-family: 'Cormorant Garamond', serif; 
+        }
+        
+        .hero-title {
+          font-family: 'Cormorant Garamond', serif;
+          font-weight: 700;
+        }
+        
+        .section-title {
+          font-family: 'Cormorant Garamond', serif;
+          font-weight: 600;
+        }
+        
+        .project-title {
+          font-family: 'Cormorant Garamond', serif;
+          font-weight: 600;
+        }
+        
+        .tagline {
+          font-family: 'Cormorant Garamond', serif;
+          font-weight: 300;
+          font-style: italic;
+        }
+        
+        .metric-value {
+          font-family: 'Suisse Intl', sans-serif;
+          font-weight: 500;
+        }
+        
+        .body-text {
+          font-family: 'Cormorant Garamond', serif;
+          font-weight: 400;
+        }
+        
         html { scroll-behavior: smooth; }
         
         @keyframes fadeInUp {
