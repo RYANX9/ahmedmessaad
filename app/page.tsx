@@ -8,7 +8,7 @@ const projects = [
     id: "deep-rl-trading",
     name: "Deep RL Trading System",
     category: "Reinforcement Learning",
-    year: "2024",
+    year: "2025",
     tagline: "When markets meet neural policies",
     description: "Comparative study of PPO and A2C agents against traditional trading strategies on Bitcoin hourly data. A2C achieved 66% win rate with 22.69% returns. Systematic evaluation across 30 seeds revealed variance patterns and limitations of DRL in non-stationary financial environments.",
     tech: ["PPO", "A2C", "PyTorch", "Gymnasium", "NumPy"],
