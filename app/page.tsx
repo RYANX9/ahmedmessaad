@@ -561,7 +561,7 @@ export default function SwissPortfolio() {
                 <ul className="space-y-2 text-sm">
                   <li><a href="https://github.com/RYANX9" target="_blank" rel="noopener noreferrer" className="hover:underline">GitHub</a></li>
                   <li><a href="https://linkedin.com/in/ahmedmessaad" target="_blank" rel="noopener noreferrer" className="hover:underline">LinkedIn</a></li>
-                  <li><a href="mailto:ahmed.messaad@outlook.com" className="hover:underline">Email</a></li>
+                  <li><a href="mailto:ahmed.messaad.ml@gmail.com" className="hover:underline">Email</a></li>
                 </ul>
               </div>
             </div>
@@ -667,7 +667,7 @@ export default function SwissPortfolio() {
               LinkedIn
             </a>
             <a 
-              href="mailto:ahmed.messaad@outlook.com" 
+              href="mailto:ahmed.messaad.ml@gmail.com" 
               className="hover:underline uppercase tracking-wider transition-all duration-300 hover:scale-105"
             >
               Email
