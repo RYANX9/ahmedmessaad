@@ -86,3 +86,40 @@ export function DoodleFlask({ className = "" }: { className?: string }) {
     </svg>
   );
 }
+
+// ---------------------------------------------------------------------------
+// "Systems" side doodles — same single-stroke hand-drawn language as the
+// medical set above, standing in for the software/engineering track.
+// ---------------------------------------------------------------------------
+
+export function DoodleTerminal({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 120 120" className={className} fill="none" aria-hidden="true">
+      <rect x="14" y="24" width="92" height="72" rx="10" stroke="currentColor" strokeWidth="3.5" />
+      <path d="M30 46l16 14-16 14" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M58 74h32" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+      <path d="M14 38h92" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function DoodleDatabase({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 120 120" className={className} fill="none" aria-hidden="true">
+      <ellipse cx="60" cy="28" rx="38" ry="14" stroke="currentColor" strokeWidth="3.5" />
+      <path d="M22 28v32c0 7.7 17 14 38 14s38-6.3 38-14V28" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+      <path d="M22 60v32c0 7.7 17 14 38 14s38-6.3 38-14V60" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function DoodleApi({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 120 120" className={className} fill="none" aria-hidden="true">
+      <circle cx="22" cy="60" r="12" stroke="currentColor" strokeWidth="3.5" />
+      <circle cx="98" cy="30" r="12" stroke="currentColor" strokeWidth="3.5" />
+      <circle cx="98" cy="90" r="12" stroke="currentColor" strokeWidth="3.5" />
+      <path d="M33 55l55-19M33 65l55 19" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+    </svg>
+  );
+}
