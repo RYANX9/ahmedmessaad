@@ -1,687 +1,288 @@
-'use client'; 
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
+import Image from "next/image";
+import { motion, type Variants } from "framer-motion";
+import { ArrowUpRight, Github, Linkedin, Mail, FileDown } from "lucide-react";
+import { profile, stats, projects, skills, contact } from "./data";
+import {
+  Blob,
+  VitalLine,
+  ScribbleUnderline,
+  DoodleStethoscope,
+  DoodleScan,
+  DoodleFlask,
+} from "./components/illustrations";
 
-const projects = [
-  {
-    id: "deep-rl-trading",
-    name: "Deep RL Trading System",
-    category: "Reinforcement Learning",
-    year: "2025",
-    tagline: "When markets meet neural policies",
-    description: "Comparative study of PPO and A2C agents against traditional trading strategies on Bitcoin hourly data. A2C achieved 66% win rate with 22.69% returns. Systematic evaluation across 30 seeds revealed variance patterns and limitations of DRL in non-stationary financial environments.",
-    tech: ["PPO", "A2C", "PyTorch", "Gymnasium", "NumPy"],
-    metrics: { winRate: "66%", sharpe: "0.185", drawdown: "17.25%" },
-    link: "https://github.com/RYANX9/deep-rl-trading"
-  },
-  {
-    id: "treatment-drl",
-    name: "Medical Treatment Optimization",
-    category: "Sequential Decision-Making",
-    year: "2025",
-    tagline: "ICU decisions, algorithmic precision",
-    description: "ICU treatment timing system trained on MIMIC-III clinical data. A2C agent achieved 99.5% clinical appropriateness with +76-145 reward improvement. Rule-based safety filter increased PPO/DQN appropriateness by 40 points. Custom 26D Gym environment modeling temporal dynamics.",
-    tech: ["Stable-Baselines3", "Gym", "MIMIC-III", "Pandas"],
-    metrics: { appropriate: "99.5%", reward: "+145", dimensions: "26D" },
-    link: "https://github.com/RYANX9/medical-treatment-drl/"
-  },
-  {
-    id: "airm",
-    name: "Clinical Brain Tumor Classifier",
-    category: "Computer Vision",
-    year: "2024",
-    tagline: "Diagnostic AI at clinical grade",
-    description: "Production-grade diagnostic system achieving 99% four-class tumor classification. End-to-end DICOM processing pipeline with radiologist-validated UI. Investigated optimal preprocessing strategies for limited medical imaging datasets and deployment-ready clinical integration.",
-    tech: ["EfficientNet-B7", "PyDICOM", "PyQt5", "SQL"],
-    metrics: { accuracy: "99%", classes: "4", pipeline: "DICOM" },
-    link: "https://youtu.be/2OeqBKF3X_A"
-  },
-  {
-    id: "hemavision",
-    name: "Automated Hematology Platform",
-    category: "Object Detection",
-    year: "2023-2024",
-    tagline: "Microscopy meets real-time inference",
-    description: "Real-time blood cell classification achieving 97% multi-class accuracy. Reduced diagnostic time from 45 to 3 minutes through optimized detection pipeline. Research on efficient segmentation architectures for high-throughput microscopy workflows.",
-    tech: ["YOLOv8", "U-Net", "OpenCV", "PyTorch"],
-    metrics: { accuracy: "97%", time: "3min", speedup: "15x" },
-    link: "https://youtu.be/YxhA877Wyn0"
-  },
-  {
-    id: "healthcost",
-    name: "Healthcare Cost Forecasting",
-    category: "Deep Learning",
-    year: "2024",
-    tagline: "Temporal patterns, financial futures",
-    description: "Conv1D architecture achieving R²=0.88 for insurance cost prediction. SHAP analysis identified primary cost drivers. Systematic ablation study investigating temporal convolution strategies for time-series healthcare prediction tasks.",
-    tech: ["Conv1D", "SHAP", "Scikit-learn", "Plotly"],
-    metrics: { r2: "0.88", method: "SHAP", type: "Conv1D" },
-    link: "https://github.com/RYANX9/healthcare-cost-prediction"
-  },
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+};
 
-];
+function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  return (
+    <motion.div
+      variants={fadeUp}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ delay }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
-export default function SwissPortfolio() {
-  const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState('hero');
-  const [darkMode, setDarkMode] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const [typedText, setTypedText] = useState('');
-  const [metricsVisible, setMetricsVisible] = useState<boolean[]>(new Array(projects.length).fill(false));
-  const projectRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const metricRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
-  const aboutRef = useRef<HTMLElement>(null);
-  const contactRef = useRef<HTMLElement>(null);
-
-  // Typing animation for hero subtitle
-  useEffect(() => {
-    const text = 'Machine Learning Engineer';
-    let index = 0;
-    const timer = setInterval(() => {
-      if (index <= text.length) {
-        setTypedText(text.slice(0, index));
-        index++;
-      } else {
-        clearInterval(timer);
-      }
-    }, 50);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Counter animation for metrics
-  const animateCounter = (element: HTMLElement, target: string) => {
-    if (target.includes('%')) {
-      const numTarget = parseFloat(target);
-      let current = 0;
-      const increment = numTarget / 30;
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= numTarget) {
-          element.textContent = target;
-          clearInterval(timer);
-        } else {
-          element.textContent = `${Math.floor(current)}%`;
-        }
-      }, 30);
-    } else {
-      element.textContent = target;
-    }
-  };
-
-  useEffect(() => {
-    setTimeout(() => setHasAnimated(true), 100);
-
-    const handleScroll = () => {
-      const newScrolled = window.scrollY > 50;
-      setScrolled(newScrolled);
-      
-      const sections = ['hero', 'about', 'work', 'contact'];
-      const current = sections.find(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
-        }
-        return false;
-      });
-      if (current) setActiveSection(current);
-
-      // Animate projects on scroll with stagger
-      projectRefs.current.forEach((ref, index) => {
-        if (ref) {
-          const rect = ref.getBoundingClientRect();
-          const isVisible = rect.top < window.innerHeight * 0.75;
-          if (isVisible) {
-            setTimeout(() => {
-              ref.style.opacity = '1';
-              ref.style.transform = 'translateY(0)';
-            }, index * 100);
-          }
-        }
-      });
-
-      // Animate metrics counters
-      metricRefs.current.forEach((ref, index) => {
-        if (ref && !metricsVisible[index]) {
-          const rect = ref.getBoundingClientRect();
-          const isVisible = rect.top < window.innerHeight * 0.8;
-          if (isVisible) {
-            setMetricsVisible(prev => {
-              const newState = [...prev];
-              newState[index] = true;
-              return newState;
-            });
-            const metricElements = ref.querySelectorAll('.metric-value');
-            metricElements.forEach((el) => {
-              const target = el.getAttribute('data-target');
-              if (target) animateCounter(el as HTMLElement, target);
-            });
-          }
-        }
-      });
-
-      // Fade in about and contact sections
-      [aboutRef, contactRef].forEach(ref => {
-        if (ref.current) {
-          const rect = ref.current.getBoundingClientRect();
-          const isVisible = rect.top < window.innerHeight * 0.8;
-          if (isVisible) {
-            ref.current.style.opacity = '1';
-            ref.current.style.transform = 'translateY(0)';
-          }
-        }
-      });
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [metricsVisible]);
-
-  const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    setMobileMenuOpen(false);
-  };
+export default function Portfolio() {
+  const nav = [
+    { href: "#work", label: "Work" },
+    { href: "#about", label: "About" },
+    { href: "#skills", label: "Skills" },
+    { href: "#contact", label: "Contact" },
+  ];
 
   return (
-    <div className={`${darkMode ? 'bg-black text-white' : 'bg-white text-black'} min-h-screen transition-colors duration-500`}>
-      <style>{`
-        /* === TYPOGRAPHY SYSTEM: Lora + Space Grotesk + Elms Sans === */
-        
-        /* Import Fonts */
-        @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Elms+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
-        
-        /* Base Typography */
-        * { 
-          font-family: 'Lora', Georgia, serif;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-        }
-        
-        /* Hero Title - Lora ExtraBold */
-        .hero-title {
-          font-family: 'Lora', serif;
-          font-weight: 700;
-          letter-spacing: -0.02em;
-        }
-        
-        /* Section Titles - Space Grotesk Medium */
-        .section-title {
-          font-family: 'Space Grotesk', sans-serif;
-          font-weight: 500;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-        }
-        
-        /* Project Titles - Lora SemiBold */
-        .project-title {
-          font-family: 'Lora', serif;
-          font-weight: 600;
-        }
-        
-        /* Body Text - Elms Sans Regular */
-        .body-text {
-          font-family: 'Elms Sans', sans-serif;
-          font-weight: 400;
-          line-height: 1.7;
-        }
-      
-        /* Taglines - Elms Sans Italic */
-        .tagline {
-          font-family: 'Elms Sans', sans-serif;
-          font-weight: 400;
-          font-style: italic;
-        }
-        
-        /* UI Elements (Nav, Buttons, Labels) - Space Grotesk */
-        nav, button, .ui-text, .label-text {
-          font-family: 'Space Grotesk', sans-serif;
-          font-weight: 500;
-        }
-        
-        /* Metrics/Numbers - Space Grotesk SemiBold */
-        .metric-value {
-          font-family: 'Space Grotesk', sans-serif;
-          font-weight: 600;
-        }
-        
-        /* Category Tags - Space Grotesk */
-        .category-tag {
-          font-family: 'Space Grotesk', sans-serif;
-          font-weight: 400;
-          letter-spacing: 0.08em;
-        }
-        
-        /* === ANIMATIONS === */
-        
-        html { scroll-behavior: smooth; }
-        
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        
-        @keyframes slideInFromLeft {
-          from {
-            opacity: 0;
-            transform: translateX(-30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        
-        @keyframes glow {
-          0%, 100% { box-shadow: 0 0 5px currentColor; }
-          50% { box-shadow: 0 0 20px currentColor, 0 0 30px currentColor; }
-        }
-        
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
-        }
-        
-        @keyframes drawLine {
-          from { width: 0; }
-          to { width: 100%; }
-        }
-        
-        .animate-on-load {
-          animation: fadeInUp 0.8s ease-out forwards;
-        }
-        
-        .animate-fade {
-          animation: fadeIn 1s ease-out forwards;
-        }
-        
-        .animate-slide {
-          animation: slideInFromLeft 0.6s ease-out forwards;
-        }
-        
-        .project-item {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
-                      transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .dark-mode-toggle {
-          transition: all 0.3s ease;
-        }
-        
-        .dark-mode-toggle.active {
-          animation: glow 0.6s ease-in-out;
-        }
-        
-        .nav-shrink {
-          animation: shrinkNav 0.3s ease-out forwards;
-        }
-        
-        @keyframes shrinkNav {
-          from { padding-top: 1.5rem; padding-bottom: 1.5rem; }
-          to { padding-top: 1rem; padding-bottom: 1rem; }
-        }
-        
-        .typing-cursor::after {
-          content: '|';
-          animation: pulse 1s infinite;
-        }
-        
-        .section-fade {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        
-        .contact-pulse {
-          animation: pulse 2s ease-in-out infinite;
-        }
-        
-        .line-draw {
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .line-draw::after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          height: 1px;
-          background: currentColor;
-          animation: drawLine 1s ease-out forwards;
-        }
-      `}</style>
-          
-      {/* Fixed Navigation */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled 
-          ? `${darkMode ? 'bg-black border-b border-white' : 'bg-white border-b border-black'} ${scrolled ? 'nav-shrink' : ''}`
-          : 'bg-transparent'
-      }py-3 md:py-1`}>
-        <div className={`max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center transition-all duration-300 ${
-          scrolled ? 'py-3' : 'py-6 md:py-8'
-        }`}>
-          <button 
-            onClick={() => scrollToSection('hero')} 
-            className={`text-sm font-light tracking-wider hover:opacity-60 transition-all duration-300 ${
-              scrolled ? 'scale-95' : 'scale-100'
-            }`}
-          >
-            AHMED MESSAAD
-          </button>
-          
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex gap-8 lg:gap-12 items-center">
-            {['about', 'work', 'contact'].map(section => (
-              <button
-                key={section}
-                onClick={() => scrollToSection(section)}
-                className={`text-xs uppercase tracking-widest transition-all duration-300 ${
-                  activeSection === section 
-                    ? darkMode ? 'text-white font-medium' : 'text-black font-medium'
-                    : darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-black'
-                }`}
-              >
-                {section}
-              </button>
+    <div className="relative overflow-x-hidden">
+      {/* ---------- Nav ---------- */}
+      <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--paper)]/85 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+          <a href="#top" className="font-display text-lg font-semibold">
+            Ahmed Messaad
+          </a>
+          <nav className="hidden gap-8 text-sm font-medium md:flex">
+            {nav.map((n) => (
+              <a key={n.href} href={n.href} className="text-[var(--ink)]/70 transition hover:text-[var(--ink)]">
+                {n.label}
+              </a>
             ))}
-            
-            <a
-              href="/resume.pdf"
-              download
-              className={`px-4 py-2 border transition-all duration-300 text-xs uppercase tracking-widest ${
-                darkMode 
-                  ? 'border-white hover:bg-white hover:text-black' 
-                  : 'border-black hover:bg-black hover:text-white'
-              }`}
-            >
-              Resume
-            </a>
-            
-            {/* Dark Mode Toggle with Glow */}
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className={`w-10 h-10 rounded-full border transition-all duration-300 flex items-center justify-center dark-mode-toggle ${
-                darkMode ? 'border-white hover:bg-white/10 active' : 'border-black hover:bg-black/5 active'
-              }`}
-              aria-label="Toggle dark mode"
-            >
-              {darkMode ? (
-                <svg className="w-4 h-4 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
-                </svg>
-              ) : (
-                <svg className="w-4 h-4 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
-                </svg>
-              )}
-            </button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden w-10 h-10 flex items-center justify-center"
-            aria-label="Toggle menu"
+          </nav>
+          <a
+            href={profile.resume}
+            className="inline-flex items-center gap-2 rounded-full bg-[var(--sage-deep)] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[var(--ink)]"
           >
-            {mobileMenuOpen ? (
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
-          </button>
+            <FileDown size={15} /> Resume
+          </a>
         </div>
+      </header>
 
-        {/* Mobile Menu */}
-        <div
-        className={`md:hidden absolute left-0 right-0 top-full z-40 overflow-hidden transition-all duration-300
-            ${mobileMenuOpen
-            ? 'max-h-96 border-t border-b'
-            : 'max-h-0 border-0 pointer-events-none'}
-            ${darkMode
-            ? (mobileMenuOpen ? 'border-white bg-black' : 'bg-black')
-            : (mobileMenuOpen ? 'border-black bg-white' : 'bg-white')
-            }`}
-        aria-hidden={!mobileMenuOpen}
-        >
-            <div className="px-6 py-6 space-y-4">
-                {['about', 'work', 'contact'].map(section => (
-                <button
-                    key={section}
-                    onClick={() => scrollToSection(section)}
-                    className={`block w-full text-left text-xs uppercase tracking-widest transition-colors ${
-                    activeSection === section
-                        ? 'font-medium'
-                        : darkMode ? 'text-gray-400' : 'text-gray-500'
-                    }`}
-                >
-                    {section}
-                </button>
-                ))}
-                
-                <a
-                href="/resume.pdf"
-                download
-                className={`block w-full text-left px-4 py-2 border transition-all text-xs uppercase tracking-widest ${
-                    darkMode 
-                    ? 'border-white hover:bg-white hover:text-black'
-                    : 'border-black hover:bg-black hover:text-white'
-                }`}
-                >
-                Download Resume
-                </a>
-                <button
-                onClick={() => setDarkMode(!darkMode)}
-                className="flex items-center gap-3 text-xs uppercase tracking-widest"
-                >
-                {darkMode ? 'Light Mode' : 'Dark Mode'}
-                </button>
-            </div>
-        </div>
-      </nav>
+      {/* ---------- Hero ---------- */}
+      <section id="top" className="relative mx-auto max-w-6xl px-6 pb-24 pt-16 md:pt-24">
+        <Blob className="pointer-events-none absolute -right-24 -top-16 w-[420px] opacity-25 md:w-[520px]" color="var(--sage)" />
+        <Blob className="pointer-events-none absolute -left-32 top-40 w-[300px] opacity-20" color="var(--lavender)" />
 
-      {/* Hero Section with Typing Effect */}
-      <section id="hero" className={`min-h-screen flex items-center justify-center ${darkMode ? 'border-b border-white' : 'border-b border-black'}`}>
-        <div className="text-center px-6 md:px-12">
-          <h1 className={`text-6xl md:text-8xl lg:text-[120px] font-light leading-none mb-6 md:mb-8 tracking-tight ${hasAnimated ? 'animate-on-load' : 'opacity-0'}`}>
-            AHMED MESSAAD
-          </h1>
-          <p className={`text-lg md:text-2xl font-light tracking-wide mb-4 typing-cursor ${hasAnimated ? 'animate-fade' : 'opacity-0'}`} style={{ animationDelay: '0.2s' }}>
-            {typedText}
-          </p>
-          <p className={`text-xs md:text-sm uppercase tracking-widest ${darkMode ? 'text-gray-400' : 'text-gray-500'} ${hasAnimated ? 'animate-fade' : 'opacity-0'}`} style={{ animationDelay: '0.4s' }}>
-            Reinforcement Learning · Computer Vision · Healthcare AI
-          </p>
-        </div>
-      </section>
-
-      {/* About Section with Scroll Fade */}
-      <section 
-        id="about" 
-        ref={aboutRef}
-        className={`section-fade ${darkMode ? 'border-b border-white' : 'border-b border-black'}`}
-      >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-32 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
-          <div className="md:col-span-3">
-            <div className="flex items-center gap-3 mb-4 md:mb-8 animate-slide">
-              <h2 className={`section-title text-xs uppercase tracking-widest ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>About</h2>
-              <img 
-                src="/noun.svg" 
-                alt="About icon" 
-                className={`w-4 h-4 ${darkMode ? 'invert' : ''}`}
-              />
-            </div>
-          </div>
-          <div className="md:col-span-9">
-            <p className="body-text text-xl md:text-3xl font-light leading-relaxed mb-8 md:mb-12 animate-fade" style={{ animationDelay: '0.1s' }}>
-              Specializing in deep reinforcement learning and clinical AI systems. Building production-grade diagnostic tools and sequential decision-making agents for healthcare applications.
+        <div className="relative grid gap-12 md:grid-cols-[1.2fr_0.8fr] md:items-center">
+          <Reveal>
+            <p className="mb-4 inline-block rounded-full border border-[var(--line)] bg-[var(--card)] px-4 py-1.5 text-sm text-[var(--sage-deep)]">
+              {profile.location}
             </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 pt-8 md:pt-12">
-              <div className="animate-fade" style={{ animationDelay: '0.2s' }}>
-                <h3 className={`text-xs uppercase tracking-widest mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Core Expertise</h3>
-                <ul className="space-y-2 text-sm">
-                  <li>Deep Reinforcement Learning</li>
-                  <li>Computer Vision</li>
-                  <li>Medical Imaging</li>
-                  <li>Time Series Analysis</li>
-                </ul>
-              </div>
-              <div className="animate-fade" style={{ animationDelay: '0.3s' }}>
-                <h3 className={`text-xs uppercase tracking-widest mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Frameworks</h3>
-                <ul className="space-y-2 text-sm">
-                  <li>PyTorch</li>
-                  <li>TensorFlow</li>
-                  <li>Stable-Baselines3</li>
-                  <li>OpenCV</li>
-                </ul>
-              </div>
-              <div className="animate-fade" style={{ animationDelay: '0.4s' }}>
-                <h3 className={`text-xs uppercase tracking-widest mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Contact</h3>
-                <ul className="space-y-2 text-sm">
-                  <li><a href="https://github.com/RYANX9" target="_blank" rel="noopener noreferrer" className="hover:underline">GitHub</a></li>
-                  <li><a href="https://linkedin.com/in/ahmedmessaad" target="_blank" rel="noopener noreferrer" className="hover:underline">LinkedIn</a></li>
-                  <li><a href="mailto:ahmed.messaad.ml@gmail.com" className="hover:underline">Email</a></li>
-                </ul>
+            <h1 className="font-display text-5xl font-semibold leading-[1.05] md:text-6xl">
+              {profile.tagline.split(" for ")[0]} for{" "}
+              <span className="relative inline-block">
+                clinical environments
+                <ScribbleUnderline className="absolute -bottom-2 left-0 w-full text-[var(--coral)]" />
+              </span>
+            </h1>
+            <p className="mt-6 max-w-lg text-lg text-[var(--ink)]/75">{profile.about[0]}</p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <a
+                href="#work"
+                className="inline-flex items-center gap-2 rounded-full bg-[var(--ink)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[var(--sage-deep)]"
+              >
+                See the work <ArrowUpRight size={16} />
+              </a>
+              <a
+                href={`mailto:${profile.email}`}
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] px-6 py-3 text-sm font-semibold transition hover:border-[var(--ink)]"
+              >
+                <Mail size={16} /> Get in touch
+              </a>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.15}>
+            <div className="relative mx-auto w-full max-w-xs">
+              <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-[32px] bg-[var(--coral)]/40" />
+              <div className="relative overflow-hidden rounded-[32px] border border-[var(--line)] bg-[var(--card)]">
+                <Image
+                  src={profile.avatar}
+                  alt={profile.name}
+                  width={400}
+                  height={480}
+                  className="h-auto w-full object-cover grayscale-[15%]"
+                  priority
+                />
               </div>
             </div>
-          </div>
+          </Reveal>
+        </div>
+
+        <VitalLine className="mt-16 h-10 w-full text-[var(--sage-deep)]/40" />
+      </section>
+
+      {/* ---------- Stats ---------- */}
+      <section className="border-y border-[var(--line)] bg-[var(--card)]">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-6 py-12 md:grid-cols-4">
+          {stats.map((s, i) => (
+            <Reveal key={s.label} delay={i * 0.06}>
+              <div className="text-3xl font-semibold text-[var(--sage-deep)] font-display md:text-4xl">
+                {s.value}
+              </div>
+              <div className="mt-1 text-sm text-[var(--ink)]/65">{s.label}</div>
+            </Reveal>
+          ))}
         </div>
       </section>
 
-      {/* Work Section with Enhanced Animations */}
-      <section id="work" className={darkMode ? 'border-b border-white' : 'border-b border-black'}>
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-32">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 mb-12 md:mb-24">
-            <div className="md:col-span-3">
-              <h2 className={`section-title text-xs uppercase tracking-widest ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Selected Work</h2>
+      {/* ---------- About ---------- */}
+      <section id="about" className="mx-auto max-w-6xl px-6 py-24">
+        <div className="grid gap-12 md:grid-cols-[0.9fr_1.1fr]">
+          <Reveal>
+            <h2 className="font-display text-3xl font-semibold">About</h2>
+            <div className="mt-3 flex gap-4 text-[var(--sage-deep)]">
+              <DoodleStethoscope className="h-10 w-10" />
+              <DoodleScan className="h-10 w-10" />
+              <DoodleFlask className="h-10 w-10" />
             </div>
-            <div className="md:col-span-9">
-              <p className={`body-text text-lg md:text-xl font-light ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                Research and production systems spanning reinforcement learning, medical imaging, and healthcare analytics.
-              </p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div className="space-y-4 text-lg leading-relaxed text-[var(--ink)]/80">
+              {profile.about.map((p) => (
+                <p key={p}>{p}</p>
+              ))}
             </div>
-          </div>
+          </Reveal>
+        </div>
+      </section>
 
-          {/* Projects with Staggered Animations */}
-          <div className="space-y-0">
-            {projects.map((project, index) => (
-          
-              <div 
-                key={project.id} 
-                ref={(el) => { projectRefs.current[index] = el; }}
-                className={`project-item ${darkMode ? 'border-t border-white' : 'border-t border-black'} py-12 md:py-16 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 transition-all duration-300`}
-              >
-                <div className="md:col-span-2 flex md:block justify-between items-start">
-                  <div className={`text-xs uppercase tracking-widest ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{project.year}</div>
-                  <div className={`text-xs mt-0 md:mt-2 ${darkMode ? 'text-gray-600' : 'text-gray-400'}`}>{String(index + 1).padStart(2, '0')}</div>
-                </div>
-                
-                <div className="md:col-span-7">
-                  <div className={`category-tag text-xs uppercase tracking-widest mb-2 md:mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{project.category}</div>
-                  <h3 className="project-title text-2xl md:text-3xl font-light mb-3 md:mb-4">{project.name}</h3>
-                  <p className="tagline text-sm mb-4 md:mb-6">{project.tagline}</p>
-                  <p className="body-text text-sm leading-relaxed mb-6 md:mb-8">{project.description}</p>
-                  
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.tech.map(tech => (
-                      <span key={tech} className={`text-xs px-3 py-1 transition-all duration-300 ${darkMode ? 'border border-white hover:bg-white hover:text-black' : 'border border-black hover:bg-black hover:text-white'}`}>
-                        {tech}
-                      </span>
-                    ))}
+      {/* ---------- Projects ---------- */}
+      <section id="work" className="border-t border-[var(--line)] bg-[var(--card)]">
+        <div className="mx-auto max-w-6xl px-6 py-24">
+          <Reveal>
+            <h2 className="font-display text-3xl font-semibold">Selected work</h2>
+            <p className="mt-2 text-[var(--ink)]/65">Applied ML systems built for diagnostic and clinical use.</p>
+          </Reveal>
+
+          <div className="mt-12 grid gap-8 md:grid-cols-2">
+            {projects.map((p, i) => (
+              <Reveal key={p.id} delay={(i % 2) * 0.08}>
+                <a
+                  href={p.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block overflow-hidden rounded-[28px] border border-[var(--line)] bg-[var(--paper)] transition hover:-translate-y-1 hover:shadow-[0_16px_40px_-16px_rgba(35,41,31,0.25)]"
+                >
+                  <div className="relative h-48 w-full overflow-hidden">
+                    <Image
+                      src={p.image}
+                      alt={p.name}
+                      fill
+                      className="object-cover transition duration-500 group-hover:scale-105"
+                    />
+                    <span className="absolute left-4 top-4 rounded-full bg-[var(--paper)] px-3 py-1 text-xs font-semibold text-[var(--ink)]">
+                      {p.year}
+                    </span>
                   </div>
 
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-xs uppercase tracking-widest hover:underline transition-all duration-300"
-                  >
-                    View Project
-                    <svg className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </a>
-                </div>
+                  <div className="p-6">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-[var(--coral-deep)]">
+                      {p.category}
+                    </span>
+                    <h3 className="mt-2 flex items-center gap-1.5 font-display text-xl font-semibold">
+                      {p.name}
+                      <ArrowUpRight
+                        size={17}
+                        className="opacity-0 transition group-hover:opacity-100"
+                      />
+                    </h3>
+                    <p className="mt-1 text-sm italic text-[var(--ink)]/55">{p.tagline}</p>
+                    <p className="mt-3 text-[15px] leading-relaxed text-[var(--ink)]/75">{p.description}</p>
 
-                <div className="md:col-span-3" ref={(el) => { metricRefs.current[index] = el; }}>
-                  <div className={`text-xs uppercase tracking-widest mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Metrics</div>
-                  <div className="space-y-4">
-                    {Object.entries(project.metrics).map(([key, value]) => (
-                      <div key={key} className={`${darkMode ? 'border-l-2 border-white' : 'border-l-2 border-black'} pl-4`}>
-                        <div className="text-xl md:text-2xl font-light metric-value" data-target={value}>0</div>
-                        <div className={`text-xs uppercase tracking-wider ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>{key}</div>
-                      </div>
-                    ))}
+                    <div className="mt-4 flex flex-wrap gap-3 border-t border-[var(--line)] pt-4">
+                      {p.metrics.map((m) => (
+                        <div key={m.label} className="text-sm">
+                          <span className="font-semibold text-[var(--sage-deep)]">{m.value}</span>{" "}
+                          <span className="text-[var(--ink)]/55">{m.label}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {p.tech.map((t) => (
+                        <span
+                          key={t}
+                          className="rounded-full border border-[var(--line)] px-2.5 py-1 text-xs text-[var(--ink)]/70"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </div>
+                </a>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Contact Section with Pulse Animation */}
-      <section 
-        id="contact" 
-        ref={contactRef}
-        className="min-h-screen flex items-center justify-center section-fade">
-        <div className="text-center px-6 md:px-12">
-          <h2 className={`text-xs uppercase tracking-widest mb-6 md:mb-8 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Get In Touch</h2>
-          <p className="text-3xl md:text-5xl font-light mb-8 md:mb-12">Let's collaborate</p>
-          <div className="flex flex-col md:flex-row gap-6 md:gap-12 justify-center text-sm">
-            <a 
-              href="https://github.com/RYANX9" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="hover:underline uppercase tracking-wider transition-all duration-300 hover:scale-105"
-            >
-              GitHub
-            </a>
-            <a 
-              href="https://linkedin.com/in/ahmedmessaad" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="hover:underline uppercase tracking-wider transition-all duration-300 hover:scale-105"
-            >
-              LinkedIn
-            </a>
-            <a 
-              href="mailto:ahmed.messaad.ml@gmail.com" 
-              className="hover:underline uppercase tracking-wider transition-all duration-300 hover:scale-105"
-            >
-              Email
-            </a>
-          </div>
+      {/* ---------- Skills ---------- */}
+      <section id="skills" className="mx-auto max-w-6xl px-6 py-24">
+        <Reveal>
+          <h2 className="font-display text-3xl font-semibold">Toolkit</h2>
+        </Reveal>
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {skills.map((s, i) => (
+            <Reveal key={s.group} delay={i * 0.06}>
+              <div className="rounded-[24px] border border-[var(--line)] bg-[var(--card)] p-6">
+                <h3 className="font-display text-lg font-semibold text-[var(--sage-deep)]">{s.group}</h3>
+                <ul className="mt-3 space-y-1.5 text-sm text-[var(--ink)]/75">
+                  {s.items.map((it) => (
+                    <li key={it}>{it}</li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className={darkMode ? 'border-t border-white py-8' : 'border-t border-black py-8'}>
-        <div className={`max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-          <div>© 2025 Developed by Ahmed Messaad</div>
-          <div className="uppercase tracking-widest">ML Engineer</div>
+      {/* ---------- Contact ---------- */}
+      <section id="contact" className="border-t border-[var(--line)] bg-[var(--ink)] text-[var(--paper)]">
+        <div className="relative mx-auto max-w-6xl overflow-hidden px-6 py-24">
+          <Blob className="pointer-events-none absolute -bottom-24 -right-24 w-[380px] opacity-20" color="var(--coral)" />
+          <Reveal>
+            <h2 className="font-display max-w-xl text-3xl font-semibold md:text-4xl">{contact.heading}</h2>
+            <p className="mt-4 max-w-lg text-[var(--paper)]/70">{contact.body}</p>
+
+            <div className="mt-8 flex flex-wrap gap-4">
+              <a
+                href={`mailto:${profile.email}`}
+                className="inline-flex items-center gap-2 rounded-full bg-[var(--coral)] px-6 py-3 text-sm font-semibold text-[var(--ink)] transition hover:bg-[var(--paper)]"
+              >
+                <Mail size={16} /> {profile.email}
+              </a>
+              <a
+                href={profile.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--paper)]/30 px-6 py-3 text-sm font-semibold transition hover:border-[var(--paper)]"
+              >
+                <Github size={16} /> GitHub
+              </a>
+              <a
+                href={profile.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--paper)]/30 px-6 py-3 text-sm font-semibold transition hover:border-[var(--paper)]"
+              >
+                <Linkedin size={16} /> LinkedIn
+              </a>
+            </div>
+          </Reveal>
         </div>
+      </section>
+
+      <footer className="bg-[var(--ink)] py-6 text-center text-xs text-[var(--paper)]/40">
+        Built by {profile.name}
       </footer>
     </div>
   );
