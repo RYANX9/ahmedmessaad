@@ -1,19 +1,23 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:ital,wght@0,400;0,500;0,600;1,400&display=swap");
 
 :root {
-  --paper: #f6f4ee;
-  --ink: #23291f;
-  --sage: #7f9b78;
-  --sage-deep: #4f6b4a;
-  --coral: #ee9b7a;
-  --coral-deep: #d97b56;
-  --lavender: #c9bfe0;
-  --line: #d9d4c4;
-  --card: #fbfaf5;
+  --bg: #0a0d0c;
+  --panel: #121714;
+  --panel-soft: #171d19;
+  --line: #2a332d;
+  --line-bright: #445146;
+  --ink: #edf0ea;
+  --ink-dim: #9aa79c;
+  --ink-faint: #5c6960;
+  --phosphor: #8fe3b0;
+  --phosphor-dim: #4f8f68;
+  --amber: #ff9f4a;
+  --amber-dim: #b8722f;
 
-  --font-display: "Fraunces", ui-serif, serif;
-  --font-body: "Plus Jakarta Sans", ui-sans-serif, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, sans-serif;
+  --font-body: "Inter", ui-sans-serif, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
 * {
@@ -25,7 +29,7 @@ html {
 }
 
 body {
-  background: var(--paper);
+  background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
@@ -33,6 +37,10 @@ body {
 
 .font-display {
   font-family: var(--font-display);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -47,11 +55,47 @@ body {
 }
 
 ::selection {
-  background: var(--coral);
-  color: var(--paper);
+  background: var(--phosphor);
+  color: var(--bg);
 }
 
 :focus-visible {
-  outline: 2px solid var(--sage-deep);
+  outline: 2px solid var(--amber);
   outline-offset: 3px;
+}
+
+@keyframes scan-sweep {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes cursor-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-scan-sweep {
+  animation: scan-sweep 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-cursor-blink {
+  animation: cursor-blink 1s step-end infinite;
 }
