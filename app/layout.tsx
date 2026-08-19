@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Ahmed Messaad",
   description:
-    "AI/ML Researcher specializing in Medical Imaging and Deep Learning.",
+    "ML Engineer specializing in Medical Imaging and Deep Learning.",
   icons: {
     icon: [
       { url: "/ahmed-icon1.png", type: "image/png", sizes: "120x120" },
