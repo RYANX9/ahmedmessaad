@@ -6,29 +6,13 @@ import { motion, type Variants } from "framer-motion";
 import {
   ArrowUpRight,
   Award,
-  Database,
   FileDown,
   Github,
   Linkedin,
   Mail,
-  Share2,
-  Terminal,
 } from "lucide-react";
 import { FaKaggle } from "react-icons/fa";
 import { ThemeToggle } from "./components/theme-toggle";
-import {
-  ContourField,
-  CutMark,
-  DimensionGrid,
-  GrainOverlay,
-  MeasureAnnotation,
-  PinMarker,
-  StitchCorners,
-  StitchRing,
-  StitchSeam,
-  ThreadSpool,
-  WeavePattern,
-} from "./components/illustrations";
 import {
   profile,
   about,
@@ -122,23 +106,6 @@ function TrackBadge({ track, className = "" }: { track: Track; className?: strin
     </span>
   );
 }
-
-// The faint per-track watermark used inside project cards and placeholder
-// panels — the same research/systems distinction the badges carry, encoded
-// a second way so it survives on a card even if the badge text is skimmed.
-function TrackTexture({ track, opacity = 0.08 }: { track: Track; opacity?: number }) {
-  return track === "research" ? (
-    <ContourField className="pointer-events-none absolute inset-0" opacity={opacity} />
-  ) : (
-    <DimensionGrid className="pointer-events-none absolute inset-0" opacity={opacity} />
-  );
-}
-
-const COVER_ICONS: Record<string, React.ReactNode> = {
-  terminal: <Terminal size={20} />,
-  database: <Database size={20} />,
-  api: <Share2 size={20} />,
-};
 
 // Quiet, technical section opener — kept from the spec-sheet register on
 // purpose, so the loud sections (hero, work) read louder by contrast.
@@ -290,34 +257,24 @@ export default function Portfolio() {
             </Reveal>
           </div>
 
-          {/* The backing panel renders the site's own duality — research
-              texture / systems texture / the stitch that joins them — behind
-              the portrait, ahead of the "Two threads" copy that names it. */}
           <Reveal delay={0.2}>
             <div className="relative">
-              <div className="absolute -inset-5 -z-10 overflow-hidden rounded-[34px] border border-[var(--line)] bg-[var(--bg-raised)]">
-                <div className="absolute inset-y-0 left-0 w-1/2">
-                  <ContourField opacity={0.55} />
-                </div>
-                <div className="absolute inset-y-0 right-0 w-1/2">
-                  <DimensionGrid opacity={0.4} />
-                </div>
-                <StitchSeam orientation="vertical" className="absolute inset-y-0 left-1/2 w-20 -translate-x-1/2 opacity-80" />
-              </div>
-
-              <div className="relative rounded-[28px] border-2 border-[var(--line-strong)] bg-[var(--bg)] p-2">
-                <StitchCorners className="opacity-70" />
+              <div
+                className="absolute -inset-8 -z-10 rounded-full opacity-25 blur-3xl"
+                style={{ background: "radial-gradient(circle, var(--coral) 0%, transparent 70%)" }}
+              />
+              // hero avatar frame — wrap the existing image div
+              <div className="relative rounded-[28px] border-2 border-[var(--line-strong)] p-2">
+                <StitchRing
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                  size={340}
+                />
                 <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[20px]">
                   <Image src={profile.avatar} alt={profile.name} fill className="object-cover grayscale contrast-125" priority />
+                  <GlassSheen />
                 </div>
+                <PinMarker className="absolute -top-2 -left-2" color="var(--gold)" />
               </div>
-
-              <CutMark className="absolute -left-2 -top-2" />
-              <CutMark className="absolute -right-2 -top-2" />
-              <CutMark className="absolute -bottom-2 -left-2" />
-              <CutMark className="absolute -bottom-2 -right-2" />
-              <PinMarker className="absolute -top-3 left-8" color="var(--gold)" rotate={-16} />
-
               <div className="absolute -bottom-4 -right-3">
                 <Sticker color="gold" rotate="6">
                   Open to work
@@ -365,7 +322,7 @@ export default function Portfolio() {
                 href={featuredProject.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative mt-10 block overflow-hidden rounded-[28px] border-2 p-8 transition hover:-translate-y-1"
+                className="group relative mt-10 block rounded-[28px] border-2 p-8 transition hover:-translate-y-1"
                 style={{ borderColor: "var(--coral)" }}
               >
                 <div className="absolute -top-3 right-8 z-20">
@@ -374,22 +331,16 @@ export default function Portfolio() {
                   </Sticker>
                 </div>
                 <div className="grid gap-8 md:grid-cols-[0.9fr_1.1fr] md:items-center">
-                  <div className="relative h-48 overflow-hidden rounded-2xl border border-[var(--line)] md:h-full">
-                    <TrackTexture track={featuredProject.track} opacity={0.45} />
-                    <GrainOverlay opacity={0.05} />
-                    {featuredProject.image ? (
-                      <Image
-                        src={featuredProject.image}
-                        alt={featuredProject.name}
-                        fill
-                        className="relative object-cover grayscale contrast-125"
-                      />
-                    ) : (
-                      <div className="relative flex h-full flex-col items-center justify-center gap-2 font-mono text-sm uppercase tracking-widest text-[var(--ink-faint)]">
-                        {COVER_ICONS[featuredProject.coverIcon ?? "terminal"]}
-                        <span>System // {featuredProject.category}</span>
-                      </div>
-                    )}
+                  <div
+                    className="relative h-48 overflow-hidden rounded-2xl border border-[var(--line)] md:h-full"
+                    style={{
+                      backgroundImage:
+                        "repeating-linear-gradient(45deg, var(--line) 0, var(--line) 1px, transparent 1px, transparent 10px)",
+                    }}
+                  >
+                    <div className="flex h-full items-center justify-center font-mono text-sm uppercase tracking-widest text-[var(--ink-faint)]">
+                      System // {featuredProject.category}
+                    </div>
                   </div>
                   <div>
                     <TrackBadge track={featuredProject.track} />
@@ -440,15 +391,13 @@ export default function Portfolio() {
                   href={p.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`group relative flex flex-col overflow-hidden rounded-2xl border-2 bg-[var(--bg-raised)] p-6 transition hover:-translate-y-1 ${
+                  className={`group relative flex flex-col rounded-2xl border-2 bg-[var(--bg-raised)] p-6 transition hover:-translate-y-1 ${
                     p.track === "research"
                       ? "border-[var(--line)] hover:border-[var(--mint)]"
                       : "border-[var(--line)] hover:border-[var(--coral)]"
                   }`}
                 >
-                  <TrackTexture track={p.track} />
-
-                  <div className="relative flex items-center justify-between">
+                  <div className="flex items-center justify-between">
                     <TrackBadge track={p.track} />
                     <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--ink-faint)]">
                       {p.year}
@@ -465,25 +414,29 @@ export default function Portfolio() {
                       />
                     </div>
                   ) : (
-                    <div className="relative mt-4 h-36 w-full overflow-hidden rounded-xl border border-[var(--line)]">
-                      <TrackTexture track={p.track} opacity={0.5} />
-                      <div className="relative flex h-full flex-col items-center justify-center gap-2 font-mono text-xs uppercase tracking-widest text-[var(--ink-faint)]">
-                        {COVER_ICONS[p.coverIcon ?? "terminal"]}
-                        <span>System // {p.category}</span>
+                    <div
+                      className="relative mt-4 h-36 w-full overflow-hidden rounded-xl border border-[var(--line)]"
+                      style={{
+                        backgroundImage:
+                          "repeating-linear-gradient(45deg, var(--line) 0, var(--line) 1px, transparent 1px, transparent 10px)",
+                      }}
+                    >
+                      <div className="flex h-full items-center justify-center font-mono text-xs uppercase tracking-widest text-[var(--ink-faint)]">
+                        System // {p.category}
                       </div>
                     </div>
                   )}
 
-                  <h3 className="relative mt-4 flex items-center gap-1.5 text-lg font-bold">
+                  <h3 className="mt-4 flex items-center gap-1.5 text-lg font-bold">
                     {p.name}
                     <ArrowUpRight size={15} className="opacity-0 transition group-hover:opacity-100" />
                   </h3>
-                  <p className="relative mt-1 font-mono text-xs uppercase tracking-wide text-[var(--ink-faint)]">
+                  <p className="mt-1 font-mono text-xs uppercase tracking-wide text-[var(--ink-faint)]">
                     {p.category}
                   </p>
-                  <p className="relative mt-3 text-sm leading-relaxed text-[var(--ink-dim)]">{p.description}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--ink-dim)]">{p.description}</p>
 
-                  <div className="relative mt-4 flex flex-wrap gap-1.5">
+                  <div className="mt-4 flex flex-wrap gap-1.5">
                     {p.metrics.map((m) => (
                       <span
                         key={m.label}
@@ -508,29 +461,18 @@ export default function Portfolio() {
         <div className="mx-auto max-w-6xl px-6 py-14">
           <SectionHead index="02" title="Two threads" description={about.heading} />
           <Reveal delay={0.05}>
-            <div className="relative mt-8 overflow-hidden rounded-3xl border border-[var(--line)] p-8">
-              <WeavePattern className="opacity-[0.14]" />
-              {/* The knot: where the research and systems columns meet. */}
-              <StitchRing
-                className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 md:block"
-                size={72}
-                color="var(--stitch)"
-              />
-              <div className="relative grid gap-6 md:grid-cols-2">
-                {about.threads.map((thread) => (
-                  <div key={thread.track}>
-                    <div className="flex items-center gap-2">
-                      <TrackBadge track={thread.track} />
-                      <span className="text-sm font-bold">{thread.label}</span>
-                    </div>
-                    <p className="mt-2 text-sm leading-relaxed text-[var(--ink-dim)]">{thread.body}</p>
+            <div className="mt-8 grid gap-6 md:grid-cols-2">
+              {about.threads.map((thread) => (
+                <div key={thread.track}>
+                  <div className="flex items-center gap-2">
+                    <TrackBadge track={thread.track} />
+                    <span className="text-sm font-bold">{thread.label}</span>
                   </div>
-                ))}
-              </div>
-              <p className="relative mt-6 max-w-2xl font-mono text-xs italic text-[var(--ink-faint)]">
-                {about.closing}
-              </p>
+                  <p className="mt-2 text-sm leading-relaxed text-[var(--ink-dim)]">{thread.body}</p>
+                </div>
+              ))}
             </div>
+            <p className="mt-6 max-w-2xl font-mono text-xs italic text-[var(--ink-faint)]">{about.closing}</p>
           </Reveal>
         </div>
       </section>
@@ -539,59 +481,53 @@ export default function Portfolio() {
       <section id="log" className="border-t border-[var(--line)]">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <SectionHead index="03" title="Log" description="Work history and education, most recent first." />
-          <div className="relative mt-8 border-t border-[var(--line)]">
-            <StitchSeam
-              orientation="vertical"
-              className="pointer-events-none absolute inset-y-0 left-[152px] hidden w-10 opacity-50 md:block"
-            />
-            <div className="relative divide-y divide-[var(--line)]">
-              {log.map((entry, i) => (
-                <Reveal
-                  key={entry.id}
-                  delay={(i % 4) * 0.05}
-                  className="grid gap-3 py-6 md:grid-cols-[140px_1fr]"
-                >
-                  <div className="font-mono text-xs uppercase tracking-widest text-[var(--ink-faint)]">
-                    <div>{entry.period}</div>
-                    <div
-                      className={`mt-2 inline-block border px-2 py-0.5 ${
-                        entry.tag === "WORK"
-                          ? "border-[var(--line-strong)] text-[var(--ink)]"
-                          : "border-[var(--line)] text-[var(--ink-faint)]"
-                      }`}
-                    >
-                      {entry.tag}
+          <div className="mt-8 divide-y divide-[var(--line)] border-t border-[var(--line)]">
+            {log.map((entry, i) => (
+              <Reveal
+                key={entry.id}
+                delay={(i % 4) * 0.05}
+                className="grid gap-3 py-6 md:grid-cols-[140px_1fr]"
+              >
+                <div className="font-mono text-xs uppercase tracking-widest text-[var(--ink-faint)]">
+                  <div>{entry.period}</div>
+                  <div
+                    className={`mt-2 inline-block border px-2 py-0.5 ${
+                      entry.tag === "WORK"
+                        ? "border-[var(--line-strong)] text-[var(--ink)]"
+                        : "border-[var(--line)] text-[var(--ink-faint)]"
+                    }`}
+                  >
+                    {entry.tag}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold">{entry.title}</h3>
+                  <p className="mt-1 font-mono text-xs uppercase tracking-wide text-[var(--ink-dim)]">
+                    {entry.org}
+                  </p>
+                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--ink-dim)]">{entry.body}</p>
+                  {entry.bullets && (
+                    <ul className="mt-3 space-y-1.5">
+                      {entry.bullets.map((b) => (
+                        <li key={b} className="flex gap-2.5 text-sm leading-relaxed text-[var(--ink-dim)]">
+                          <span className="mt-1.5 h-1 w-1 shrink-0 bg-[var(--ink-faint)]" />
+                          {b}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {entry.tech && (
+                    <div className="mt-3 flex flex-wrap gap-1.5 font-mono text-[10px] uppercase tracking-wide text-[var(--ink-faint)]">
+                      {entry.tech.map((t) => (
+                        <span key={t} className="border border-[var(--line)] px-1.5 py-0.5">
+                          {t}
+                        </span>
+                      ))}
                     </div>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold">{entry.title}</h3>
-                    <p className="mt-1 font-mono text-xs uppercase tracking-wide text-[var(--ink-dim)]">
-                      {entry.org}
-                    </p>
-                    <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--ink-dim)]">{entry.body}</p>
-                    {entry.bullets && (
-                      <ul className="mt-3 space-y-1.5">
-                        {entry.bullets.map((b) => (
-                          <li key={b} className="flex gap-2.5 text-sm leading-relaxed text-[var(--ink-dim)]">
-                            <span className="mt-1.5 h-1 w-1 shrink-0 bg-[var(--ink-faint)]" />
-                            {b}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                    {entry.tech && (
-                      <div className="mt-3 flex flex-wrap gap-1.5 font-mono text-[10px] uppercase tracking-wide text-[var(--ink-faint)]">
-                        {entry.tech.map((t) => (
-                          <span key={t} className="border border-[var(--line)] px-1.5 py-0.5">
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+                  )}
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
@@ -632,7 +568,9 @@ export default function Portfolio() {
               <Reveal key={pub.id} delay={i * 0.05} className="py-5">
                 <div className="flex flex-wrap items-baseline justify-between gap-3">
                   <h3 className="text-base font-bold">{pub.title}</h3>
-                  <MeasureAnnotation label={pub.date} color="var(--clay)" />
+                  <span className="whitespace-nowrap font-mono text-xs uppercase tracking-widest text-[var(--ink-faint)]">
+                    {pub.date}
+                  </span>
                 </div>
                 <p className="mt-1 font-mono text-xs uppercase tracking-wide text-[var(--ink-dim)]">{pub.venue}</p>
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--ink-dim)]">{pub.detail}</p>
@@ -714,10 +652,7 @@ export default function Portfolio() {
 
       <footer className="border-t border-[var(--line)] py-8">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 font-mono text-[11px] uppercase tracking-widest text-[var(--ink-faint)]">
-          <span className="inline-flex items-center gap-2">
-            <ThreadSpool className="opacity-60" color="var(--stitch)" />
-            Designed in {profile.location.toUpperCase()}. Built with Next.js.
-          </span>
+          <span>Designed in {profile.location.toUpperCase()}. Built with Next.js.</span>
           <span>AM — 2026</span>
         </div>
       </footer>
