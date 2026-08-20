@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, JetBrains_Mono, Fraunces, } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -17,7 +17,6 @@ const jetbrainsMono = JetBrains_Mono({
 const fraunces = Fraunces({
   variable: "--font-name",
   subsets: ["latin"],
-  weight: ["600"],
   style: ["italic"],
   axes: ["opsz", "SOFT", "WONK"],
 });
@@ -39,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}>
-       <head>
+      <head>
         <link rel="icon" href="/ahmed-icon1.png" type="image/png" sizes="120x120" />
         <link rel="shortcut icon" href="/ahmed-icon1.png" type="image/png" />
         <link rel="apple-touch-icon" href="/ahmed-icon1.png" />
