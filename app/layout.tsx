@@ -16,7 +16,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 const nameFont = localFont({
-  src: "./fonts/Rigraf-Bold.woff2",
+  src: "./fonts/DXRigraf-SemiBoldExpanded.otf",
   variable: "--font-name",
   weight: "700",
 });
