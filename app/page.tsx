@@ -339,7 +339,7 @@ export default function Portfolio() {
 
           {featuredProject && (
             <Reveal delay={0.1}>
-              
+              <a
                 href={featuredProject.link}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -407,7 +407,7 @@ export default function Portfolio() {
           <Reveal delay={0.15}>
             <div className="mt-8 grid gap-6 md:grid-cols-2">
               {restProjects.map((p) => (
-                
+                <a
                   key={p.id}
                   href={p.link}
                   target="_blank"
@@ -633,7 +633,7 @@ export default function Portfolio() {
             <h3 className="mt-8 max-w-xl text-2xl font-bold leading-tight md:text-3xl">{contact.heading}</h3>
             <p className="mt-4 max-w-lg text-[var(--ink-dim)]">{contact.body}</p>
 
-            
+            <a
               href={`mailto:${profile.email}`}
               className="mt-8 inline-flex items-center gap-2 rounded-full px-7 py-4 font-mono text-sm font-bold uppercase tracking-widest transition hover:-translate-y-0.5"
               style={{ background: "var(--coral)", color: "var(--coral-ink)" }}
@@ -642,7 +642,7 @@ export default function Portfolio() {
             </a>
 
             <div className="mt-6 flex flex-wrap gap-3 font-mono text-xs font-bold uppercase tracking-widest">
-              
+              <a
                 href={profile.github}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -650,7 +650,7 @@ export default function Portfolio() {
               >
                 <Github size={14} /> GitHub
               </a>
-              
+              <a
                 href={profile.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -658,7 +658,7 @@ export default function Portfolio() {
               >
                 <Linkedin size={14} /> LinkedIn
               </a>
-              
+              <a
                 href={profile.kaggle}
                 target="_blank"
                 rel="noopener noreferrer"
