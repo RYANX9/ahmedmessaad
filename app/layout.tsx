@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, JetBrains_Mono, Big_Shoulders_Display } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono, Amarante } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -15,10 +15,10 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500", "600", "700"],
 });
 
-const nameFont = Big_Shoulders_Display({
+const nameFont = Amarante({
   subsets: ["latin"],
   variable: "--font-name",
-  weight: ["700", "900"],
+  weight: ["400"],
 });
 
 /*
