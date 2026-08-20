@@ -214,7 +214,7 @@ export default function Portfolio() {
         {navOpen && (
           <nav className="mb-12 flex flex-col overflow-hidden rounded-2xl border-2 border-[var(--line-strong)] bg-[var(--bg-raised)] font-mono text-xs font-bold uppercase tracking-widest md:hidden">
             {nav.map((n) => (
-              
+              <a
                 key={n.href}
                 href={n.href}
                 onClick={() => setNavOpen(false)}
