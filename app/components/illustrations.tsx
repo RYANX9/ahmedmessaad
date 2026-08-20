@@ -1,19 +1,19 @@
+"use client";
+
 // Signature chrome for the "stitched swatch" theme: two material textures —
 // a contour field for the research track and a dimension grid for the
 // systems track — held together by a hand-drawn running stitch. The weave
 // pattern is the payoff, used once, where the two textures interleave into
 // a single fabric.
 //
-// The second layer below reads as a tech pack / fabric spec sheet: cut
-// marks, a pin, a measurement tag, a spool of thread — the objects that
-// belong on a garment production board, not glow or blur. Each is meant
-// to be placed once or twice per composition, never tiled as a background.
-//
-// GlassSheen (bottom of file) is the one exception: a jeweler's loupe, the
-// single tool on the board that's actually made of glass. It gets used in
-// exactly one or two places in page.tsx, never as ambient decoration.
+// The components below this line extend the same language toward a more
+// premium finish: glass sheens, ambient glow, film grain, and a running
+// stitch traced along a glass ring. Nothing here is a generic glassmorphism
+// card — every effect ties back to the sage/clay/coral/mint/stitch palette
+// and the hand-drawn line weight already established above.
 
 import { useId } from "react";
+import { motion } from "framer-motion";
 
 export function ContourField({
   className = "",
@@ -182,60 +182,125 @@ export function StitchCorners({
 }
 
 // ---------------------------------------------------------------------------
-// Tech-pack accents — sparse, hand-placed objects, not full-bleed textures.
+// Premium layer
 // ---------------------------------------------------------------------------
 
-// A small stitched knot. Use where two things visually meet — the seam
-// between two panels, the point two columns converge — not as an aura
-// around a photo; it reads wrong against a rectangular frame.
-export function StitchRing({
+// Ambient glass glow: two soft gradient blobs plus a pair of interlocked
+// rings, one traced with a running stitch. This is the site's answer to a
+// glossy hero orb — same idea, rendered as line art in the house palette
+// instead of a rendered glass material.
+export function AmbientOrb({
   className = "",
-  color = "var(--stitch)",
-  size = 220,
+  primary = "var(--coral)",
+  secondary = "var(--mint)",
 }: {
   className?: string;
-  color?: string;
-  size?: number;
+  primary?: string;
+  secondary?: string;
 }) {
-  const r = size / 2 - 4;
-  const c = size / 2;
+  const id = useId();
   return (
     <svg
-      className={`seam-spin pointer-events-none ${className}`}
-      width={size}
-      height={size}
-      viewBox={`0 0 ${size} ${size}`}
+      className={`pointer-events-none absolute ${className}`}
+      viewBox="0 0 400 400"
       aria-hidden="true"
     >
-      <circle cx={c} cy={c} r={r} fill="none" stroke={color} strokeWidth="1.4" strokeDasharray="1 7" strokeLinecap="round" opacity="0.55" />
-      <circle cx={c} cy={c} r={r - 11} fill="none" stroke={color} strokeWidth="1" strokeDasharray="0.5 5" opacity="0.3" />
+      <defs>
+        <radialGradient id={`orb-a-${id}`} cx="35%" cy="30%" r="70%">
+          <stop offset="0%" stopColor={primary} stopOpacity="0.5" />
+          <stop offset="100%" stopColor={primary} stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id={`orb-b-${id}`} cx="65%" cy="70%" r="70%">
+          <stop offset="0%" stopColor={secondary} stopOpacity="0.45" />
+          <stop offset="100%" stopColor={secondary} stopOpacity="0" />
+        </radialGradient>
+        <filter id={`orb-blur-${id}`}>
+          <feGaussianBlur stdDeviation="20" />
+        </filter>
+      </defs>
+
+      <g filter={`url(#orb-blur-${id})`}>
+        <circle cx="160" cy="160" r="130" fill={`url(#orb-a-${id})`} />
+        <circle cx="240" cy="240" r="130" fill={`url(#orb-b-${id})`} />
+      </g>
+
+      <g fill="none" strokeWidth="1.4" opacity="0.5">
+        <circle cx="165" cy="165" r="92" stroke={primary} />
+        <circle cx="235" cy="235" r="92" stroke={secondary} />
+      </g>
+
+      <circle
+        cx="165"
+        cy="165"
+        r="92"
+        fill="none"
+        stroke="var(--stitch)"
+        strokeWidth="1"
+        strokeDasharray="4 5"
+        opacity="0.65"
+      />
     </svg>
   );
 }
 
-// Print registration mark. Corner accent for a photo frame or featured
-// card — the "this was laid out on a production sheet" signal, not a
-// decorative circle.
-export function CutMark({
+// A diagonal specular highlight, the way light catches a pane of glass.
+// Layer this over a bordered panel — it reads as a coat of glass without
+// needing an actual blurred background behind it.
+export function GlassSheen({
   className = "",
-  color = "var(--ink-faint)",
-  size = 18,
+  strength = 0.22,
 }: {
   className?: string;
-  color?: string;
-  size?: number;
+  strength?: number;
 }) {
+  const id = useId();
   return (
-    <svg width={size} height={size} viewBox="0 0 18 18" className={className} aria-hidden="true">
-      <circle cx="9" cy="9" r="5.5" fill="none" stroke={color} strokeWidth="1" opacity="0.7" />
-      <line x1="9" y1="0" x2="9" y2="18" stroke={color} strokeWidth="1" opacity="0.7" />
-      <line x1="0" y1="9" x2="18" y2="9" stroke={color} strokeWidth="1" opacity="0.7" />
+    <svg
+      className={`pointer-events-none absolute inset-0 h-full w-full ${className}`}
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient id={`sheen-${id}`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="white" stopOpacity="0" />
+          <stop offset="40%" stopColor="white" stopOpacity="0" />
+          <stop offset="50%" stopColor="white" stopOpacity={strength} />
+          <stop offset="60%" stopColor="white" stopOpacity="0" />
+          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#sheen-${id})`} style={{ mixBlendMode: "overlay" }} />
     </svg>
   );
 }
 
-// Fine film-grain noise via feTurbulence — texture, not gloss. useId keeps
-// the filter id unique so multiple instances on one page don't collide.
+// A frosted-glass wrapper: translucent panel, inner top-edge highlight, and
+// a sheen pass. Border radius is inherited from whatever className sets on
+// the wrapping element so it drops into existing card shapes cleanly.
+export function GlassPanel({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-[inherit] backdrop-blur-md ${className}`}
+      style={{
+        background: "color-mix(in srgb, var(--bg-raised) 55%, transparent)",
+        boxShadow: "inset 0 1px 0 0 color-mix(in srgb, var(--ink) 14%, transparent)",
+      }}
+    >
+      <GlassSheen />
+      {children}
+    </div>
+  );
+}
+
+// Subtle film grain, the kind of thing that separates "flat CSS gradient"
+// from "printed material." Meant to sit at very low opacity across a large
+// area — a hero section, or the whole page.
 export function GrainOverlay({
   className = "",
   opacity = 0.05,
@@ -243,140 +308,94 @@ export function GrainOverlay({
   className?: string;
   opacity?: number;
 }) {
-  const filterId = useId();
-  return (
-    <svg className={`pointer-events-none absolute inset-0 h-full w-full ${className}`} aria-hidden="true">
-      <filter id={filterId}>
-        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
-        <feColorMatrix type="saturate" values="0" />
-      </filter>
-      <rect width="100%" height="100%" filter={`url(#${filterId})`} opacity={opacity} />
-    </svg>
-  );
-}
-
-// A sewing pin. One per composition, tilted, tacking a corner down.
-export function PinMarker({
-  className = "",
-  color = "var(--coral)",
-  rotate = -12,
-  size = 28,
-}: {
-  className?: string;
-  color?: string;
-  rotate?: number;
-  size?: number;
-}) {
+  const id = useId();
   return (
     <svg
-      className={className}
-      width={size}
-      height={size}
-      viewBox="0 0 40 40"
-      style={{ transform: `rotate(${rotate}deg)` }}
+      className={`pointer-events-none absolute inset-0 h-full w-full ${className}`}
       aria-hidden="true"
     >
-      <line x1="20" y1="14" x2="12" y2="34" stroke="rgba(0,0,0,0.35)" strokeWidth="2.2" strokeLinecap="round" />
-      <line x1="19" y1="13" x2="11" y2="33" stroke="#a8adb3" strokeWidth="1.5" strokeLinecap="round" />
-      <circle cx="19" cy="10" r="9" fill={color} stroke="rgba(0,0,0,0.25)" strokeWidth="1" />
-      <circle cx="15.5" cy="6.5" r="2.3" fill="rgba(255,255,255,0.5)" />
+      <filter id={`grain-${id}`}>
+        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" result="noise" />
+        <feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0" />
+      </filter>
+      <rect width="100%" height="100%" filter={`url(#grain-${id})`} opacity={opacity} />
     </svg>
   );
 }
 
-// A coordinate/measure tag — pair with a real value (a date, a metric, an
-// id), never a placeholder. It's meant to relabel information you already
-// have, not add ornamental filler next to it.
-export function MeasureAnnotation({
+// A slow light sweep across a card — the premium "catches the eye once,
+// then gets out of the way" motion. Repeats on a long delay so it reads as
+// an ambient detail, not a loading spinner.
+export function ScanPulse({
   className = "",
-  label = "01.000",
-  color = "var(--clay)",
-}: {
-  className?: string;
-  label?: string;
-  color?: string;
-}) {
-  return (
-    <svg className={`pointer-events-none ${className}`} width="120" height="24" viewBox="0 0 120 24" aria-hidden="true">
-      <line x1="0" y1="12" x2="18" y2="12" stroke={color} strokeWidth="1" opacity="0.6" />
-      <circle cx="18" cy="12" r="2" fill={color} />
-      <text x="24" y="16" fontSize="9" letterSpacing="0.05em" fill={color} opacity="0.75" style={{ fontFamily: "var(--font-mono)" }}>
-        {label}
-      </text>
-    </svg>
-  );
-}
-
-// A decorative object rather than a texture — wound thread on a spool, with
-// a stray tail. Fits best in quiet corners: a footer, an empty margin.
-export function ThreadSpool({
-  className = "",
-  color = "var(--sage)",
+  color = "var(--coral)",
 }: {
   className?: string;
   color?: string;
 }) {
+  const id = useId();
   return (
-    <svg className={className} width="24" height="30" viewBox="0 0 46 58" fill="none" aria-hidden="true">
-      <rect x="6" y="4" width="34" height="6" rx="1.5" stroke={color} strokeWidth="1.4" />
-      <rect x="6" y="48" width="34" height="6" rx="1.5" stroke={color} strokeWidth="1.4" />
-      <path
-        d="M10 10 L10 48 M14 10 L14 48 M18 10 L18 48 M22 10 L22 48 M26 10 L26 48 M30 10 L30 48 M36 10 L36 48"
-        stroke={color}
-        strokeWidth="0.8"
-        opacity="0.45"
+    <svg
+      className={`pointer-events-none absolute inset-0 h-full w-full overflow-hidden ${className}`}
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient id={`scan-${id}`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor={color} stopOpacity="0" />
+          <stop offset="50%" stopColor={color} stopOpacity="0.45" />
+          <stop offset="100%" stopColor={color} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <motion.rect
+        y="0"
+        width="16%"
+        height="100%"
+        fill={`url(#scan-${id})`}
+        initial={{ x: "-20%" }}
+        animate={{ x: "110%" }}
+        transition={{ duration: 3, repeat: Infinity, repeatDelay: 3.5, ease: "easeInOut" }}
       />
-      <path
-        d="M6 16 Q23 21 40 16 M6 24 Q23 29 40 24 M6 32 Q23 37 40 32 M6 40 Q23 45 40 40"
-        stroke={color}
-        strokeWidth="1"
-        opacity="0.85"
-      />
-      <path d="M32 38 Q41 44 38 55" stroke={color} strokeWidth="1.2" strokeLinecap="round" opacity="0.7" />
     </svg>
   );
 }
 
-// ---------------------------------------------------------------------------
-// GlassSheen — the loupe. The ONE glass/blur object on the page. A tech
-// pack gets exactly one magnifier pinned near the sample for quality
-// inspection; it never appears twice in the same spot, and it never
-// substitutes for a card background. Backdrop-blur is applied only inside
-// the circular lens element (see .loupe-lens in globals.css), so the
-// handle stays crisp metal, not blurred glass.
-// ---------------------------------------------------------------------------
-export function GlassSheen({
-  className = "",
-  size = 112,
-}: {
-  className?: string;
-  size?: number;
-}) {
-  const box = size * 1.3;
+// A running-stitch horizontal rule — replaces a plain 1px divider line with
+// one that matches the hand-stitched seams used elsewhere on the page.
+export function ThreadDivider({ className = "" }: { className?: string }) {
   return (
-    <div
-      className={`pointer-events-none absolute ${className}`}
-      style={{ width: box, height: box }}
+    <svg
+      className={`pointer-events-none w-full ${className}`}
+      viewBox="0 0 400 10"
+      preserveAspectRatio="none"
       aria-hidden="true"
     >
-      <div
-        className="loupe-lens absolute left-0 top-0 rounded-full"
-        style={{ width: size, height: size }}
-      />
-      <svg width={box} height={box} viewBox={`0 0 ${box} ${box}`} className="absolute inset-0">
-        <circle cx={size / 2} cy={size / 2} r={size / 2 - 2.5} fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="2.5" />
-        <circle cx={size / 2} cy={size / 2} r={size / 2 - 2.5} fill="none" stroke="rgba(0,0,0,0.3)" strokeWidth="1" />
-        <path
-          d={`M${size * 0.3} ${size * 0.22} A${size * 0.4} ${size * 0.4} 0 0 1 ${size * 0.78} ${size * 0.32}`}
-          stroke="rgba(255,255,255,0.55)"
-          strokeWidth="3"
-          fill="none"
-          strokeLinecap="round"
-          opacity="0.7"
-        />
-        <line x1={size * 0.82} y1={size * 0.82} x2={box - 4} y2={box - 4} stroke="rgba(0,0,0,0.35)" strokeWidth="7" strokeLinecap="round" />
-        <line x1={size * 0.81} y1={size * 0.81} x2={box - 5} y2={box - 5} stroke="#cfd4da" strokeWidth="4" strokeLinecap="round" />
-      </svg>
-    </div>
+      <line x1="0" y1="5" x2="400" y2="5" stroke="var(--stitch)" strokeWidth="1" strokeDasharray="7 5" opacity="0.55" />
+      <g stroke="var(--stitch)" strokeWidth="1" opacity="0.4">
+        <line x1="0" y1="1" x2="0" y2="9" />
+        <line x1="400" y1="1" x2="400" y2="9" />
+      </g>
+    </svg>
+  );
+}
+
+// A tiny grommet/rivet mark — a fastener detail for card corners, an
+// alternative to StitchCorners with a rounder, more "hardware" read.
+export function RivetPin({
+  className = "",
+  color = "var(--stitch)",
+}: {
+  className?: string;
+  color?: string;
+}) {
+  return (
+    <svg className={`pointer-events-none ${className}`} viewBox="0 0 20 20" aria-hidden="true">
+      <circle cx="10" cy="10" r="6.5" fill="none" stroke={color} strokeWidth="1" opacity="0.6" />
+      <circle cx="10" cy="10" r="1.4" fill={color} opacity="0.8" />
+      <line x1="10" y1="1.5" x2="10" y2="4.5" stroke={color} strokeWidth="1" opacity="0.5" />
+      <line x1="10" y1="15.5" x2="10" y2="18.5" stroke={color} strokeWidth="1" opacity="0.5" />
+      <line x1="1.5" y1="10" x2="4.5" y2="10" stroke={color} strokeWidth="1" opacity="0.5" />
+      <line x1="15.5" y1="10" x2="18.5" y2="10" stroke={color} strokeWidth="1" opacity="0.5" />
+    </svg>
   );
 }
