@@ -252,13 +252,13 @@ export default function Portfolio() {
                 >
                   See the work →
                 </a>
-                
+                <a
                   href={`mailto:${profile.email}`}
                   className="rounded-full border-2 border-[var(--line-strong)] px-6 py-3 transition hover:border-[var(--ink)]"
                 >
                   Contact
                 </a>
-                
+                <a
                   href={profile.resume}
                   className="inline-flex items-center gap-2 rounded-full border-2 border-[var(--line-strong)] px-6 py-3 transition hover:border-[var(--ink)]"
                 >
