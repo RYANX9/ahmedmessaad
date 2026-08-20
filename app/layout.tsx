@@ -18,7 +18,7 @@ const jetbrainsMono = JetBrains_Mono({
 const nameFont = Big_Shoulders_Display({
   subsets: ["latin"],
   variable: "--font-name",
-  weight: ["700"],
+  weight: ["700", "900"],
 });
 
 /*
