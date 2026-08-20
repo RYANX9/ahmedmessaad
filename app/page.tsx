@@ -10,6 +10,8 @@ import {
   Github,
   Linkedin,
   Mail,
+  Menu,
+  X,
 } from "lucide-react";
 import { FaKaggle } from "react-icons/fa";
 import {
@@ -59,7 +61,6 @@ function Reveal({
   );
 }
 
-// A hand-placed, slightly rotated pill badge — the Gumroad/Ko-fi sticker beat.
 function Sticker({
   children,
   color = "gold",
@@ -87,8 +88,6 @@ function Sticker({
   );
 }
 
-// Track badge — colorful now (mint = research, coral = systems), used wherever
-// content needs to say which lane it belongs to.
 const TRACK_COLORS: Record<Track, { bg: string; ink: string; label: string }> = {
   research: { bg: "var(--mint)", ink: "var(--mint-ink)", label: "Research" },
   systems: { bg: "var(--coral)", ink: "var(--coral-ink)", label: "Systems" },
@@ -106,8 +105,6 @@ function TrackBadge({ track, className = "" }: { track: Track; className?: strin
   );
 }
 
-// Quiet, technical section opener — kept from the spec-sheet register on
-// purpose, so the loud sections (hero, work) read louder by contrast.
 function SectionHead({
   index,
   title,
@@ -132,13 +129,13 @@ function SectionHead({
 
 const nav = [
   { href: "#work", label: "Work" },
+  { href: "#about", label: "About" },
   { href: "#log", label: "Log" },
   { href: "#stack", label: "Stack" },
   { href: "#papers", label: "Papers" },
   { href: "#connect", label: "Connect" },
 ];
 
-// Experience + education merged into one reverse-chronological log.
 type LogEntry = {
   id: string;
   tag: "WORK" | "EDU";
@@ -177,6 +174,7 @@ const log: LogEntry[] = [
 
 export default function Portfolio() {
   const [filter, setFilter] = useState<"all" | Track>("all");
+  const [navOpen, setNavOpen] = useState(false);
   const visibleProjects = filter === "all" ? projects : projects.filter((p) => p.track === filter);
   const featuredProject = visibleProjects.find((p) => p.featured);
   const restProjects = visibleProjects.filter((p) => !p.featured);
@@ -185,7 +183,7 @@ export default function Portfolio() {
     <div className="relative overflow-x-hidden">
       {/* ================= HERO — this is "him" ================= */}
       <section id="top" className="relative mx-auto max-w-6xl px-6 pb-16 pt-8 md:pt-12">
-        <div className="mb-16 flex items-center justify-between font-mono text-xs uppercase tracking-widest text-[var(--ink-dim)]">
+        <div className="mb-4 flex items-center justify-between font-mono text-xs uppercase tracking-widest text-[var(--ink-dim)]">
           <a href="#top" className="text-[var(--ink)]">
             AM — 01
           </a>
@@ -196,11 +194,39 @@ export default function Portfolio() {
               </a>
             ))}
           </nav>
-          <Sticker color="mint" rotate="-2">
-            <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--mint-ink)" }} />
-            Available
-          </Sticker>
+          <div className="flex items-center gap-3">
+            <Sticker color="mint" rotate="-2">
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--mint-ink)" }} />
+              Available
+            </Sticker>
+            <button
+              type="button"
+              onClick={() => setNavOpen((v) => !v)}
+              aria-label="Toggle navigation"
+              aria-expanded={navOpen}
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border-2 border-[var(--line-strong)] transition hover:border-[var(--ink)] md:hidden"
+            >
+              {navOpen ? <X size={16} /> : <Menu size={16} />}
+            </button>
+          </div>
         </div>
+
+        {navOpen && (
+          <nav className="mb-12 flex flex-col overflow-hidden rounded-2xl border-2 border-[var(--line-strong)] bg-[var(--bg-raised)] font-mono text-xs font-bold uppercase tracking-widest md:hidden">
+            {nav.map((n) => (
+              
+                key={n.href}
+                href={n.href}
+                onClick={() => setNavOpen(false)}
+                className="border-b border-[var(--line)] px-5 py-3.5 last:border-b-0 hover:bg-[var(--bg)] hover:text-[var(--ink)]"
+              >
+                {n.label}
+              </a>
+            ))}
+          </nav>
+        )}
+
+        {!navOpen && <div className="mb-12" />}
 
         <div className="grid gap-12 md:grid-cols-[1.3fr_0.7fr] md:items-center">
           <div>
@@ -219,20 +245,20 @@ export default function Portfolio() {
 
             <Reveal delay={0.1}>
               <div className="mt-8 flex flex-wrap gap-3 font-mono text-xs font-bold uppercase tracking-widest">
-                <a
+                
                   href="#work"
                   className="rounded-full px-6 py-3 transition hover:-translate-y-0.5"
                   style={{ background: "var(--coral)", color: "var(--coral-ink)" }}
                 >
                   See the work →
                 </a>
-                <a
+                
                   href={`mailto:${profile.email}`}
                   className="rounded-full border-2 border-[var(--line-strong)] px-6 py-3 transition hover:border-[var(--ink)]"
                 >
                   Contact
                 </a>
-                <a
+                
                   href={profile.resume}
                   className="inline-flex items-center gap-2 rounded-full border-2 border-[var(--line-strong)] px-6 py-3 transition hover:border-[var(--ink)]"
                 >
@@ -313,7 +339,7 @@ export default function Portfolio() {
 
           {featuredProject && (
             <Reveal delay={0.1}>
-              <a
+              
                 href={featuredProject.link}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -381,7 +407,7 @@ export default function Portfolio() {
           <Reveal delay={0.15}>
             <div className="mt-8 grid gap-6 md:grid-cols-2">
               {restProjects.map((p) => (
-                <a
+                
                   key={p.id}
                   href={p.link}
                   target="_blank"
@@ -607,7 +633,7 @@ export default function Portfolio() {
             <h3 className="mt-8 max-w-xl text-2xl font-bold leading-tight md:text-3xl">{contact.heading}</h3>
             <p className="mt-4 max-w-lg text-[var(--ink-dim)]">{contact.body}</p>
 
-            <a
+            
               href={`mailto:${profile.email}`}
               className="mt-8 inline-flex items-center gap-2 rounded-full px-7 py-4 font-mono text-sm font-bold uppercase tracking-widest transition hover:-translate-y-0.5"
               style={{ background: "var(--coral)", color: "var(--coral-ink)" }}
@@ -616,7 +642,7 @@ export default function Portfolio() {
             </a>
 
             <div className="mt-6 flex flex-wrap gap-3 font-mono text-xs font-bold uppercase tracking-widest">
-              <a
+              
                 href={profile.github}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -624,7 +650,7 @@ export default function Portfolio() {
               >
                 <Github size={14} /> GitHub
               </a>
-              <a
+              
                 href={profile.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -632,7 +658,7 @@ export default function Portfolio() {
               >
                 <Linkedin size={14} /> LinkedIn
               </a>
-              <a
+              
                 href={profile.kaggle}
                 target="_blank"
                 rel="noopener noreferrer"
