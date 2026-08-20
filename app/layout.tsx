@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, JetBrains_Mono, Fraunces } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -14,11 +15,10 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500", "600", "700"],
 });
 
-const fraunces = Fraunces({
+const nameFont = localFont({
+  src: "./fonts/Rigraf-Bold.woff2",
   variable: "--font-name",
-  subsets: ["latin"],
-  style: ["italic"],
-  axes: ["opsz", "SOFT", "WONK"],
+  weight: "700",
 });
 
 export const metadata: Metadata = {
@@ -37,7 +37,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}>
+    <html
+      lang="en"
+      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${nameFont.variable}`}
+    >
       <head>
         <link rel="icon" href="/ahmed-icon1.png" type="image/png" sizes="120x120" />
         <link rel="shortcut icon" href="/ahmed-icon1.png" type="image/png" />
