@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, JetBrains_Mono, Lora } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono, Big_Shoulders_Display } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -15,7 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500", "600", "700"],
 });
 
-const nameFont = Lora({
+const nameFont = Big_Shoulders_Display({
   subsets: ["latin"],
   variable: "--font-name",
   weight: ["700"],
