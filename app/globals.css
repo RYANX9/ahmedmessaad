@@ -27,8 +27,8 @@
 /* Light mode — a warm off-white paper tone rather than pure #fff, so the
    accent stickers still pop instead of washing out against the background. */
 [data-theme="light"] {
-  --bg: #f4eee1;
-  --bg-raised: #fbf7ec;
+  --bg: #f5f2eb;
+  --bg-raised: #fcfbf4;
   --ink: #201b12;
   --ink-dim: rgba(32, 27, 18, 0.64);
   --ink-faint: rgba(32, 27, 18, 0.4);
