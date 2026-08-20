@@ -16,9 +16,34 @@
   --mint-ink: #06231a;
   --gold: #ffc531;
   --gold-ink: #2a1c00;
+  --stitch: rgba(243, 242, 237, 0.4);
+  --sage: #37e6a0;
+  --clay: #ff5c5c;
 
   --font-display: "Space Grotesk", ui-sans-serif, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* Light mode — a warm off-white paper tone rather than pure #fff, so the
+   accent stickers still pop instead of washing out against the background. */
+[data-theme="light"] {
+  --bg: #f4eee1;
+  --bg-raised: #fbf7ec;
+  --ink: #201b12;
+  --ink-dim: rgba(32, 27, 18, 0.64);
+  --ink-faint: rgba(32, 27, 18, 0.4);
+  --line: rgba(32, 27, 18, 0.12);
+  --line-strong: rgba(32, 27, 18, 0.26);
+
+  --coral: #d94a35;
+  --coral-ink: #fdf0ea;
+  --mint: #1c8f5e;
+  --mint-ink: #eafbf2;
+  --gold: #b9800a;
+  --gold-ink: #fff6e2;
+  --stitch: rgba(32, 27, 18, 0.45);
+  --sage: #1c8f5e;
+  --clay: #d94a35;
 }
 
 * {
@@ -36,6 +61,7 @@ body {
   color: var(--ink);
   font-family: var(--font-display);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .font-mono {
