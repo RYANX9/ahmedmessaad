@@ -3,6 +3,13 @@
 // systems track — held together by a hand-drawn running stitch. The weave
 // pattern is the payoff, used once, where the two textures interleave into
 // a single fabric.
+//
+// Below the original set: a second layer of pieces (glass, pins, grain,
+// scatter, spool) meant to be used sparingly as accents rather than full
+// backgrounds — the sewing-kit objects and annotation marks that make the
+// swatch feel handled rather than printed.
+
+import { useId } from "react";
 
 export function ContourField({
   className = "",
@@ -166,6 +173,202 @@ export function StitchCorners({
       {mark(94, 6, true)}
       {mark(6, 94, false, true)}
       {mark(94, 94, true, true)}
+    </svg>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Accent layer — sparse, hand-placed pieces rather than full-bleed textures.
+// ---------------------------------------------------------------------------
+
+// Slow rotating stitched ring. Drop behind a photo or sticker, absolutely
+// positioned and centered, larger than its subject by ~20-40px.
+export function StitchRing({
+  className = "",
+  color = "var(--stitch)",
+  size = 220,
+}: {
+  className?: string;
+  color?: string;
+  size?: number;
+}) {
+  const r = size / 2 - 4;
+  const c = size / 2;
+  return (
+    <svg
+      className={`seam-spin pointer-events-none ${className}`}
+      width={size}
+      height={size}
+      viewBox={`0 0 ${size} ${size}`}
+      aria-hidden="true"
+    >
+      <circle cx={c} cy={c} r={r} fill="none" stroke={color} strokeWidth="1.4" strokeDasharray="1 7" strokeLinecap="round" opacity="0.55" />
+      <circle cx={c} cy={c} r={r - 11} fill="none" stroke={color} strokeWidth="1" strokeDasharray="0.5 5" opacity="0.3" />
+    </svg>
+  );
+}
+
+// True glassmorphism, not a flat SVG approximation — needs to sit inside a
+// `relative overflow-hidden` element that already has the border radius you
+// want, since it inherits it. Good over a photo frame or a raised card.
+export function GlassSheen({ className = "" }: { className?: string }) {
+  return (
+    <div className={`pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit] ${className}`} aria-hidden="true">
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 26%, rgba(255,255,255,0) 74%, rgba(255,255,255,0.09) 100%)",
+        }}
+      />
+      <div
+        className="absolute -inset-x-12 top-0 h-full opacity-35"
+        style={{
+          background: "linear-gradient(115deg, transparent 42%, rgba(255,255,255,0.28) 49%, transparent 56%)",
+        }}
+      />
+      <div className="absolute inset-0 rounded-[inherit] border border-white/10" />
+    </div>
+  );
+}
+
+// Fine-grained noise, closer to film grain than to a repeating PNG. Layer at
+// low opacity over a raised surface to break up flat dark fills.
+export function GrainOverlay({
+  className = "",
+  opacity = 0.05,
+}: {
+  className?: string;
+  opacity?: number;
+}) {
+  const filterId = useId();
+  return (
+    <svg className={`pointer-events-none absolute inset-0 h-full w-full ${className}`} aria-hidden="true">
+      <filter id={filterId}>
+        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
+        <feColorMatrix type="saturate" values="0" />
+      </filter>
+      <rect width="100%" height="100%" filter={`url(#${filterId})`} opacity={opacity} />
+    </svg>
+  );
+}
+
+// A sewing pin. Use as a small, tilted corner accent on a card or photo —
+// not a background pattern, one or two per composition at most.
+export function PinMarker({
+  className = "",
+  color = "var(--coral)",
+  rotate = -12,
+  size = 28,
+}: {
+  className?: string;
+  color?: string;
+  rotate?: number;
+  size?: number;
+}) {
+  return (
+    <svg
+      className={className}
+      width={size}
+      height={size}
+      viewBox="0 0 40 40"
+      style={{ transform: `rotate(${rotate}deg)` }}
+      aria-hidden="true"
+    >
+      <line x1="20" y1="14" x2="12" y2="34" stroke="rgba(0,0,0,0.35)" strokeWidth="2.2" strokeLinecap="round" />
+      <line x1="19" y1="13" x2="11" y2="33" stroke="#a8adb3" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="19" cy="10" r="9" fill={color} stroke="rgba(0,0,0,0.25)" strokeWidth="1" />
+      <circle cx="15.5" cy="6.5" r="2.3" fill="rgba(255,255,255,0.5)" />
+    </svg>
+  );
+}
+
+// Deterministic scatter of mono glyphs — an alternative to the full-bleed
+// field patterns for tighter spaces (a card corner, a hero margin). Fixed
+// seed so it renders identically on server and client.
+const SCATTER_SEED: Array<[number, number, string, number]> = [
+  [8, 14, "×", 0],
+  [24, 72, "+", 8],
+  [46, 28, "·", 0],
+  [63, 84, "\u2234", -6],
+  [79, 18, "/", 4],
+  [91, 52, "+", 0],
+  [35, 92, "×", -3],
+  [12, 46, "\u2014", 10],
+  [55, 8, "·", 0],
+];
+
+export function ScatterGlyphs({
+  className = "",
+  color = "var(--ink-faint)",
+}: {
+  className?: string;
+  color?: string;
+}) {
+  return (
+    <div className={`pointer-events-none absolute inset-0 select-none ${className}`} aria-hidden="true">
+      {SCATTER_SEED.map(([x, y, glyph, rotate], i) => (
+        <span
+          key={i}
+          className="absolute font-mono text-[11px]"
+          style={{ left: `${x}%`, top: `${y}%`, color, opacity: 0.4, transform: `rotate(${rotate}deg)` }}
+        >
+          {glyph}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+// A single blueprint-style coordinate/measure annotation. Pair with a stat
+// number or a corner of a featured card — the payoff is in using it once
+// or twice, not tiling it.
+export function MeasureAnnotation({
+  className = "",
+  label = "01.000",
+  color = "var(--clay)",
+}: {
+  className?: string;
+  label?: string;
+  color?: string;
+}) {
+  return (
+    <svg className={`pointer-events-none ${className}`} width="90" height="24" viewBox="0 0 90 24" aria-hidden="true">
+      <line x1="0" y1="12" x2="18" y2="12" stroke={color} strokeWidth="1" opacity="0.6" />
+      <circle cx="18" cy="12" r="2" fill={color} />
+      <text x="24" y="16" fontSize="9" letterSpacing="0.05em" fill={color} opacity="0.75" style={{ fontFamily: "var(--font-mono)" }}>
+        {label}
+      </text>
+    </svg>
+  );
+}
+
+// A decorative object rather than a texture — wound thread on a spool, with
+// a stray tail. Fits best in quiet corners: a footer, an empty hero margin.
+export function ThreadSpool({
+  className = "",
+  color = "var(--sage)",
+}: {
+  className?: string;
+  color?: string;
+}) {
+  return (
+    <svg className={className} width="46" height="58" viewBox="0 0 46 58" fill="none" aria-hidden="true">
+      <rect x="6" y="4" width="34" height="6" rx="1.5" stroke={color} strokeWidth="1.4" />
+      <rect x="6" y="48" width="34" height="6" rx="1.5" stroke={color} strokeWidth="1.4" />
+      <path
+        d="M10 10 L10 48 M14 10 L14 48 M18 10 L18 48 M22 10 L22 48 M26 10 L26 48 M30 10 L30 48 M36 10 L36 48"
+        stroke={color}
+        strokeWidth="0.8"
+        opacity="0.45"
+      />
+      <path
+        d="M6 16 Q23 21 40 16 M6 24 Q23 29 40 24 M6 32 Q23 37 40 32 M6 40 Q23 45 40 40"
+        stroke={color}
+        strokeWidth="1"
+        opacity="0.85"
+      />
+      <path d="M32 38 Q41 44 38 55" stroke={color} strokeWidth="1.2" strokeLinecap="round" opacity="0.7" />
     </svg>
   );
 }
