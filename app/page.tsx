@@ -10,10 +10,9 @@ import {
   Github,
   Linkedin,
   Mail,
-  Menu,
-  X,
 } from "lucide-react";
 import { FaKaggle } from "react-icons/fa";
+import { ThemeToggle } from "./components/theme-toggle";
 import {
   profile,
   about,
@@ -61,6 +60,7 @@ function Reveal({
   );
 }
 
+// A hand-placed, slightly rotated pill badge — the Gumroad/Ko-fi sticker beat.
 function Sticker({
   children,
   color = "gold",
@@ -88,6 +88,8 @@ function Sticker({
   );
 }
 
+// Track badge — colorful now (mint = research, coral = systems), used wherever
+// content needs to say which lane it belongs to.
 const TRACK_COLORS: Record<Track, { bg: string; ink: string; label: string }> = {
   research: { bg: "var(--mint)", ink: "var(--mint-ink)", label: "Research" },
   systems: { bg: "var(--coral)", ink: "var(--coral-ink)", label: "Systems" },
@@ -105,6 +107,8 @@ function TrackBadge({ track, className = "" }: { track: Track; className?: strin
   );
 }
 
+// Quiet, technical section opener — kept from the spec-sheet register on
+// purpose, so the loud sections (hero, work) read louder by contrast.
 function SectionHead({
   index,
   title,
@@ -129,13 +133,13 @@ function SectionHead({
 
 const nav = [
   { href: "#work", label: "Work" },
-  { href: "#about", label: "About" },
   { href: "#log", label: "Log" },
   { href: "#stack", label: "Stack" },
   { href: "#papers", label: "Papers" },
   { href: "#connect", label: "Connect" },
 ];
 
+// Experience + education merged into one reverse-chronological log.
 type LogEntry = {
   id: string;
   tag: "WORK" | "EDU";
@@ -174,7 +178,6 @@ const log: LogEntry[] = [
 
 export default function Portfolio() {
   const [filter, setFilter] = useState<"all" | Track>("all");
-  const [navOpen, setNavOpen] = useState(false);
   const visibleProjects = filter === "all" ? projects : projects.filter((p) => p.track === filter);
   const featuredProject = visibleProjects.find((p) => p.featured);
   const restProjects = visibleProjects.filter((p) => !p.featured);
@@ -183,7 +186,7 @@ export default function Portfolio() {
     <div className="relative overflow-x-hidden">
       {/* ================= HERO — this is "him" ================= */}
       <section id="top" className="relative mx-auto max-w-6xl px-6 pb-16 pt-8 md:pt-12">
-        <div className="mb-4 flex items-center justify-between font-mono text-xs uppercase tracking-widest text-[var(--ink-dim)]">
+        <div className="mb-16 flex items-center justify-between font-mono text-xs uppercase tracking-widest text-[var(--ink-dim)]">
           <a href="#top" className="text-[var(--ink)]">
             AM — 01
           </a>
@@ -195,38 +198,13 @@ export default function Portfolio() {
             ))}
           </nav>
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <Sticker color="mint" rotate="-2">
               <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--mint-ink)" }} />
               Available
             </Sticker>
-            <button
-              type="button"
-              onClick={() => setNavOpen((v) => !v)}
-              aria-label="Toggle navigation"
-              aria-expanded={navOpen}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border-2 border-[var(--line-strong)] transition hover:border-[var(--ink)] md:hidden"
-            >
-              {navOpen ? <X size={16} /> : <Menu size={16} />}
-            </button>
           </div>
         </div>
-
-        {navOpen && (
-          <nav className="mb-12 flex flex-col overflow-hidden rounded-2xl border-2 border-[var(--line-strong)] bg-[var(--bg-raised)] font-mono text-xs font-bold uppercase tracking-widest md:hidden">
-            {nav.map((n) => (
-              <a
-                key={n.href}
-                href={n.href}
-                onClick={() => setNavOpen(false)}
-                className="border-b border-[var(--line)] px-5 py-3.5 last:border-b-0 hover:bg-[var(--bg)] hover:text-[var(--ink)]"
-              >
-                {n.label}
-              </a>
-            ))}
-          </nav>
-        )}
-
-        {!navOpen && <div className="mb-12" />}
 
         <div className="grid gap-12 md:grid-cols-[1.3fr_0.7fr] md:items-center">
           <div>
@@ -234,10 +212,7 @@ export default function Portfolio() {
               <Sticker color="gold" rotate="-3">
                 Portfolio · Rev 2026
               </Sticker>
-              <h1
-                className="mt-5 text-6xl leading-[0.9] tracking-tight md:text-8xl"
-                style={{ fontFamily: "var(--font-name)", fontWeight: 700 }}
-              >
+              <h1 className="mt-5 text-6xl font-bold leading-[0.95] tracking-tight md:text-8xl">
                 {profile.name}
               </h1>
               <p className="mt-4 font-mono text-sm uppercase tracking-widest text-[var(--ink-dim)]">
@@ -346,10 +321,10 @@ export default function Portfolio() {
                 href={featuredProject.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative mt-10 block overflow-hidden rounded-[28px] border-2 p-8 transition hover:-translate-y-1"
+                className="group relative mt-10 block rounded-[28px] border-2 p-8 transition hover:-translate-y-1"
                 style={{ borderColor: "var(--coral)" }}
               >
-                <div className="absolute -top-3 right-8 z-10">
+                <div className="absolute -top-3 right-8 z-20">
                   <Sticker color="gold" rotate="-6">
                     ★ Featured
                   </Sticker>
