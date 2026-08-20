@@ -263,16 +263,17 @@ export default function Portfolio() {
                 className="absolute -inset-8 -z-10 rounded-full opacity-25 blur-3xl"
                 style={{ background: "radial-gradient(circle, var(--coral) 0%, transparent 70%)" }}
               />
+              // hero avatar frame — wrap the existing image div
               <div className="relative rounded-[28px] border-2 border-[var(--line-strong)] p-2">
+                <StitchRing
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                  size={340}
+                />
                 <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[20px]">
-                  <Image
-                    src={profile.avatar}
-                    alt={profile.name}
-                    fill
-                    className="object-cover grayscale contrast-125"
-                    priority
-                  />
+                  <Image src={profile.avatar} alt={profile.name} fill className="object-cover grayscale contrast-125" priority />
+                  <GlassSheen />
                 </div>
+                <PinMarker className="absolute -top-2 -left-2" color="var(--gold)" />
               </div>
               <div className="absolute -bottom-4 -right-3">
                 <Sticker color="gold" rotate="6">
