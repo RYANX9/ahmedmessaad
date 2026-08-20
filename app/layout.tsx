@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, JetBrains_Mono, Amarante } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono, Alegreya } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -15,7 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500", "600", "700"],
 });
 
-const nameFont = Amarante({
+const nameFont = Alegreya({
   subsets: ["latin"],
   variable: "--font-name",
   weight: ["400"],
