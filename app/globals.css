@@ -76,31 +76,6 @@ body {
   transform: translateY(-4px);
 }
 
-/* Illustration accents — StitchRing / GlassSheen / ScatterGlyphs etc. in
-   app/components/illustrations.tsx */
-@keyframes seam-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-.seam-spin {
-  animation: seam-spin 70s linear infinite;
-  transform-origin: 50% 50%;
-}
-
-@keyframes drift {
-  0%,
-  100% {
-    transform: translate(0, 0);
-  }
-  50% {
-    transform: translate(6px, -8px);
-  }
-}
-.drift-slow {
-  animation: drift 12s ease-in-out infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
