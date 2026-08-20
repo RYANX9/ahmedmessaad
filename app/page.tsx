@@ -12,7 +12,15 @@ import {
   Mail,
 } from "lucide-react";
 import { FaKaggle } from "react-icons/fa";
-import { ThemeToggle } from "./components/theme-toggle";
+import { Navbar } from "./components/navbar";
+import {
+  AmbientOrb,
+  GlassSheen,
+  GrainOverlay,
+  RivetPin,
+  ScanPulse,
+  ThreadDivider,
+} from "./components/illustrations";
 import {
   profile,
   about,
@@ -126,18 +134,10 @@ function SectionHead({
       </div>
       <h2 className="mt-2 text-3xl font-bold md:text-4xl">{title}</h2>
       {description && <p className="mt-2 max-w-xl text-[var(--ink-dim)]">{description}</p>}
-      <div className="mt-6 h-px w-full bg-[var(--line)]" />
+      <ThreadDivider className="mt-6" />
     </Reveal>
   );
 }
-
-const nav = [
-  { href: "#work", label: "Work" },
-  { href: "#log", label: "Log" },
-  { href: "#stack", label: "Stack" },
-  { href: "#papers", label: "Papers" },
-  { href: "#connect", label: "Connect" },
-];
 
 // Experience + education merged into one reverse-chronological log.
 type LogEntry = {
@@ -184,35 +184,21 @@ export default function Portfolio() {
 
   return (
     <div className="relative overflow-x-hidden">
-      {/* ================= NAV — sticky on its own, same on every screen =====
-          Pulled out of the hero (it used to be a div inside <section id="top">,
-          which only sticks with the hero's own scroll, not the whole page). A
-          plain `sticky top-0` header with a solid background works the same
-          way on mobile and desktop — no separate breakpoint logic needed. */}
-      <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--bg)]">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 font-mono text-xs uppercase tracking-widest text-[var(--ink-dim)]">
-          <a href="#top" className="text-[var(--ink)]">
-            AM — 01
-          </a>
-          <nav className="hidden gap-6 md:flex">
-            {nav.map((n) => (
-              <a key={n.href} href={n.href} className="transition hover:text-[var(--ink)]">
-                {n.label}
-              </a>
-            ))}
-          </nav>
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
-            <Sticker color="mint" rotate="-2">
-              <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--mint-ink)" }} />
-              Available
-            </Sticker>
-          </div>
-        </div>
-      </header>
+      <div className="pointer-events-none fixed inset-0 z-[1]">
+        <GrainOverlay opacity={0.035} />
+      </div>
+
+      <Navbar />
 
       {/* ================= HERO — this is "him" ================= */}
-      <section id="top" className="relative mx-auto max-w-6xl scroll-mt-20 px-6 pb-16 pt-10 md:pt-14">
+      <section id="top" className="relative mx-auto max-w-6xl px-6 pb-16 pt-32 md:pt-40">
+        <div className="absolute right-6 top-8 md:right-6 md:top-10">
+          <Sticker color="mint" rotate="-2">
+            <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--mint-ink)" }} />
+            Available
+          </Sticker>
+        </div>
+
         <div className="grid gap-12 md:grid-cols-[1.3fr_0.7fr] md:items-center">
           <div>
             <Reveal>
@@ -266,11 +252,13 @@ export default function Portfolio() {
 
           <Reveal delay={0.2}>
             <div className="relative">
-              <div
-                className="absolute -inset-8 -z-10 rounded-full opacity-25 blur-3xl"
-                style={{ background: "radial-gradient(circle, var(--coral) 0%, transparent 70%)" }}
+              <AmbientOrb
+                className="-inset-x-20 -inset-y-16 -z-10 h-[140%] w-[140%] opacity-80"
+                primary="var(--coral)"
+                secondary="var(--mint)"
               />
               <div className="relative rounded-[28px] border-2 border-[var(--line-strong)] p-2">
+                <GlassSheen className="rounded-[28px]" strength={0.14} />
                 <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[20px]">
                   <Image
                     src={profile.avatar}
@@ -292,7 +280,7 @@ export default function Portfolio() {
       </section>
 
       {/* ================= WORK — this is "the work" ================= */}
-      <section id="work" className="scroll-mt-20 border-t border-[var(--line)]">
+      <section id="work" className="border-t border-[var(--line)]">
         <div className="mx-auto max-w-6xl px-6 py-20">
           <SectionHead
             index="01"
@@ -331,6 +319,10 @@ export default function Portfolio() {
                 className="group relative mt-10 block rounded-[28px] border-2 p-8 transition hover:-translate-y-1"
                 style={{ borderColor: "var(--coral)" }}
               >
+                <ScanPulse className="rounded-[28px]" color="var(--coral)" />
+                <RivetPin className="absolute -left-2.5 -top-2.5 h-6 w-6" />
+                <RivetPin className="absolute -bottom-2.5 -right-2.5 h-6 w-6" />
+
                 <div className="absolute -top-3 right-8 z-20">
                   <Sticker color="gold" rotate="-6">
                     ★ Featured
@@ -463,7 +455,7 @@ export default function Portfolio() {
       {/* ================= Quiet from here down ================= */}
 
       {/* ---- About ---- */}
-      <section id="about" className="scroll-mt-20 border-t border-[var(--line)]">
+      <section id="about" className="border-t border-[var(--line)]">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <SectionHead index="02" title="Two threads" description={about.heading} />
           <Reveal delay={0.05}>
@@ -484,7 +476,7 @@ export default function Portfolio() {
       </section>
 
       {/* ---- Log ---- */}
-      <section id="log" className="scroll-mt-20 border-t border-[var(--line)]">
+      <section id="log" className="border-t border-[var(--line)]">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <SectionHead index="03" title="Log" description="Work history and education, most recent first." />
           <div className="mt-8 divide-y divide-[var(--line)] border-t border-[var(--line)]">
@@ -539,7 +531,7 @@ export default function Portfolio() {
       </section>
 
       {/* ---- Stack ---- */}
-      <section id="stack" className="scroll-mt-20 border-t border-[var(--line)]">
+      <section id="stack" className="border-t border-[var(--line)]">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <SectionHead index="04" title="Stack" description="Everything below has shipped in something real." />
           <Reveal delay={0.05}>
@@ -566,7 +558,7 @@ export default function Portfolio() {
       </section>
 
       {/* ---- Papers ---- */}
-      <section id="papers" className="scroll-mt-20 border-t border-[var(--line)]">
+      <section id="papers" className="border-t border-[var(--line)]">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <SectionHead index="05" title="Papers" />
           <div className="mt-8 divide-y divide-[var(--line)] border-y border-[var(--line)]">
@@ -611,7 +603,7 @@ export default function Portfolio() {
       </section>
 
       {/* ---- Connect ---- */}
-      <section id="connect" className="scroll-mt-20 border-t border-[var(--line)]">
+      <section id="connect" className="border-t border-[var(--line)]">
         <div className="mx-auto max-w-6xl px-6 py-20">
           <SectionHead index="06" title="Connect" />
           <Reveal delay={0.05}>
