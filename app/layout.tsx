@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono, Lora } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -15,11 +15,19 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500", "600", "700"],
 });
 
+const nameFont = Lora({
+  subsets: ["latin"],
+  variable: "--font-name",
+  weight: ["700"],
+});
+
+/*
 const nameFont = localFont({
   src: "./fonts/DXRigraf-SemiBoldExpanded.otf",
   variable: "--font-name",
   weight: "700",
 });
+*/
 
 export const metadata: Metadata = {
   title: "Ahmed Messaad — AM-2026",
