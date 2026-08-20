@@ -234,7 +234,10 @@ export default function Portfolio() {
               <Sticker color="gold" rotate="-3">
                 Portfolio · Rev 2026
               </Sticker>
-              <h1 className="mt-5 text-6xl font-bold leading-[0.95] tracking-tight md:text-8xl">
+              <h1
+                className="mt-5 text-6xl italic leading-[0.9] tracking-tight md:text-8xl"
+                style={{ fontFamily: "var(--font-name)", fontWeight: 600 }}
+              >
                 {profile.name}
               </h1>
               <p className="mt-4 font-mono text-sm uppercase tracking-widest text-[var(--ink-dim)]">
