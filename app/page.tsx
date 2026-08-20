@@ -245,7 +245,7 @@ export default function Portfolio() {
 
             <Reveal delay={0.1}>
               <div className="mt-8 flex flex-wrap gap-3 font-mono text-xs font-bold uppercase tracking-widest">
-                
+                <a
                   href="#work"
                   className="rounded-full px-6 py-3 transition hover:-translate-y-0.5"
                   style={{ background: "var(--coral)", color: "var(--coral-ink)" }}
