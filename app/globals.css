@@ -8,8 +8,14 @@
   --ink-faint: rgba(243, 242, 237, 0.34);
   --line: rgba(243, 242, 237, 0.13);
   --line-strong: rgba(243, 242, 237, 0.28);
-  --red: #ff4433;
-  --red-dim: rgba(255, 68, 51, 0.14);
+
+  /* Sticker/badge accents — dark base stays neutral, these carry all the color. */
+  --coral: #ff5c5c;
+  --coral-ink: #2a0a0a;
+  --mint: #37e6a0;
+  --mint-ink: #06231a;
+  --gold: #ffc531;
+  --gold-ink: #2a1c00;
 
   --font-display: "Space Grotesk", ui-sans-serif, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
@@ -56,11 +62,11 @@ body {
 }
 
 ::selection {
-  background: var(--red);
-  color: var(--bg);
+  background: var(--coral);
+  color: var(--coral-ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--red);
+  outline: 2px solid var(--coral);
   outline-offset: 3px;
 }
