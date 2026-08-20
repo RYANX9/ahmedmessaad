@@ -96,3 +96,73 @@ body {
   outline: 2px solid var(--coral);
   outline-offset: 3px;
 }
+
+/* ---------------------------------------------------------------------
+   Sticky header. Opaque-enough frosted panel over scrolling content —
+   this is the ONE place blur is purely functional (legibility against
+   whatever scrolls underneath it), not decorative. Border is invisible
+   at scroll position 0, since the header and hero read as one surface
+   there, and fades in past the top so a seam only appears once you've
+   actually scrolled past it.
+   --------------------------------------------------------------------- */
+.site-header {
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease, background-color 0.2s ease;
+}
+
+.site-header[data-scrolled="true"] {
+  border-bottom-color: var(--line);
+}
+
+/* ---------------------------------------------------------------------
+   Loupe glass (GlassSheen). Blur is clipped to the circular lens only —
+   the handle stays sharp metal, not glass. This is the second and last
+   deliberate glass surface outside the header.
+   --------------------------------------------------------------------- */
+.loupe-lens {
+  backdrop-filter: blur(3px) saturate(165%) brightness(1.1);
+  -webkit-backdrop-filter: blur(3px) saturate(165%) brightness(1.1);
+  background: radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.22), transparent 55%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+/* ---------------------------------------------------------------------
+   Spec plate. A laminated panel under the featured project's metrics —
+   the one card on the page treated as "the flagship item on the sheet",
+   so it's the only card whose data gets this treatment.
+   --------------------------------------------------------------------- */
+.spec-plate {
+  background: color-mix(in srgb, var(--bg-raised) 55%, transparent);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+/* ---------------------------------------------------------------------
+   Stitch chrome animation. StitchRing and StitchSeam ship with these
+   class hooks but no rules — without them the "stitch" is just a solid
+   line and the "seam" never turns. Slow and quiet on purpose: this is
+   spec-sheet chrome, not a spinner.
+   --------------------------------------------------------------------- */
+.seam-spin {
+  animation: seam-spin 46s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes seam-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.stitch-path {
+  stroke-dasharray: 0.018 0.018;
+}
+
+.stitch-ticks line {
+  stroke-linecap: round;
+}
