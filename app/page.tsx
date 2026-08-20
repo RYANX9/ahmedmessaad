@@ -1,35 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
 import {
   ArrowUpRight,
   Award,
-  Database,
   FileDown,
   Github,
   Linkedin,
   Mail,
-  Share2,
-  Terminal,
 } from "lucide-react";
 import { FaKaggle } from "react-icons/fa";
 import { ThemeToggle } from "./components/theme-toggle";
-import {
-  ContourField,
-  CutMark,
-  DimensionGrid,
-  GlassSheen,
-  GrainOverlay,
-  MeasureAnnotation,
-  PinMarker,
-  StitchCorners,
-  StitchRing,
-  StitchSeam,
-  ThreadSpool,
-  WeavePattern,
-} from "./components/illustrations";
 import {
   profile,
   about,
@@ -43,7 +26,6 @@ import {
   honors,
   contact,
   type Track,
-  type Project,
 } from "./data";
 
 // ---------------------------------------------------------------------------
@@ -149,72 +131,6 @@ function SectionHead({
   );
 }
 
-// coverIcon exists on Project but was never actually rendered anywhere —
-// every project without a photo fell back to the same generic gray hatch
-// regardless of track. This maps the field to a real glyph, tinted per
-// track, so "no photo" still says something specific about the project.
-const COVER_ICONS = { terminal: Terminal, database: Database, api: Share2 } as const;
-
-function CoverGlyph({ icon, track }: { icon?: Project["coverIcon"]; track: Track }) {
-  if (!icon) return null;
-  const Icon = COVER_ICONS[icon];
-  const accent = track === "research" ? "var(--sage)" : "var(--clay)";
-  return (
-    <span
-      className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border-2"
-      style={{ borderColor: accent, color: accent }}
-    >
-      <Icon size={18} />
-    </span>
-  );
-}
-
-// Replaces the old track-blind diagonal hatch: research placeholders get
-// the contour texture, systems placeholders get the dimension grid — the
-// same vocabulary already used for the track badges, just applied to the
-// one spot on the page that previously ignored it.
-function ProjectPlaceholder({ project }: { project: Project }) {
-  return (
-    <div className="relative flex h-full w-full items-center justify-center">
-      {project.track === "research" ? (
-        <ContourField opacity={0.35} />
-      ) : (
-        <DimensionGrid opacity={0.32} />
-      )}
-      <div className="relative flex flex-col items-center gap-2">
-        <CoverGlyph icon={project.coverIcon} track={project.track} />
-        <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--ink-faint)]">
-          {project.category}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-const MONTHS: Record<string, string> = {
-  january: "01",
-  february: "02",
-  march: "03",
-  april: "04",
-  may: "05",
-  june: "06",
-  july: "07",
-  august: "08",
-  september: "09",
-  october: "10",
-  november: "11",
-  december: "12",
-};
-
-// MeasureAnnotation is documented to pair with a real value, never a
-// placeholder — this turns "December 2023" into the "MM.YYYY" register
-// the rest of the spec-sheet chrome already uses.
-function formatShortDate(date: string): string {
-  const [month, year] = date.split(" ");
-  const code = MONTHS[month?.toLowerCase() ?? ""];
-  return code && year ? `${code}.${year}` : date;
-}
-
 const nav = [
   { href: "#work", label: "Work" },
   { href: "#log", label: "Log" },
@@ -262,29 +178,18 @@ const log: LogEntry[] = [
 
 export default function Portfolio() {
   const [filter, setFilter] = useState<"all" | Track>("all");
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    function onScroll() {
-      setScrolled(window.scrollY > 8);
-    }
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   const visibleProjects = filter === "all" ? projects : projects.filter((p) => p.track === filter);
   const featuredProject = visibleProjects.find((p) => p.featured);
   const restProjects = visibleProjects.filter((p) => !p.featured);
 
   return (
     <div className="relative overflow-x-hidden">
-      {/* ================= HEADER — sticky, on its own, above the hero =============
-          Pulled out of the hero section so it can stick independently of the
-          hero's own padding. Opaque-ish frosted glass (.site-header) is the
-          one place on the page blur exists purely for legibility, not theme —
-          it needs to sit over whatever's scrolling underneath it. */}
-      <header className="site-header sticky top-0 z-50" data-scrolled={scrolled}>
+      {/* ================= NAV — sticky on its own, same on every screen =====
+          Pulled out of the hero (it used to be a div inside <section id="top">,
+          which only sticks with the hero's own scroll, not the whole page). A
+          plain `sticky top-0` header with a solid background works the same
+          way on mobile and desktop — no separate breakpoint logic needed. */}
+      <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--bg)]">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 font-mono text-xs uppercase tracking-widest text-[var(--ink-dim)]">
           <a href="#top" className="text-[var(--ink)]">
             AM — 01
@@ -307,7 +212,7 @@ export default function Portfolio() {
       </header>
 
       {/* ================= HERO — this is "him" ================= */}
-      <section id="top" className="relative mx-auto max-w-6xl scroll-mt-24 px-6 pb-16 pt-10 md:pt-14">
+      <section id="top" className="relative mx-auto max-w-6xl scroll-mt-20 px-6 pb-16 pt-10 md:pt-14">
         <div className="grid gap-12 md:grid-cols-[1.3fr_0.7fr] md:items-center">
           <div>
             <Reveal>
@@ -365,12 +270,6 @@ export default function Portfolio() {
                 className="absolute -inset-8 -z-10 rounded-full opacity-25 blur-3xl"
                 style={{ background: "radial-gradient(circle, var(--coral) 0%, transparent 70%)" }}
               />
-              {/* The one physical sample on the sheet: pinned top-left
-                  (PinMarker), registration-marked bottom-right (CutMark),
-                  and checked under a loupe (GlassSheen) — the sample under
-                  inspection is the only other place glass appears besides
-                  the header. Grain sits under the loupe, not over it, so
-                  the "film" texture reads on the photo, not the lens. */}
               <div className="relative rounded-[28px] border-2 border-[var(--line-strong)] p-2">
                 <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[20px]">
                   <Image
@@ -380,11 +279,7 @@ export default function Portfolio() {
                     className="object-cover grayscale contrast-125"
                     priority
                   />
-                  <GrainOverlay opacity={0.05} />
                 </div>
-                <PinMarker className="absolute -top-2 -left-2 z-20" color="var(--gold)" />
-                <CutMark className="absolute -bottom-2 -right-2 z-20" color="var(--ink-faint)" size={20} />
-                <GlassSheen className="-bottom-6 -right-6 z-20" size={100} />
               </div>
               <div className="absolute -bottom-4 -right-3">
                 <Sticker color="gold" rotate="6">
@@ -397,7 +292,7 @@ export default function Portfolio() {
       </section>
 
       {/* ================= WORK — this is "the work" ================= */}
-      <section id="work" className="scroll-mt-24 border-t border-[var(--line)]">
+      <section id="work" className="scroll-mt-20 border-t border-[var(--line)]">
         <div className="mx-auto max-w-6xl px-6 py-20">
           <SectionHead
             index="01"
@@ -442,27 +337,17 @@ export default function Portfolio() {
                   </Sticker>
                 </div>
                 <div className="grid gap-8 md:grid-cols-[0.9fr_1.1fr] md:items-center">
-                  {featuredProject.image ? (
-                    <div className="relative h-48 overflow-hidden rounded-2xl border border-[var(--line)] md:h-full">
-                      <Image
-                        src={featuredProject.image}
-                        alt={featuredProject.name}
-                        fill
-                        className="object-cover grayscale contrast-125 transition duration-500 group-hover:grayscale-0"
-                      />
-                      <CutMark className="absolute left-3 top-3" color="var(--ink-faint)" />
+                  <div
+                    className="relative h-48 overflow-hidden rounded-2xl border border-[var(--line)] md:h-full"
+                    style={{
+                      backgroundImage:
+                        "repeating-linear-gradient(45deg, var(--line) 0, var(--line) 1px, transparent 1px, transparent 10px)",
+                    }}
+                  >
+                    <div className="flex h-full items-center justify-center font-mono text-sm uppercase tracking-widest text-[var(--ink-faint)]">
+                      System // {featuredProject.category}
                     </div>
-                  ) : (
-                    <div
-                      className="relative h-48 overflow-hidden rounded-2xl border md:h-full"
-                      style={{ borderColor: "var(--line)" }}
-                    >
-                      <ProjectPlaceholder project={featuredProject} />
-                      {/* Registration mark on the featured card only — a
-                          rarity signal, same reasoning as the hero photo. */}
-                      <CutMark className="absolute left-3 top-3" color="var(--coral)" />
-                    </div>
-                  )}
+                  </div>
                   <div>
                     <TrackBadge track={featuredProject.track} />
                     <h3 className="mt-3 flex items-center gap-2 text-3xl font-bold">
@@ -480,29 +365,23 @@ export default function Portfolio() {
                       {featuredProject.description}
                     </p>
 
-                    {/* Spec plate: the only project card whose numbers get
-                        laminated under glass. It's the flagship item on the
-                        sheet, so it's the one entry that gets the "under
-                        glass" treatment — everything else stays flat. */}
-                    <div className="spec-plate mt-5 p-4">
-                      <div className="flex flex-wrap gap-2">
-                        {featuredProject.metrics.map((m) => (
-                          <span
-                            key={m.label}
-                            className="rounded-full border border-[var(--line-strong)] px-3 py-1 font-mono text-xs"
-                          >
-                            <span className="font-bold">{m.value}</span>{" "}
-                            <span className="text-[var(--ink-faint)]">{m.label}</span>
-                          </span>
-                        ))}
-                      </div>
-                      <div className="mt-3 flex flex-wrap gap-2 font-mono text-[11px] uppercase tracking-wide text-[var(--ink-dim)]">
-                        {featuredProject.tech.map((t) => (
-                          <span key={t} className="rounded-full border border-[var(--line)] px-2.5 py-1">
-                            {t}
-                          </span>
-                        ))}
-                      </div>
+                    <div className="mt-5 flex flex-wrap gap-2">
+                      {featuredProject.metrics.map((m) => (
+                        <span
+                          key={m.label}
+                          className="rounded-full border border-[var(--line-strong)] px-3 py-1 font-mono text-xs"
+                        >
+                          <span className="font-bold">{m.value}</span>{" "}
+                          <span className="text-[var(--ink-faint)]">{m.label}</span>
+                        </span>
+                      ))}
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-2 font-mono text-[11px] uppercase tracking-wide text-[var(--ink-dim)]">
+                      {featuredProject.tech.map((t) => (
+                        <span key={t} className="rounded-full border border-[var(--line)] px-2.5 py-1">
+                          {t}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -541,8 +420,16 @@ export default function Portfolio() {
                       />
                     </div>
                   ) : (
-                    <div className="relative mt-4 h-36 w-full overflow-hidden rounded-xl border border-[var(--line)]">
-                      <ProjectPlaceholder project={p} />
+                    <div
+                      className="relative mt-4 h-36 w-full overflow-hidden rounded-xl border border-[var(--line)]"
+                      style={{
+                        backgroundImage:
+                          "repeating-linear-gradient(45deg, var(--line) 0, var(--line) 1px, transparent 1px, transparent 10px)",
+                      }}
+                    >
+                      <div className="flex h-full items-center justify-center font-mono text-xs uppercase tracking-widest text-[var(--ink-faint)]">
+                        System // {p.category}
+                      </div>
                     </div>
                   )}
 
@@ -576,19 +463,11 @@ export default function Portfolio() {
       {/* ================= Quiet from here down ================= */}
 
       {/* ---- About ---- */}
-      <section id="about" className="scroll-mt-24 border-t border-[var(--line)]">
+      <section id="about" className="scroll-mt-20 border-t border-[var(--line)]">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <SectionHead index="02" title="Two threads" description={about.heading} />
           <Reveal delay={0.05}>
-            <div className="relative mt-8 grid gap-6 md:grid-cols-2">
-              {/* The one place StitchRing is allowed to be a "ring": the
-                  literal seam between the two threads the whole site is
-                  about. Not on the hero photo (a ring around a rectangular
-                  frame reads wrong) — only where two things actually meet. */}
-              <StitchRing
-                className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 opacity-70 md:block"
-                size={72}
-              />
+            <div className="mt-8 grid gap-6 md:grid-cols-2">
               {about.threads.map((thread) => (
                 <div key={thread.track}>
                   <div className="flex items-center gap-2">
@@ -604,25 +483,11 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* Weave band: the two thread textures interleaving into one fabric,
-          used exactly once, exactly where About's "two threads" argument
-          resolves into a single chronological Log below it. */}
-      <div className="relative h-10 overflow-hidden border-y border-[var(--line)]" aria-hidden="true">
-        <WeavePattern className="opacity-30" />
-      </div>
-
       {/* ---- Log ---- */}
-      <section id="log" className="scroll-mt-24">
+      <section id="log" className="scroll-mt-20 border-t border-[var(--line)]">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <SectionHead index="03" title="Log" description="Work history and education, most recent first." />
-          <div className="relative mt-8 divide-y divide-[var(--line)] border-t border-[var(--line)]">
-            {/* Every entry below is pinned to one continuous thread — the
-                actual through-line of a career — so the gutter gets a
-                running seam instead of staying blank. Sits at the join
-                between the date column and the content column. */}
-            <div className="pointer-events-none absolute left-[126px] top-0 hidden h-full w-8 opacity-35 md:block">
-              <StitchSeam orientation="vertical" />
-            </div>
+          <div className="mt-8 divide-y divide-[var(--line)] border-t border-[var(--line)]">
             {log.map((entry, i) => (
               <Reveal
                 key={entry.id}
@@ -674,18 +539,13 @@ export default function Portfolio() {
       </section>
 
       {/* ---- Stack ---- */}
-      <section id="stack" className="scroll-mt-24 border-t border-[var(--line)]">
+      <section id="stack" className="scroll-mt-20 border-t border-[var(--line)]">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <SectionHead index="04" title="Stack" description="Everything below has shipped in something real." />
           <Reveal delay={0.05}>
-            {/* The most literally "blueprint" section on the page — the
-                only one framed with corner registration ticks, so the
-                framing matches the content instead of every box getting
-                the same treatment. */}
-            <div className="relative mt-8 space-y-4 rounded-2xl border border-[var(--line)] p-6">
-              <StitchCorners />
+            <div className="mt-8 space-y-4">
               {skills.map((s) => (
-                <div key={s.group} className="flex flex-wrap items-center gap-2 border-b border-[var(--line)] pb-4 last:border-b-0 last:pb-0">
+                <div key={s.group} className="flex flex-wrap items-center gap-2 border-b border-[var(--line)] pb-4">
                   <span className="mr-2 w-full shrink-0 font-mono text-[11px] uppercase tracking-widest text-[var(--ink-faint)] sm:w-40">
                     {s.group}
                   </span>
@@ -706,7 +566,7 @@ export default function Portfolio() {
       </section>
 
       {/* ---- Papers ---- */}
-      <section id="papers" className="scroll-mt-24 border-t border-[var(--line)]">
+      <section id="papers" className="scroll-mt-20 border-t border-[var(--line)]">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <SectionHead index="05" title="Papers" />
           <div className="mt-8 divide-y divide-[var(--line)] border-y border-[var(--line)]">
@@ -721,17 +581,12 @@ export default function Portfolio() {
                 <p className="mt-1 font-mono text-xs uppercase tracking-wide text-[var(--ink-dim)]">{pub.venue}</p>
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--ink-dim)]">{pub.detail}</p>
                 {pub.award && (
-                  <div className="mt-3 flex flex-wrap items-center gap-3">
-                    <p
-                      className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[11px] uppercase tracking-widest"
-                      style={{ borderColor: "var(--gold)", color: "var(--gold)" }}
-                    >
-                      <Award size={12} /> {pub.award}
-                    </p>
-                    {/* A real value, not filler — the paper's own date,
-                        reformatted into the site's MM.YYYY spec register. */}
-                    <MeasureAnnotation label={formatShortDate(pub.date)} color="var(--gold)" />
-                  </div>
+                  <p
+                    className="mt-3 inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[11px] uppercase tracking-widest"
+                    style={{ borderColor: "var(--gold)", color: "var(--gold)" }}
+                  >
+                    <Award size={12} /> {pub.award}
+                  </p>
                 )}
               </Reveal>
             ))}
@@ -756,7 +611,7 @@ export default function Portfolio() {
       </section>
 
       {/* ---- Connect ---- */}
-      <section id="connect" className="scroll-mt-24 border-t border-[var(--line)]">
+      <section id="connect" className="scroll-mt-20 border-t border-[var(--line)]">
         <div className="mx-auto max-w-6xl px-6 py-20">
           <SectionHead index="06" title="Connect" />
           <Reveal delay={0.05}>
@@ -801,10 +656,7 @@ export default function Portfolio() {
         </div>
       </section>
 
-      <footer className="relative overflow-hidden border-t border-[var(--line)] py-8">
-        {/* Leftover material in the corner — the one quiet-margin spot the
-            ThreadSpool component is documented for. */}
-        <ThreadSpool className="pointer-events-none absolute -bottom-2 right-6 opacity-50 md:right-10" color="var(--sage)" />
+      <footer className="border-t border-[var(--line)] py-8">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 font-mono text-[11px] uppercase tracking-widest text-[var(--ink-faint)]">
           <span>Designed in {profile.location.toUpperCase()}. Built with Next.js.</span>
           <span>AM — 2026</span>
