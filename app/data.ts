@@ -10,7 +10,7 @@
 export type Track = "research" | "systems";
 
 export const profile = {
-  name: "Ahmed Messaad",
+  name: "AHMED MESSAAD",
   role: "AI/ML Engineer & Full-Stack Developer",
   tagline: "I build the model. Then I build the product around it.",
   location: "Algeria",
