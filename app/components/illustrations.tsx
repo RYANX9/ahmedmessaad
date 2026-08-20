@@ -8,6 +8,10 @@
 // marks, a pin, a measurement tag, a spool of thread — the objects that
 // belong on a garment production board, not glow or blur. Each is meant
 // to be placed once or twice per composition, never tiled as a background.
+//
+// GlassSheen (bottom of file) is the one exception: a jeweler's loupe, the
+// single tool on the board that's actually made of glass. It gets used in
+// exactly one or two places in page.tsx, never as ambient decoration.
 
 import { useId } from "react";
 
@@ -330,5 +334,49 @@ export function ThreadSpool({
       />
       <path d="M32 38 Q41 44 38 55" stroke={color} strokeWidth="1.2" strokeLinecap="round" opacity="0.7" />
     </svg>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// GlassSheen — the loupe. The ONE glass/blur object on the page. A tech
+// pack gets exactly one magnifier pinned near the sample for quality
+// inspection; it never appears twice in the same spot, and it never
+// substitutes for a card background. Backdrop-blur is applied only inside
+// the circular lens element (see .loupe-lens in globals.css), so the
+// handle stays crisp metal, not blurred glass.
+// ---------------------------------------------------------------------------
+export function GlassSheen({
+  className = "",
+  size = 112,
+}: {
+  className?: string;
+  size?: number;
+}) {
+  const box = size * 1.3;
+  return (
+    <div
+      className={`pointer-events-none absolute ${className}`}
+      style={{ width: box, height: box }}
+      aria-hidden="true"
+    >
+      <div
+        className="loupe-lens absolute left-0 top-0 rounded-full"
+        style={{ width: size, height: size }}
+      />
+      <svg width={box} height={box} viewBox={`0 0 ${box} ${box}`} className="absolute inset-0">
+        <circle cx={size / 2} cy={size / 2} r={size / 2 - 2.5} fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="2.5" />
+        <circle cx={size / 2} cy={size / 2} r={size / 2 - 2.5} fill="none" stroke="rgba(0,0,0,0.3)" strokeWidth="1" />
+        <path
+          d={`M${size * 0.3} ${size * 0.22} A${size * 0.4} ${size * 0.4} 0 0 1 ${size * 0.78} ${size * 0.32}`}
+          stroke="rgba(255,255,255,0.55)"
+          strokeWidth="3"
+          fill="none"
+          strokeLinecap="round"
+          opacity="0.7"
+        />
+        <line x1={size * 0.82} y1={size * 0.82} x2={box - 4} y2={box - 4} stroke="rgba(0,0,0,0.35)" strokeWidth="7" strokeLinecap="round" />
+        <line x1={size * 0.81} y1={size * 0.81} x2={box - 5} y2={box - 5} stroke="#cfd4da" strokeWidth="4" strokeLinecap="round" />
+      </svg>
+    </div>
   );
 }
