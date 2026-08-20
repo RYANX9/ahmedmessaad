@@ -14,6 +14,14 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500", "600", "700"],
 });
 
+const fraunces = Fraunces({
+  variable: "--font-name",
+  subsets: ["latin"],
+  weight: ["600"],
+  style: ["italic"],
+  axes: ["opsz", "SOFT", "WONK"],
+});
+
 export const metadata: Metadata = {
   title: "Ahmed Messaad — AM-2026",
   description:
