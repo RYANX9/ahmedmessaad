@@ -1,14 +1,17 @@
-// Shared chrome for the "case file" theme: a specimen-stamp signature motif
-// (Stamp / Seal), a light film-grain overlay standing in for the texture of
-// a printed report, a blueprint panel used as a cover when a project has no
-// screenshot, and an infinite marquee for the credentials ticker.
+// Shared chrome. The signature element is PulseLine: a single line that
+// reads as a heartbeat trace in research contexts and a circuit trace in
+// systems contexts, and physically merges the two in the About section.
+// Everything else (VitalTag, SectionMark, ReadoutBadge) is a mono-readout
+// language borrowed from the instruments this work actually produces —
+// monitor strips and log panels — not a decorative "case file" motif.
 
-import { Award } from "lucide-react";
+import { motion } from "framer-motion";
+import { Terminal, Database, Share2 } from "lucide-react";
 
 export function GrainOverlay() {
   return (
     <div
-      className="pointer-events-none fixed inset-0 z-[80] opacity-[0.05] mix-blend-multiply"
+      className="pointer-events-none fixed inset-0 z-[80] opacity-[0.035] mix-blend-multiply"
       aria-hidden="true"
     >
       <svg width="100%" height="100%">
@@ -22,125 +25,170 @@ export function GrainOverlay() {
   );
 }
 
-export function Stamp({
-  children,
-  rotate = -6,
-  tone = "ink",
+type LineVariant = "pulse" | "trace" | "merge" | "steady";
+
+const PATHS: Record<LineVariant, string> = {
+  // Cardiac trace — sharp QRS spikes on a flat baseline. Research contexts.
+  pulse:
+    "M0,30 H220 L232,30 L244,6 L258,54 L270,12 L282,30 H560 L572,30 L584,6 L598,54 L610,12 L622,30 H900 L912,30 L924,6 L938,54 L950,12 L962,30 H1200",
+  // Circuit trace — right-angle jogs, PCB style. Systems contexts.
+  trace:
+    "M0,30 H140 V10 H320 V50 H480 H620 V10 H780 V50 H960 H1200",
+  // The two vocabularies meeting mid-line, at a shared node.
+  merge:
+    "M0,30 L60,30 L72,30 L84,6 L98,54 L110,12 L122,30 H300 V30 H480 V12 H600 V48 H720 H900 V12 H1060 V48 H1200",
+  // A held, steady rhythm — used at Contact to signal an open channel.
+  steady:
+    "M0,30 H240 L252,20 L264,40 L276,30 H520 L532,20 L544,40 L556,30 H800 L812,20 L824,40 L836,30 H1080 L1092,20 L1104,40 L1116,30 H1200",
+};
+
+export function PulseLine({
+  variant = "pulse",
   className = "",
+  color,
 }: {
-  children: React.ReactNode;
-  rotate?: number;
-  tone?: "ink" | "stain" | "graphite";
+  variant?: LineVariant;
   className?: string;
+  color?: "signal" | "circuit" | "ink";
 }) {
-  const color = { ink: "var(--ink)", stain: "var(--stain)", graphite: "var(--graphite)" }[tone];
+  const stroke =
+    color === "circuit" ? "var(--circuit)" : color === "ink" ? "var(--ink)" : "var(--signal)";
   return (
-    <div className={`inline-flex ${className}`} style={{ transform: `rotate(${rotate}deg)` }}>
-      <div className="relative px-4 py-2" style={{ border: `1.5px solid ${color}` }}>
-        <div className="pointer-events-none absolute inset-[3px]" style={{ border: `1px dashed ${color}`, opacity: 0.55 }} />
-        <span
-          className="relative whitespace-nowrap font-mono text-[10px] font-bold uppercase tracking-[0.22em]"
-          style={{ color }}
-        >
-          {children}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-export function Seal({ title, sub }: { title: string; sub: string }) {
-  return (
-    <div
-      className="relative flex h-28 w-28 shrink-0 rotate-[-4deg] items-center justify-center rounded-full text-center"
-      style={{ border: "1.5px solid var(--ink)" }}
+    <svg
+      viewBox="0 0 1200 60"
+      preserveAspectRatio="none"
+      className={className}
+      aria-hidden="true"
     >
-      <div className="pointer-events-none absolute inset-[5px] rounded-full" style={{ border: "1px dashed var(--ink-faint)" }} />
-      <div className="relative px-3">
-        <Award size={14} className="mx-auto mb-1.5" style={{ color: "var(--stain)" }} />
-        <p className="font-mono text-[8.5px] font-bold uppercase leading-tight tracking-wide text-[var(--ink)]">
-          {title}
-        </p>
-        <p className="mt-1 font-mono text-[7.5px] uppercase tracking-wide text-[var(--ink-faint)]">{sub}</p>
-      </div>
-    </div>
+      <motion.path
+        d={PATHS[variant]}
+        fill="none"
+        stroke={stroke}
+        strokeWidth={1.75}
+        strokeLinejoin="round"
+        strokeLinecap="round"
+        initial={{ pathLength: 0, opacity: 0 }}
+        whileInView={{ pathLength: 1, opacity: 1 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+      />
+    </svg>
   );
 }
 
-export function BlueprintPanel({
+// Small live-status indicator — a beating dot plus a mono readout, the way
+// a monitor shows a channel is active. Used sparingly: nav + hero only.
+export function LiveTag({ label, tone = "signal" }: { label: string; tone?: "signal" | "circuit" }) {
+  const color = tone === "circuit" ? "var(--circuit)" : "var(--signal)";
+  return (
+    <span className="inline-flex items-center gap-2 font-mono text-[10px] font-medium uppercase tracking-[0.2em]" style={{ color }}>
+      <span className="live-dot h-1.5 w-1.5 rounded-full" style={{ background: color }} />
+      {label}
+    </span>
+  );
+}
+
+// Track chip — replaces the old stamp. Reads like a channel label on a
+// monitor strip: a color, a short code, nothing performative.
+export function VitalTag({
   label,
+  tone = "signal",
   className = "",
 }: {
   label: string;
+  tone?: "signal" | "circuit";
+  className?: string;
+}) {
+  const color = tone === "circuit" ? "var(--circuit)" : "var(--signal)";
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] ${className}`}
+      style={{ color }}
+    >
+      <span className="h-1.5 w-1.5 rounded-full" style={{ background: color }} />
+      {label}
+    </span>
+  );
+}
+
+// Section header — a label and a rule, no invented numbering unless the
+// content is a genuine sequence (passed in via `index`).
+export function SectionMark({
+  label,
+  index,
+  className = "",
+}: {
+  label: string;
+  index?: string;
   className?: string;
 }) {
   return (
+    <div className={`flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.24em] text-[var(--ink-faint)] ${className}`}>
+      {index && <span style={{ color: "var(--signal)" }}>{index}</span>}
+      <span>{label}</span>
+      <span
+        className="h-px flex-1"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(90deg, var(--line-strong) 0 4px, transparent 4px 8px)",
+        }}
+      />
+    </div>
+  );
+}
+
+// Flat readout badge for publications/honors — a panel, not a ceremonial
+// seal. The award icon is dropped; the fact speaks without ornament.
+export function ReadoutBadge({ title, sub }: { title: string; sub: string }) {
+  return (
     <div
-      className={`relative overflow-hidden ${className}`}
+      className="flex h-24 w-24 shrink-0 flex-col items-center justify-center gap-1 border text-center"
+      style={{ borderColor: "var(--line-strong)" }}
+    >
+      <p className="font-mono text-[8.5px] font-bold uppercase leading-tight tracking-wide text-[var(--ink)]">
+        {title}
+      </p>
+      <p className="font-mono text-[7.5px] uppercase tracking-wide text-[var(--ink-faint)]">{sub}</p>
+    </div>
+  );
+}
+
+const COVER_ICONS = { terminal: Terminal, database: Database, api: Share2 };
+
+// Cover for systems projects with no screenshot — a schematic panel in
+// circuit blue, standing in for a diagram rather than pretending to be one.
+export function SchematicPanel({
+  label,
+  icon,
+  className = "",
+}: {
+  label: string;
+  icon: keyof typeof COVER_ICONS;
+  className?: string;
+}) {
+  const Icon = COVER_ICONS[icon];
+  return (
+    <div
+      className={`relative flex items-end overflow-hidden ${className}`}
       style={{
         border: "1px solid var(--line-strong)",
         backgroundColor: "var(--paper-raised)",
         backgroundImage:
           "linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px)",
-        backgroundSize: "18px 18px",
+        backgroundSize: "16px 16px",
       }}
       aria-hidden="true"
     >
-      {[
-        ["left-2 top-2", "border-l border-t"],
-        ["right-2 top-2", "border-r border-t"],
-        ["left-2 bottom-2", "border-l border-b"],
-        ["right-2 bottom-2", "border-r border-b"],
-      ].map(([pos, border]) => (
-        <span
-          key={pos}
-          className={`absolute h-2.5 w-2.5 ${pos} ${border}`}
-          style={{ borderColor: "var(--graphite)" }}
-        />
-      ))}
-      <div className="absolute bottom-3 left-3 font-mono text-[10px] uppercase tracking-[0.18em]" style={{ color: "var(--graphite)" }}>
+      <Icon size={26} className="absolute right-4 top-4" style={{ color: "var(--circuit)", opacity: 0.7 }} />
+      <div className="absolute bottom-3 left-3 font-mono text-[10px] uppercase tracking-[0.18em]" style={{ color: "var(--circuit)" }}>
         {label}
       </div>
     </div>
   );
 }
 
-export function IndexMark({
-  index,
-  label,
-  className = "",
-}: {
-  index: string;
-  label: string;
-  className?: string;
-}) {
-  return (
-    <div className={`flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--ink-faint)] ${className}`}>
-      <span className="text-[var(--stain)]">{index}</span>
-      <span>{label}</span>
-      <span className="h-px flex-1" style={{ backgroundImage: "repeating-linear-gradient(90deg, var(--line-strong) 0 4px, transparent 4px 8px)" }} />
-    </div>
-  );
-}
-
-export function Redaction({
-  widths = [88, 62, 74],
-  className = "",
-}: {
-  widths?: number[];
-  className?: string;
-}) {
-  return (
-    <div className={`space-y-1.5 ${className}`} aria-hidden="true">
-      {widths.map((w, i) => (
-        <div key={i} className="h-[7px]" style={{ width: `${w}%`, background: "var(--ink)", opacity: 0.86 }} />
-      ))}
-    </div>
-  );
-}
-
 export function Marquee({ items }: { items: string[] }) {
-  const row = items.join("   —   ") + "   —   ";
+  const row = items.join("   /   ") + "   /   ";
   return (
     <div className="overflow-hidden" style={{ background: "var(--ink)" }} aria-hidden="true">
       <div className="marquee-track py-3">
