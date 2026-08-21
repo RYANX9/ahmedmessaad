@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Big_Shoulders_Display, Fraunces, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, Fraunces, JetBrains_Mono } from "next/font/google";
 import { GrainOverlay } from "./components/illustrations";
 import "./globals.css";
 
-const bigShoulders = Big_Shoulders_Display({
+const bigShoulders = Space_Grotesk({
   variable: "--font-display",
   subsets: ["latin"],
   weight: ["500", "600", "700", "800", "900"],
