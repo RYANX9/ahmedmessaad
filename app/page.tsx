@@ -193,10 +193,6 @@ export default function Portfolio() {
       {/* ================= HERO — this is "him" ================= */}
       <section id="top" className="relative mx-auto max-w-6xl px-6 pb-16 pt-32 md:pt-40">
         <div className="absolute right-6 top-8 md:right-6 md:top-10">
-          <Sticker color="mint" rotate="-2">
-            <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--mint-ink)" }} />
-            Available
-          </Sticker>
         </div>
 
         <div className="grid gap-12 md:grid-cols-[1.3fr_0.7fr] md:items-center">
