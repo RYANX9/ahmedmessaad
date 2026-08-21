@@ -1,32 +1,53 @@
 @import "tailwindcss";
 
 :root {
-  /* Studio grey-white lifted straight from the portrait's backdrop, not a
-     stock cream or near-black. Ink is a soft black, never pure #000. */
-  --paper: #e9e8e3;
-  --paper-raised: #f4f3ee;
-  --paper-deep: #dcdbd3;
-  --paper-translucent: rgba(233, 232, 227, 0.86);
+  /* Paper lifted from the portrait's own backdrop — not a stock cream. */
+  --paper: #efede6;
+  --paper-raised: #f8f7f2;
+  --paper-deep: #e2ded2;
+  --paper-translucent: rgba(239, 237, 230, 0.86);
 
-  --ink: #17181a;
-  --ink-dim: rgba(23, 24, 26, 0.62);
-  --ink-faint: rgba(23, 24, 26, 0.36);
+  --ink: #0c0d0b;
+  --ink-dim: rgba(12, 13, 11, 0.64);
+  --ink-faint: rgba(12, 13, 11, 0.36);
 
-  --line: rgba(23, 24, 26, 0.14);
-  --line-strong: rgba(23, 24, 26, 0.32);
+  --line: rgba(12, 13, 11, 0.13);
+  --line-strong: rgba(12, 13, 11, 0.3);
 
-  /* Single accent, used like a specimen stamp — never decorative filler. */
-  --stain: #b1271f;
-  --stain-soft: rgba(177, 39, 31, 0.1);
+  /* Two tracks, two frequencies. Signal = biological / research.
+     Circuit = engineered / systems. Pulse is spent on one real moment
+     per view, never used as base decoration. */
+  --signal: #00b37a;
+  --signal-soft: rgba(0, 179, 122, 0.12);
+  --circuit: #2451c4;
+  --circuit-soft: rgba(36, 81, 196, 0.1);
+  --pulse: #e8432e;
+  --pulse-soft: rgba(232, 67, 46, 0.1);
 
-  /* Secondary, desaturated — the "systems" half of the duality, reads like
-     blueprint ink rather than a UI color. */
-  --graphite: #454b52;
-  --graphite-soft: rgba(69, 75, 82, 0.1);
+  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-body: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
 
-  --font-display: "Big Shoulders Display", ui-sans-serif, sans-serif;
-  --font-serif: "Fraunces", ui-serif, serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+[data-theme="dark"] {
+  --paper: #0a0b09;
+  --paper-raised: #131410;
+  --paper-deep: #050503;
+  --paper-translucent: rgba(10, 11, 9, 0.86);
+
+  --ink: #efede6;
+  --ink-dim: rgba(239, 237, 230, 0.68);
+  --ink-faint: rgba(239, 237, 230, 0.4);
+
+  --line: rgba(239, 237, 230, 0.14);
+  --line-strong: rgba(239, 237, 230, 0.3);
+
+  --signal: #35e0a6;
+  --signal-soft: rgba(53, 224, 166, 0.14);
+  --circuit: #7f9fff;
+  --circuit-soft: rgba(127, 159, 255, 0.14);
+  --pulse: #ff6b52;
+  --pulse-soft: rgba(255, 107, 82, 0.14);
 }
 
 * {
@@ -39,12 +60,10 @@ html {
 
 body {
   background-color: var(--paper);
-  background-image: radial-gradient(var(--line) 1px, transparent 1px);
-  background-size: 24px 24px;
   color: var(--ink);
-  font-family: var(--font-serif);
-  font-feature-settings: "ss01" 1;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .font-display {
@@ -55,37 +74,24 @@ body {
   font-family: var(--font-mono);
 }
 
-.font-serif {
-  font-family: var(--font-serif);
+.font-body {
+  font-family: var(--font-body);
 }
 
 ::selection {
-  background: var(--stain);
+  background: var(--signal);
   color: var(--paper);
 }
 
 :focus-visible {
-  outline: 2px solid var(--stain);
+  outline: 2px solid var(--signal);
   outline-offset: 3px;
 }
 
-/* Deckle-edge cut — used sparingly, only where a panel sits on a differently
-   toned surface so the tear actually reads. */
-.torn-bottom {
-  position: relative;
-}
-.torn-bottom::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 10px;
-  background-image: linear-gradient(135deg, var(--paper) 50%, transparent 50%),
-    linear-gradient(45deg, var(--paper) 50%, transparent 50%);
-  background-size: 16px 16px;
-  background-position: 0 100%, 8px 100%;
-  background-repeat: repeat-x;
+/* Fine grid, used only behind the hero — a scale, not wallpaper. */
+.instrument-grid {
+  background-image: radial-gradient(var(--line) 1px, transparent 1px);
+  background-size: 22px 22px;
 }
 
 @keyframes marquee-scroll {
@@ -100,7 +106,23 @@ body {
 .marquee-track {
   display: flex;
   width: max-content;
-  animation: marquee-scroll 32s linear infinite;
+  animation: marquee-scroll 34s linear infinite;
+}
+
+@keyframes live-beat {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.72);
+  }
+}
+
+.live-dot {
+  animation: live-beat 1.8s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
