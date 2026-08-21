@@ -286,7 +286,7 @@ export default function Portfolio() {
               style={{ borderColor: "var(--line-strong)" }}
             >
               <div className="absolute -top-3 left-7">
-                <VitalTag label="Lead project" tone={TRACK_META[lead.track].tone} className="border px-3 py-1.5" style={undefined} />
+                <VitalTag label="Lead project" tone={TRACK_META[lead.track].tone} className="border px-3 py-1.5" />
               </div>
 
               {lead.image ? (
