@@ -292,7 +292,9 @@ export const projects: Project[] = [
     link: "https://specmob.vercel.app",
     linkText: "Visit site",
     coverIcon: "database",
+    image: "/spec1.jpeg",
     featured: true,
+
   },
   {
     id: "day-tracker",
