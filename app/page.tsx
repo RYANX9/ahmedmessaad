@@ -571,7 +571,7 @@ export default function Portfolio() {
                 {pub.award && (
                   <p
                     className="mt-3 inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[11px] uppercase tracking-widest"
-                    style={{ borderColor: "var(--gold)", color: "var(--gold)" }}
+                    style={{ borderColor: "var(--mint)", color: "var(--coral)" }}
                   >
                     <Award size={12} /> {pub.award}
                   </p>
