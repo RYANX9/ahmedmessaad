@@ -571,7 +571,7 @@ export default function Portfolio() {
                 {pub.award && (
                   <p
                     className="mt-3 inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[11px] uppercase tracking-widest"
-                    style={{ borderColor: "var(--mint)", color: "var(--coral)" }}
+                    style={{ borderColor: "var(--mint)", color: "var(--mint)" }}
                   >
                     <Award size={12} /> {pub.award}
                   </p>
@@ -586,9 +586,9 @@ export default function Portfolio() {
                 <span
                   key={h.id}
                   className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 font-mono text-[11px] text-[var(--ink-dim)]"
-                  style={{ borderColor: "var(--gold)" }}
+                  style={{ borderColor: "var(--mint)" }}
                 >
-                  <Award size={11} style={{ color: "var(--gold)" }} />
+                  <Award size={11} style={{ color: "var(--mint)" }} />
                   {h.label}
                   <span className="text-[var(--ink-faint)]">— {h.org}</span>
                 </span>
