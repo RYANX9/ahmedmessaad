@@ -3,10 +3,10 @@ import { Space_Grotesk, Fraunces, JetBrains_Mono } from "next/font/google";
 import { GrainOverlay } from "./components/illustrations";
 import "./globals.css";
 
-const bigShoulders = Space_Grotesk({
+const spaceGrotesk = Space_Grotesk({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800", "900"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const fraunces = Fraunces({
@@ -40,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bigShoulders.variable} ${fraunces.variable} ${jetbrainsMono.variable}`}
+      className={`${spaceGrotesk.variable} ${fraunces.variable} ${jetbrainsMono.variable}`}
     >
       <head>
         <link rel="icon" href="/ahmed-icon1.png" type="image/png" sizes="120x120" />
