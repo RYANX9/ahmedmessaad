@@ -18,7 +18,6 @@ import {
   GlassSheen,
   GrainOverlay,
   RivetPin,
-  ScanPulse,
   ThreadDivider,
 } from "./components/illustrations";
 import {
@@ -315,7 +314,6 @@ export default function Portfolio() {
                 className="group relative mt-10 block rounded-[28px] border-2 p-8 transition hover:-translate-y-1"
                 style={{ borderColor: "var(--coral)" }}
               >
-                <ScanPulse className="rounded-[28px]" color="var(--coral)" />
                 <RivetPin className="absolute -left-2.5 -top-2.5 h-6 w-6" />
                 <RivetPin className="absolute -bottom-2.5 -right-2.5 h-6 w-6" />
 
