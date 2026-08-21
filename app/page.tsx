@@ -46,60 +46,36 @@ export default function Portfolio() {
 
       {/* ============================================================ HERO */}
       <section className="card hero-card">
-        <div>
-          <div className="hero-tagline">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9L12 2Z" />
-            </svg>
-            {profile.location} — {profile.role}
+        <div className="hero-top">
+          <div>
+            <div className="hero-tagline">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9L12 2Z" />
+              </svg>
+              {profile.location} — {profile.role}
+            </div>
+            <h1 className="hero-title">{profile.tagline}</h1>
+            <p className="hero-desc">
+              Applied deep learning for clinical and diagnostic use cases, and the full-stack systems that put them
+              in front of real people — without the AI layer ever blocking the happy path.
+            </p>
+
+            <div className="hero-stats-strip">
+              {[stats[0], stats[1], stats[4]].map((s) => (
+                <div className="hero-stat" key={s.label}>
+                  <span className="hero-stat-val">{s.value}</span>
+                  <span className="hero-stat-lab">{s.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          <h1 className="hero-title">{profile.tagline}</h1>
-          <p className="hero-desc">
-            Applied deep learning for clinical and diagnostic use cases, and the full-stack systems that put them in
-            front of real people — without the AI layer ever blocking the happy path.
-          </p>
-        </div>
 
-        <div className="hero-visual">
-          <svg
-            viewBox="0 0 500 320"
-            xmlns="http://www.w3.org/2000/svg"
-            className="macropad-svg"
-          >
-            <rect x="50" y="40" width="230" height="70" rx="14" fill="#FFFFFF" fillOpacity="0.9" stroke="#E0E0E0" strokeWidth="2" />
-            <text x="165" y="72" fontFamily="'Space Grotesk', sans-serif" fontWeight="700" fontSize="15" fill="#333" textAnchor="middle">
-              PyTorch · EfficientNet
-            </text>
-            <text x="165" y="92" fontFamily="'Space Grotesk', sans-serif" fontWeight="500" fontSize="11" fill="#888" textAnchor="middle">
-              medical imaging models
-            </text>
-
-            <rect x="300" y="40" width="150" height="70" rx="14" fill="#FFFFFF" fillOpacity="0.9" stroke="#E0E0E0" strokeWidth="2" />
-            <text x="375" y="72" fontFamily="'Space Grotesk', sans-serif" fontWeight="700" fontSize="14" fill="#333" textAnchor="middle">
-              SHAP
-            </text>
-            <text x="375" y="92" fontFamily="'Space Grotesk', sans-serif" fontWeight="500" fontSize="11" fill="#888" textAnchor="middle">
-              interpretability
-            </text>
-
-            <rect x="220" y="130" width="80" height="60" rx="12" fill="#FFFFFF" fillOpacity="0.9" stroke="#E0E0E0" strokeWidth="2" />
-            <text x="260" y="165" fontFamily="'Space Grotesk', sans-serif" fontWeight="700" fontSize="14" fill="#333" textAnchor="middle">
-              FastAPI
-            </text>
-
-            <rect x="50" y="210" width="150" height="80" rx="14" fill="#FFFFFF" fillOpacity="0.9" stroke="#E0E0E0" strokeWidth="2" />
-            <text x="125" y="245" fontFamily="'Space Grotesk', sans-serif" fontWeight="700" fontSize="13" fill="#333" textAnchor="middle">
-              Next.js
-            </text>
-            <text x="125" y="265" fontFamily="'Space Grotesk', sans-serif" fontWeight="500" fontSize="11" fill="#888" textAnchor="middle">
-              + Postgres
-            </text>
-
-            <rect x="220" y="210" width="80" height="80" rx="14" fill="#FFFFFF" fillOpacity="0.9" stroke="#E0E0E0" strokeWidth="2" />
-            <text x="260" y="255" fontFamily="'Space Grotesk', sans-serif" fontWeight="700" fontSize="13" fill="#333" textAnchor="middle">
-              YOLOv8
-            </text>
-          </svg>
+          <div className="hero-photo-frame">
+            <Image src={profile.avatar} alt={profile.name} fill sizes="340px" style={{ objectFit: "cover" }} priority />
+            <span className="hero-photo-badge">
+              <span className="status-dot" /> Available for work
+            </span>
+          </div>
         </div>
 
         <div className="hero-footer">
@@ -231,26 +207,19 @@ export default function Portfolio() {
 
       {/* ============================================================ INVENTORY */}
       <div className="section-label-bar">Inventory — tools &amp; stack</div>
-      <div className="grid-2">
+      <div className="grid-3">
         {skills.map((group) => (
-          <div className={`card voice-card ${group.track}`} key={group.group}>
-            <div>
-              <span className="tag-label">{group.group}</span>
-              <div className="tech-pills" style={{ justifyContent: "flex-start", marginTop: 16, marginBottom: 0 }}>
-                {group.items.map((item) => (
-                  <span
-                    key={item}
-                    className="tech-pill"
-                    style={{
-                      background: group.track === "research" ? "rgba(47,74,60,0.1)" : "rgba(79,61,94,0.1)",
-                      color: group.track === "research" ? "var(--accent-sage)" : "var(--accent-lavender)",
-                      borderColor: "transparent",
-                    }}
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
+          <div className="card skill-card" key={group.group}>
+            <div className="skill-card-head">
+              <span className={`skill-dot ${group.track}`} />
+              <span className="skill-card-title">{group.group}</span>
+            </div>
+            <div className="skill-chip-row">
+              {group.items.map((item) => (
+                <span key={item} className={`skill-chip ${group.track}`}>
+                  {item}
+                </span>
+              ))}
             </div>
           </div>
         ))}
