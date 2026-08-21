@@ -122,14 +122,14 @@ export const education: EducationItem[] = [
     detail:
       "Thesis: \"My Daily Health — Multi-Disease Diagnostic Platform Using Ensemble Deep Learning.\" Ensemble of ResNet50, DenseNet-121, and EfficientNet-B3 across five disease domains, 90.3%–99.5% accuracy, evaluated via 5-fold cross-validation over 12 pre-trained architectures.",
   },
-  {
-    id: "bsc",
-    degree: "B.Sc. Electronics",
-    institution: "University Mohamed Boudiaf of M'sila",
-    period: "2018 – 2021",
-    detail:
-      "Final project: a microcontroller-based multi-layer security system integrating hardware-software authentication with embedded sensor networks.",
-  },
+//  {
+//    id: "bsc",
+//    degree: "B.Sc. Electronics",
+//    institution: "University Mohamed Boudiaf of M'sila",
+//    period: "2018 – 2021",
+//    detail:
+//      "Final project: a microcontroller-based multi-layer security system integrating hardware-software authentication with embedded sensor networks.",
+//  },
 ];
 
 // ---------------------------------------------------------------------------
