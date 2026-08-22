@@ -1,21 +1,21 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
+import { Outfit, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const plusJakarta = Plus_Jakarta_Sans({
-  variable: "--font-body",
+const outfit = Outfit({
+  variable: "--font-display",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-display",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Ahmed Messaad — Applied AI & Product Systems",
+  title: "Ahmed Messaad — AI/ML Engineer & Full-Stack Developer",
   description:
     "AI/ML Engineer & Full-Stack Developer — medical imaging and deep learning research, plus the Next.js, Postgres, and API engineering that ships it.",
   icons: {
@@ -30,12 +30,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${plusJakarta.variable} ${spaceGrotesk.variable}`}>
+    <html lang="en" className={`${outfit.variable} ${jetbrainsMono.variable}`}>
       <head>
         <link rel="icon" href="/ahmed-icon1.png" type="image/png" sizes="120x120" />
         <link rel="shortcut icon" href="/ahmed-icon1.png" type="image/png" />
         <link rel="apple-touch-icon" href="/ahmed-icon1.png" />
-        <meta name="theme-color" content="#121212" />
+        <meta name="theme-color" content="#f4f2ec" />
       </head>
       <body className="antialiased">{children}</body>
     </html>
