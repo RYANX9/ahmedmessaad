@@ -305,8 +305,8 @@ export default function Portfolio() {
       {/* ================= HERO ================= */}
       <section id="top" className="mx-auto max-w-6xl px-6 pb-12 pt-8 sm:pb-16 sm:pt-10">
         <Reveal>
-          <h1 className="max-w-3xl text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl md:text-7xl">
-            {profile.tagline}
+          <h1 className="font-hero max-w-3xl text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl md:text-7xl">
+            {profile.tagline.replace(/A/g, "\uE000")}
           </h1>
         </Reveal>
 
