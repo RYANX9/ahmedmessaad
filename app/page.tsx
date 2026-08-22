@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
-import { Github, Linkedin, Mail, ArrowUpRight, Award } from "lucide-react";
+import { useState, type CSSProperties, type ReactNode } from "react";
+import { motion, type Variants } from "framer-motion";
+import { ArrowUpRight, Award, FileDown, Github, Linkedin, Mail } from "lucide-react";
 import { FaKaggle } from "react-icons/fa";
-import { Navbar } from "./components/navbar";
 import {
   profile,
   about,
@@ -12,313 +11,499 @@ import {
   experience,
   education,
   projects,
+  projectFilters,
   skills,
   publications,
   honors,
   contact,
-  projectFilters,
+  type Project,
   type Track,
 } from "./data";
+import { ProjectIconBadge } from "./components/project-icons";
+import { PulseLine } from "./components/signature";
 
-function chunk<T>(arr: T[], size: number): T[][] {
-  const out: T[][] = [];
-  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
-  return out;
+// ---------------------------------------------------------------------------
+// Shared primitives
+// ---------------------------------------------------------------------------
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+};
+
+function Reveal({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      className={className}
+      variants={fadeUp}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ delay }}
+    >
+      {children}
+    </motion.div>
+  );
 }
 
-const TRACK_TAG_CLASS: Record<Track, string> = {
-  research: "tag-dark",
-  systems: "tag-yellow",
+const TRACK_COLOR: Record<Track, string> = {
+  research: "var(--teal)",
+  systems: "var(--orange)",
 };
+
+function TrackDot({ track }: { track: Track }) {
+  return (
+    <span
+      className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-widest"
+      style={{ color: TRACK_COLOR[track] }}
+    >
+      <span className="h-1.5 w-1.5 rounded-full" style={{ background: TRACK_COLOR[track] }} />
+      {track === "research" ? "Research" : "Systems"}
+    </span>
+  );
+}
+
+function SectionHead({ title, meta }: { title: string; meta?: string }) {
+  return (
+    <Reveal className="flex flex-wrap items-baseline justify-between gap-3 border-b-2 border-[var(--ink)] pb-4">
+      <h2 className="text-3xl font-bold tracking-tight md:text-4xl">{title}</h2>
+      {meta && <span className="font-mono text-xs font-semibold uppercase tracking-widest text-[var(--gray)]">{meta}</span>}
+    </Reveal>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Work: bento grid + update list
+// ---------------------------------------------------------------------------
+
+type CardVariant = "orange" | "white" | "dark";
+
+const CARD_STYLE: Record<CardVariant, CSSProperties> = {
+  orange: { background: "var(--orange)", color: "#fff", borderColor: "var(--ink)" },
+  white: { background: "var(--card)", color: "var(--ink)", borderColor: "var(--ink)" },
+  dark: { background: "var(--ink)", color: "var(--paper)", borderColor: "var(--ink)" },
+};
+
+function cardVariant(p: Project, index: number, total: number): CardVariant {
+  if (p.featured) return "orange";
+  if (index === total - 1) return "dark";
+  return "white";
+}
+
+function BentoCard({ project, index, total }: { project: Project; index: number; total: number }) {
+  const variant = cardVariant(project, index, total);
+  const inverted = variant !== "white";
+  const style = CARD_STYLE[variant];
+
+  return (
+    <Reveal delay={index * 0.06} className={project.featured ? "md:col-span-2" : ""}>
+      <a
+        href={project.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hard-shadow-hover group flex h-full flex-col justify-between rounded-[20px] border-2 p-7"
+        style={style}
+      >
+        <div className="flex items-start justify-between gap-4">
+          <span
+            className="font-mono text-[11px] font-semibold uppercase tracking-widest"
+            style={{ color: inverted ? "rgba(255,255,255,0.7)" : "var(--gray)" }}
+          >
+            {project.category} — {project.year}
+          </span>
+          <ProjectIconBadge icon={project.icon} track={project.track} inverted={inverted} />
+        </div>
+
+        <div className="mt-4">
+          <h3 className="text-xl font-bold md:text-2xl">{project.name}</h3>
+          <p className="mt-2 text-sm leading-relaxed opacity-85">
+            {project.featured ? project.description : project.tagline}
+          </p>
+        </div>
+
+        {project.metrics.length > 0 && (
+          <div className="mt-5 flex flex-wrap gap-5">
+            {project.metrics.slice(0, project.featured ? 3 : 2).map((m) => (
+              <div key={m.label}>
+                <div className="text-lg font-extrabold">{m.value}</div>
+                <div
+                  className="font-mono text-[10px] uppercase tracking-widest"
+                  style={{ color: inverted ? "rgba(255,255,255,0.65)" : "var(--gray)" }}
+                >
+                  {m.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-bold">
+          {project.linkText}
+          <ArrowUpRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </span>
+      </a>
+    </Reveal>
+  );
+}
+
+function UpdateRow({ project, index }: { project: Project; index: number }) {
+  const metric = project.metrics[0];
+  return (
+    <Reveal delay={index * 0.05}>
+      <a
+        href={project.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hard-shadow-hover group grid grid-cols-[auto_1fr_auto] items-center gap-5 rounded-[18px] border-2 border-[var(--ink)] bg-[var(--card)] p-5 transition-transform duration-300 md:p-6"
+      >
+        <ProjectIconBadge icon={project.icon} track={project.track} size={46} />
+
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h4 className="text-base font-bold">{project.name}</h4>
+            <TrackDot track={project.track} />
+          </div>
+          <p className="mt-1 text-sm text-[var(--gray)]">{project.tagline}</p>
+        </div>
+
+        <div className="flex items-center gap-5">
+          {metric && (
+            <div className="hidden text-right sm:block">
+              <div className="text-base font-extrabold">{metric.value}</div>
+              <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--gray)]">{metric.label}</div>
+            </div>
+          )}
+          <span className="inline-flex items-center gap-1.5 rounded-full border-2 border-[var(--ink)] px-4 py-2 font-mono text-xs font-bold uppercase tracking-widest transition-colors group-hover:bg-[var(--ink)] group-hover:text-[var(--paper)]">
+            View
+          </span>
+        </div>
+      </a>
+    </Reveal>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Page
+// ---------------------------------------------------------------------------
+
+type LogEntry = {
+  id: string;
+  tag: "WORK" | "EDU";
+  period: string;
+  title: string;
+  org: string;
+  body: string;
+};
+
+const log: LogEntry[] = [
+  ...experience.map((e) => ({
+    id: e.id,
+    tag: "WORK" as const,
+    period: e.period,
+    title: e.role,
+    org: e.org,
+    body: e.summary,
+  })),
+  ...education.map((e) => ({
+    id: e.id,
+    tag: "EDU" as const,
+    period: e.period,
+    title: e.degree,
+    org: e.institution,
+    body: e.detail ?? "",
+  })),
+];
 
 export default function Portfolio() {
   const [filter, setFilter] = useState<"all" | Track>("all");
-  const visible = filter === "all" ? projects : projects.filter((p) => p.track === filter);
-  const rows = chunk(visible, 3);
 
-  const researchThread = about.threads.find((t) => t.track === "research");
-  const systemsThread = about.threads.find((t) => t.track === "systems");
-  const spotlight = projects.find((p) => p.id === "mydailyhealth") ?? projects[0];
+  const visible = filter === "all" ? projects : projects.filter((p) => p.track === filter);
+  const sorted = [...visible].sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
+  const bentoProjects = sorted.slice(0, 4);
+  const restProjects = sorted.slice(4);
 
   return (
-    <div className="wrapper" id="top">
-      <Navbar />
-
-      {/* ============================================================ HERO */}
-      <section className="card hero-card">
-        <div className="hero-top">
-          <div>
-            <div className="hero-tagline">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9L12 2Z" />
-              </svg>
-              {profile.location} — {profile.role}
-            </div>
-            <h1 className="hero-title">{profile.tagline}</h1>
-            <p className="hero-desc">
-              Applied deep learning for clinical and diagnostic use cases, and the full-stack systems that put them
-              in front of real people — without the AI layer ever blocking the happy path.
-            </p>
-
-            <div className="hero-stats-strip">
-              {[stats[0], stats[1], stats[4]].map((s) => (
-                <div className="hero-stat" key={s.label}>
-                  <span className="hero-stat-val">{s.value}</span>
-                  <span className="hero-stat-lab">{s.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="hero-photo-frame">
-            <Image src={profile.avatar} alt={profile.name} fill sizes="340px" style={{ objectFit: "cover" }} priority />
-            <span className="hero-photo-badge">
-              <span className="status-dot" /> Available for work
-            </span>
-          </div>
+    <div className="relative overflow-x-hidden">
+      {/* ================= NAV ================= */}
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-7">
+        <a href="#top" className="flex items-center gap-2 text-lg font-bold">
+          <span className="h-3 w-3 rounded-full" style={{ background: "var(--orange)" }} />
+          {profile.name.toLowerCase()}
+        </a>
+        <div className="hidden gap-8 font-mono text-xs font-semibold uppercase tracking-widest md:flex">
+          <a href="#work" className="opacity-70 transition hover:opacity-100">Work</a>
+          <a href="#log" className="opacity-70 transition hover:opacity-100">Log</a>
+          <a href="#stack" className="opacity-70 transition hover:opacity-100">Stack</a>
+          <a href="#papers" className="opacity-70 transition hover:opacity-100">Papers</a>
         </div>
-
-        <div className="hero-footer">
-          <div className="status-pill">
-            <span className="status-dot" /> Open to research &amp; full-stack roles
-          </div>
-          <div className="action-pill">
-            Explore the work
-            <a href="#work" className="btn-yellow">
-              View projects →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================ TWO VOICES + STATS */}
-      <div className="grid-3">
-        {researchThread && (
-          <div className="card voice-card research">
-            <div>
-              <span className="tag-label">{researchThread.label}</span>
-              <h2>Models that a clinician could use.</h2>
-              <p>{researchThread.body}</p>
-            </div>
-          </div>
-        )}
-        {systemsThread && (
-          <div className="card voice-card systems">
-            <div>
-              <span className="tag-label">{systemsThread.label}</span>
-              <h2>The software that ships it.</h2>
-              <p>{systemsThread.body}</p>
-            </div>
-          </div>
-        )}
-        <div className="card stat-card">
-          {stats.slice(0, 3).map((s) => (
-            <div className="stat-row" key={s.label}>
-              <span className="stat-val">{s.value}</span>
-              <span className="stat-lab">{s.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ============================================================ WORK */}
-      <div id="work" className="section-label-bar">
-        Selected work — {projects.filter((p) => p.track === "systems").length} systems,{" "}
-        {projects.filter((p) => p.track === "research").length} research
-      </div>
-      <div className="filter-row">
-        {projectFilters.map((f) => (
-          <button
-            key={f.id}
-            type="button"
-            className={`filter-pill${filter === f.id ? " active" : ""}`}
-            onClick={() => setFilter(f.id)}
+        <div className="flex items-center gap-3">
+          <a href="#connect" className="hidden font-semibold sm:inline">Get in touch</a>
+          <a
+            href={`mailto:${profile.email}`}
+            className="rounded-full border-2 border-[var(--ink)] px-5 py-2.5 text-sm font-bold transition hover:bg-[var(--ink)] hover:text-[var(--paper)]"
           >
-            {f.label}
-          </button>
-        ))}
-      </div>
-
-      {rows.map((row, i) => (
-        <div className="grid-3" key={i}>
-          {row.map((p) => (
-            <a href={p.link} key={p.id} target="_blank" rel="noopener noreferrer" className="card project-card">
-              <div>
-                <div className="project-preview-box">
-                  {p.image ? (
-                    <Image src={p.image} alt={p.name} fill sizes="400px" style={{ objectFit: "cover" }} />
-                  ) : (
-                    <div className="bg-pattern" />
-                  )}
-                  <span
-                    className={`project-pill-tag ${
-                      p.category.toLowerCase().includes("bbc") ? "tag-orange" : TRACK_TAG_CLASS[p.track]
-                    }`}
-                  >
-                    {p.category.toLowerCase().includes("bbc") ? "Featured — BBC News" : p.track === "research" ? "Research" : "Systems"}
-                  </span>
-                  <span className="preview-metric">{p.metrics[0]?.value}</span>
-                </div>
-                <div className="project-title">{p.name}</div>
-                <div className="project-tagline">{p.tagline}</div>
-                <div className="project-body">{p.description}</div>
-              </div>
-              <div>
-                <div className="metrics-row">
-                  {p.metrics.slice(0, 2).map((m) => (
-                    <div className="metric-item" key={m.label}>
-                      <span className="metric-val">{m.value}</span>
-                      <span className="metric-lab">{m.label}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="card-action-bar">
-                  <span style={{ display: "flex", alignItems: "center", gap: 8, fontSize: "0.82rem", color: "#666" }}>
-                    <span className={`track-dot ${p.track}`} /> {p.year}
-                  </span>
-                  <span className="link-pill">
-                    {p.linkText} <ArrowUpRight size={13} />
-                  </span>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-      ))}
-
-      {/* ============================================================ GLOW BANNER */}
-      <section className="card glow-banner" id="research">
-        <div className="glow-circle" />
-        <div className="glow-banner-content">
-          <h2>{spotlight.tagline}</h2>
-          <p>{spotlight.description}</p>
-          <div className="tech-pills">
-            {spotlight.tech.map((t) => (
-              <span className="tech-pill" key={t}>
-                {t}
-              </span>
-            ))}
-          </div>
-          <a href={spotlight.link} className="btn-yellow" target="_blank" rel="noopener noreferrer">
-            {spotlight.linkText} →
+            Hire me
           </a>
         </div>
+      </nav>
+
+      {/* ================= HERO ================= */}
+      <section id="top" className="mx-auto max-w-6xl px-6 pb-16 pt-10">
+        <Reveal>
+          <h1 className="max-w-3xl text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
+            {profile.tagline}
+          </h1>
+        </Reveal>
+
+        <div className="mt-8 grid gap-10 md:grid-cols-[1fr_auto] md:items-end">
+          <Reveal delay={0.08} className="max-w-xl">
+            <p className="text-lg leading-relaxed text-[var(--gray)]">{about.closing}</p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <a
+                href="#work"
+                className="rounded-full px-6 py-3 text-sm font-bold text-white transition hard-shadow-hover"
+                style={{ background: "var(--ink)" }}
+              >
+                View the work
+              </a>
+              <a
+                href={`mailto:${profile.email}`}
+                className="inline-flex items-center gap-2 rounded-full border-2 border-[var(--ink)] px-6 py-3 text-sm font-bold transition hover:bg-[var(--ink)] hover:text-[var(--paper)]"
+              >
+                Get in touch <ArrowUpRight size={14} />
+              </a>
+              <a
+                href={profile.resume}
+                className="inline-flex items-center gap-2 rounded-full border-2 border-[var(--ink)] px-6 py-3 text-sm font-bold transition hover:bg-[var(--ink)] hover:text-[var(--paper)]"
+              >
+                <FileDown size={14} /> Resume
+              </a>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.14} className="w-full max-w-sm md:w-72">
+            <PulseLine className="w-full" />
+          </Reveal>
+        </div>
+
+        <Reveal delay={0.18}>
+          <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 border-t-2 border-[var(--line)] pt-6">
+            {stats.map((s) => (
+              <div key={s.label} className="font-mono text-xs">
+                <span className="text-base font-extrabold">{s.value}</span>{" "}
+                <span className="uppercase tracking-wide text-[var(--gray)]">{s.label}</span>
+              </div>
+            ))}
+          </div>
+        </Reveal>
       </section>
 
-      {/* ============================================================ INVENTORY */}
-      <div className="section-label-bar">Inventory — tools &amp; stack</div>
-      <div className="grid-3">
-        {skills.map((group) => (
-          <div className="card skill-card" key={group.group}>
-            <div className="skill-card-head">
-              <span className={`skill-dot ${group.track}`} />
-              <span className="skill-card-title">{group.group}</span>
-            </div>
-            <div className="skill-chip-row">
-              {group.items.map((item) => (
-                <span key={item} className={`skill-chip ${group.track}`}>
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* ================= WORK ================= */}
+      <section id="work" className="mx-auto max-w-6xl px-6 py-16">
+        <SectionHead title="Work" meta={`${projects.length} projects`} />
 
-      {/* ============================================================ EXPERIENCE */}
-      <div className="grid-7-5" id="experience">
-        <div className="card exp-card">
-          <h2>Experience</h2>
-          {experience.map((e) => (
-            <div className="exp-item" key={e.id}>
-              <div className="exp-year">{e.period}</div>
-              <div>
-                <div className="exp-role">{e.role}</div>
-                <div className="exp-org">{e.org}</div>
-                <div className="exp-desc">{e.summary}</div>
-                <div className="exp-tech">
-                  {e.tech.slice(0, 4).map((t) => (
-                    <span key={t}>{t}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
+        <Reveal delay={0.05} className="mt-7 flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap gap-2 font-mono text-xs font-bold uppercase tracking-widest">
+            {projectFilters.map((f) => {
+              const active = filter === f.id;
+              return (
+                <button
+                  key={f.id}
+                  onClick={() => setFilter(f.id)}
+                  className="rounded-full border-2 border-[var(--ink)] px-4 py-2 transition"
+                  style={active ? { background: "var(--ink)", color: "var(--paper)" } : { color: "var(--gray)" }}
+                >
+                  {f.label}
+                </button>
+              );
+            })}
+          </div>
+          <span className="ml-1 flex items-center gap-4 font-mono text-[11px] text-[var(--gray)]">
+            <TrackDot track="research" /> <TrackDot track="systems" />
+          </span>
+        </Reveal>
+
+        <div className="mt-8 grid gap-5 md:grid-cols-3">
+          {bentoProjects.map((p, i) => (
+            <BentoCard key={p.id} project={p} index={i} total={bentoProjects.length} />
           ))}
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          <div className="card honor-card">
-            <h3>Publications &amp; honors</h3>
-            {honors.map((h) => (
-              <div className="honor-item" key={h.id}>
-                <strong>{h.label}</strong>
-                <span>{h.org}</span>
-              </div>
+        {restProjects.length > 0 && (
+          <div className="mt-6 flex flex-col gap-4">
+            {restProjects.map((p, i) => (
+              <UpdateRow key={p.id} project={p} index={i} />
             ))}
           </div>
-          <div className="card edu-card" style={{ background: "var(--bg-card-dark)" }}>
-            {education.map((ed) => (
-              <div key={ed.id} style={{ marginBottom: 14 }}>
-                <h3>{ed.degree}</h3>
-                <p>
-                  {ed.institution}, {ed.period}. {ed.detail}
-                </p>
+        )}
+      </section>
+
+      {/* ================= TWO THREADS ================= */}
+      <section id="about" className="mx-auto max-w-6xl px-6 py-16">
+        <SectionHead title="Two threads" />
+        <div className="mt-8 grid gap-5 md:grid-cols-2">
+          {about.threads.map((thread, i) => (
+            <Reveal key={thread.track} delay={i * 0.06}>
+              <div className="h-full rounded-[20px] border-2 border-[var(--ink)] bg-[var(--card)] p-7">
+                <TrackDot track={thread.track} />
+                <p className="mt-3 text-sm leading-relaxed text-[var(--gray)]">{thread.body}</p>
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ============================================================ PAPERS */}
-      <div className="section-label-bar">Papers — published record</div>
-      <div className="card paper-card" id="papers">
-        {publications.map((pub) => (
-          <div className="paper-item" key={pub.id}>
-            <div className="paper-seal">
-              <Award size={16} color="var(--accent-orange)" style={{ marginBottom: 4 }} />
-              <span>{pub.award ? "Award" : "Published"}</span>
-              <span className="sub">{pub.date}</span>
-            </div>
-            <div>
-              <div className="paper-title">{pub.title}</div>
-              <div className="paper-venue">{pub.venue}</div>
-              <p className="paper-detail">{pub.detail}</p>
-              {pub.award && <span className="paper-award">{pub.award}</span>}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* ============================================================ FOOTER */}
-      <section className="card footer-card" id="contact">
-        <div />
-        <div>
-          <span className="tag-label" style={{ background: "rgba(204,255,0,0.15)", color: "var(--accent-yellow)" }}>
-            Open to work
-          </span>
-          <h2 className="footer-title">{contact.heading}</h2>
-          <p className="footer-subtitle">{contact.body}</p>
-        </div>
-        <div>
-          <div className="footer-links">
-            <a href={`mailto:${profile.email}`} className="social-btn">
-              <Mail size={15} /> Email
-            </a>
-            <a href={profile.github} target="_blank" rel="noopener noreferrer" className="social-btn">
-              <Github size={15} /> GitHub
-            </a>
-            <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="social-btn">
-              <Linkedin size={15} /> LinkedIn
-            </a>
-            <a href={profile.kaggle} target="_blank" rel="noopener noreferrer" className="social-btn">
-              <FaKaggle size={15} /> Kaggle
-            </a>
-          </div>
-          <div className="footer-bottom">
-            {profile.name} — {profile.location} — © 2026
-          </div>
+            </Reveal>
+          ))}
         </div>
       </section>
+
+      {/* ================= LOG ================= */}
+      <section id="log" className="mx-auto max-w-6xl px-6 py-16">
+        <SectionHead title="Log" meta="2018 — 2024" />
+        <div className="mt-8 grid gap-5 md:grid-cols-2">
+          {log.map((entry, i) => (
+            <Reveal key={entry.id} delay={(i % 4) * 0.06}>
+              <div className="h-full rounded-[20px] border-2 border-[var(--ink)] bg-[var(--card)] p-7">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold uppercase tracking-widest" style={{ color: "var(--orange)" }}>
+                    {entry.period}
+                  </span>
+                  <span className="rounded-full border border-[var(--line-strong)] px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-[var(--gray)]">
+                    {entry.tag}
+                  </span>
+                </div>
+                <h4 className="mt-3 text-lg font-bold">{entry.title}</h4>
+                <p className="mt-1 text-sm font-semibold text-[var(--gray)]">{entry.org}</p>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--gray)]">{entry.body}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ================= STACK ================= */}
+      <section id="stack" className="mx-auto max-w-6xl px-6 py-16">
+        <SectionHead title="Stack" meta="Shipped, not theoretical" />
+        <div className="mt-8 flex flex-col gap-4">
+          {skills.map((s, i) => (
+            <Reveal key={s.group} delay={i * 0.04}>
+              <div className="flex flex-wrap items-center gap-3 border-b-2 border-[var(--line)] pb-4">
+                <span className="w-full shrink-0 font-mono text-xs font-bold uppercase tracking-widest text-[var(--gray)] sm:w-48">
+                  {s.group}
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {s.items.map((it) => (
+                    <span
+                      key={it}
+                      className="rounded-full border-2 px-3 py-1 font-mono text-xs font-semibold"
+                      style={{ borderColor: TRACK_COLOR[s.track] }}
+                    >
+                      {it}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ================= PAPERS ================= */}
+      <section id="papers" className="mx-auto max-w-6xl px-6 py-16">
+        <SectionHead title="Papers" />
+        <div className="mt-8 flex flex-col gap-4">
+          {publications.map((pub, i) => (
+            <Reveal key={pub.id} delay={i * 0.05}>
+              <div className="rounded-[20px] border-2 border-[var(--ink)] bg-[var(--card)] p-7">
+                <div className="flex flex-wrap items-baseline justify-between gap-3">
+                  <h3 className="text-base font-bold">{pub.title}</h3>
+                  <span className="whitespace-nowrap font-mono text-xs font-semibold uppercase tracking-widest text-[var(--gray)]">
+                    {pub.date}
+                  </span>
+                </div>
+                <p className="mt-1 text-sm font-semibold text-[var(--gray)]">{pub.venue}</p>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--gray)]">{pub.detail}</p>
+                {pub.award && (
+                  <p
+                    className="mt-4 inline-flex items-center gap-1.5 rounded-full border-2 px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-widest"
+                    style={{ borderColor: "var(--orange)", color: "var(--orange)" }}
+                  >
+                    <Award size={12} /> {pub.award}
+                  </p>
+                )}
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal delay={0.1} className="mt-5 flex flex-wrap gap-2">
+          {honors.map((h) => (
+            <span
+              key={h.id}
+              className="inline-flex items-center gap-1.5 rounded-full border-2 border-[var(--ink)] bg-[var(--card)] px-3 py-1.5 font-mono text-[11px] font-semibold"
+            >
+              <Award size={11} style={{ color: "var(--orange)" }} />
+              {h.label}
+              <span className="text-[var(--gray)]">— {h.org}</span>
+            </span>
+          ))}
+        </Reveal>
+      </section>
+
+      {/* ================= CONNECT ================= */}
+      <section id="connect" className="mx-auto max-w-6xl px-6 pb-20">
+        <Reveal>
+          <div className="rounded-[28px] p-10 text-center md:p-16" style={{ background: "var(--ink)", color: "var(--paper)" }}>
+            <h2 className="mx-auto max-w-2xl text-3xl font-extrabold leading-tight md:text-5xl">
+              {contact.heading}
+            </h2>
+            <p className="mx-auto mt-5 max-w-xl text-base opacity-70">{contact.body}</p>
+
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <a
+                href={`mailto:${profile.email}`}
+                className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-bold text-white"
+                style={{ background: "var(--orange)" }}
+              >
+                <Mail size={16} /> {profile.email}
+              </a>
+              <a
+                href={profile.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-white/60 px-5 py-3 text-sm font-bold transition hover:border-white"
+              >
+                <Github size={15} /> GitHub
+              </a>
+              <a
+                href={profile.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-white/60 px-5 py-3 text-sm font-bold transition hover:border-white"
+              >
+                <Linkedin size={15} /> LinkedIn
+              </a>
+              <a
+                href={profile.kaggle}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-white/60 px-5 py-3 text-sm font-bold transition hover:border-white"
+              >
+                <FaKaggle size={15} /> Kaggle
+              </a>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
+      <footer className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-8 font-mono text-[11px] uppercase tracking-widest text-[var(--gray)]">
+        <span>{profile.location} — built with Next.js</span>
+        <span>AM — 2026</span>
+      </footer>
     </div>
   );
 }
