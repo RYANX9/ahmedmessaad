@@ -164,6 +164,10 @@ export type Project = {
   link: string;
   linkText: string;
   featured?: boolean;
+  // Gives the bento card a two-column span and room for the full
+  // description instead of just the tagline. Independent of `featured` —
+  // use it for any project whose story needs more space to land.
+  wide?: boolean;
 };
 
 export const projects: Project[] = [
@@ -224,6 +228,7 @@ export const projects: Project[] = [
     ],
     link: "https://www.youtube.com/watch?v=fX77vZlHkng",
     linkText: "BBC coverage",
+    wide: true,
   },
   {
     id: "healthcost",
