@@ -306,7 +306,16 @@ export default function Portfolio() {
       <section id="top" className="mx-auto max-w-6xl px-6 pb-12 pt-8 sm:pb-16 sm:pt-10">
         <Reveal>
           <h1 className="font-hero max-w-3xl text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl md:text-7xl">
-            {profile.tagline.replace(/A/g, "\uE000")}
+            {profile.tagline.split(/(?=[eUnEUN])|(?<=[eUnEUN])/g).map((part, index) => {
+              if (/^[eUnEUN]$/.test(part)) {
+                return (
+                  <span key={index} className="reset-glyph">
+                    {part}
+                  </span>
+                );
+              }
+              return part;
+            })}
           </h1>
         </Reveal>
 
