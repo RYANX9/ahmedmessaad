@@ -241,11 +241,10 @@ export default function Portfolio() {
   const restProjects = sorted.slice(4);
 
   return (
-    <div className="relative overflow-x-hidden">
-
+    <div className="relative overflow-x-hidden pt-24 sm:pt-32">
       {/* ================= NAV ================= */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b-2 border-transparent bg-[var(--paper)]/95 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 sm:py-7">
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b-2 border-[var(--line)] bg-[var(--paper)]/95 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 sm:py-3.5">
           <a href="#top" className="flex items-center gap-2 text-base font-bold sm:text-lg">
             <span className="h-3 w-3 rounded-full" style={{ background: "var(--orange)" }} />
             {profile.name.toLowerCase()}
@@ -261,7 +260,7 @@ export default function Portfolio() {
             <a href="#connect" className="hidden font-semibold sm:inline">Get in touch</a>
             <a
               href={`mailto:${profile.email}`}
-              className="rounded-full border-2 border-[var(--ink)] px-4 py-2 text-xs font-bold transition hover:bg-[var(--ink)] hover:text-[var(--paper)] sm:px-5 sm:py-2.5 sm:text-sm"
+              className="rounded-full border-2 border-[var(--ink)] px-4 py-1.5 text-xs font-bold transition hover:bg-[var(--ink)] hover:text-[var(--paper)] sm:px-5 sm:py-2 sm:text-sm"
             >
               Hire me
             </a>
@@ -270,7 +269,7 @@ export default function Portfolio() {
               onClick={() => setMenuOpen((v) => !v)}
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
-              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--ink)] md:hidden"
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-[var(--ink)] md:hidden"
             >
               {menuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
