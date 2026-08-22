@@ -12,7 +12,8 @@ export type Track = "research" | "systems";
 export const profile = {
   name: "Ahmed Messaad",
   role: "AI/ML Engineer & Full-Stack Developer",
-  tagline: "I build the model. Then I build the product around it.",
+//  tagline: "I build the model. Then I build the product around it.",
+  tagline: "I BUILD THE MODELS THEN I BUILD THE PROCUCT AROUND IT.",
   location: "Algeria",
   email: "ahmed.messaad@outlook.com",
   github: "https://github.com/RYANX9",
