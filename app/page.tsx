@@ -103,8 +103,10 @@ function BentoCard({ project, index, total }: { project: Project; index: number;
   const inverted = variant !== "white";
   const style = CARD_STYLE[variant];
 
+  const expanded = Boolean(project.featured || project.wide);
+
   return (
-    <Reveal delay={index * 0.06} className={project.featured ? "md:col-span-2" : ""}>
+    <Reveal delay={index * 0.06} className={expanded ? "md:col-span-2" : ""}>
       <a
         href={project.link}
         target="_blank"
@@ -124,14 +126,14 @@ function BentoCard({ project, index, total }: { project: Project; index: number;
 
         <div className="mt-4">
           <h3 className="text-xl font-bold md:text-2xl">{project.name}</h3>
-          <p className="mt-2 text-sm leading-relaxed opacity-85">
-            {project.featured ? project.description : project.tagline}
+          <p className={`mt-2 text-sm leading-relaxed opacity-85 ${expanded ? "max-w-2xl" : ""}`}>
+            {expanded ? project.description : project.tagline}
           </p>
         </div>
 
         {project.metrics.length > 0 && (
           <div className="mt-5 flex flex-wrap gap-5">
-            {project.metrics.slice(0, project.featured ? 3 : 2).map((m) => (
+            {project.metrics.slice(0, expanded ? 3 : 2).map((m) => (
               <div key={m.label}>
                 <div className="text-lg font-extrabold">{m.value}</div>
                 <div
