@@ -5,12 +5,12 @@
 //   "research" — applied deep learning for clinical / diagnostic use cases
 //   "systems"  — the full-stack engineering that ships a model as a product
 // Projects, skills, and experience are all tagged with a track so the UI can
-// color-code and filter them consistently (sage = research, lavender = systems).
+// color-code and filter them consistently (teal = research, orange = systems).
 
 export type Track = "research" | "systems";
 
 export const profile = {
-  name: "AHMED MESSAAD",
+  name: "Ahmed Messaad",
   role: "AI/ML Engineer & Full-Stack Developer",
   tagline: "I build the model. Then I build the product around it.",
   location: "Algeria",
@@ -122,23 +122,38 @@ export const education: EducationItem[] = [
     detail:
       "Thesis: \"My Daily Health — Multi-Disease Diagnostic Platform Using Ensemble Deep Learning.\" Ensemble of ResNet50, DenseNet-121, and EfficientNet-B3 across five disease domains, 90.3%–99.5% accuracy, evaluated via 5-fold cross-validation over 12 pre-trained architectures.",
   },
-//  {
-//    id: "bsc",
-//    degree: "B.Sc. Electronics",
-//    institution: "University Mohamed Boudiaf of M'sila",
-//    period: "2018 – 2021",
-//    detail:
-//      "Final project: a microcontroller-based multi-layer security system integrating hardware-software authentication with embedded sensor networks.",
-//  },
+  {
+    id: "bsc",
+    degree: "B.Sc. Electronics",
+    institution: "University Mohamed Boudiaf of M'sila",
+    period: "2018 – 2021",
+    detail:
+      "Final project: a microcontroller-based multi-layer security system integrating hardware-software authentication with embedded sensor networks.",
+  },
 ];
 
 // ---------------------------------------------------------------------------
 // Projects
 // ---------------------------------------------------------------------------
 
+// Each project gets one icon, chosen for what the project actually does —
+// not a decorative glyph. See app/components/project-icons.tsx for the
+// icon -> lucide component mapping.
+export type ProjectIcon =
+  | "activity"
+  | "brain"
+  | "droplet"
+  | "line-chart"
+  | "stethoscope"
+  | "trending-down"
+  | "smartphone"
+  | "bell-ring"
+  | "git-branch";
+
 export type Project = {
   id: string;
   track: Track;
+  icon: ProjectIcon;
   name: string;
   category: string;
   year: string;
@@ -148,12 +163,6 @@ export type Project = {
   metrics: { label: string; value: string }[];
   link: string;
   linkText: string;
-  // Research projects use a real photo from /public. Systems projects use a
-  // hand-drawn doodle cover instead (key into the ProjectCover registry) —
-  // there's no clinical screenshot to show, and the doodle keeps the visual
-  // language consistent with the rest of the site.
-  image?: string;
-  coverIcon?: "terminal" | "database" | "api";
   featured?: boolean;
 };
 
@@ -162,6 +171,7 @@ export const projects: Project[] = [
   {
     id: "treatment-drl",
     track: "research",
+    icon: "activity",
     name: "Medical Treatment DRL",
     category: "Sequential Decision-Making",
     year: "2025",
@@ -176,11 +186,11 @@ export const projects: Project[] = [
     ],
     link: "https://github.com/RYANX9/medical-treatment-drl/",
     linkText: "View code",
-    image: "/clinrl.jpeg",
   },
   {
     id: "airm-project",
     track: "research",
+    icon: "brain",
     name: "AIRM Brain Tumor System",
     category: "Computer Vision",
     year: "2024",
@@ -195,30 +205,30 @@ export const projects: Project[] = [
     ],
     link: "https://youtu.be/2OeqBKF3X_A",
     linkText: "Watch demo",
-    image: "/brain.jpg",
   },
   {
     id: "hemavision",
     track: "research",
+    icon: "droplet",
     name: "HemaVision",
-    category: "Object Detection — Featured on BBC News Arabic",
+    category: "Object Detection",
     year: "2023–2024",
     tagline: "45 minutes of microscopy work, down to 3",
     description:
-      "Automated hematology platform for real-time detection and classification of red blood cells, white blood cell subtypes, and platelets. A disease classification layer flags cell morphology tied to leukemia, malaria, and anemia. Reached 97% multi-class accuracy, cut diagnostic time from 45 minutes to 3, and the pipeline was validated by a practicing clinical hematologist before being featured on BBC News Arabic's 4Tech program.",
+      "Automated hematology platform reaching 97% multi-class blood cell classification. Cut diagnostic time from 45 minutes to 3 through an optimized detection pipeline, while investigating efficient segmentation architectures for microscopy imaging.",
     tech: ["YOLOv8", "U-Net", "OpenCV", "PyTorch"],
     metrics: [
       { label: "accuracy", value: "97%" },
       { label: "time", value: "3min" },
-      { label: "coverage", value: "BBC 4Tech" },
+      { label: "speedup", value: "15x" },
     ],
-    link: "https://www.youtube.com/watch?v=fX77vZlHkng",
-    linkText: "BBC coverage",
-    image: "/blood.jpg",
+    link: "https://youtu.be/YxhA877Wyn0",
+    linkText: "Watch demo",
   },
   {
     id: "healthcost",
     track: "research",
+    icon: "line-chart",
     name: "Healthcare Cost Prediction",
     category: "Deep Learning",
     year: "2024",
@@ -233,11 +243,11 @@ export const projects: Project[] = [
     ],
     link: "https://github.com/RYANX9/healthcare-cost-prediction",
     linkText: "View code",
-    image: "/healthcarecost.png",
   },
   {
     id: "mydailyhealth",
     track: "research",
+    icon: "stethoscope",
     name: "My Daily Health",
     category: "Research Thesis",
     year: "2023",
@@ -252,11 +262,11 @@ export const projects: Project[] = [
     ],
     link: "https://youtu.be/kh7WBjNPpEM",
     linkText: "Watch demo",
-    image: "/daily.png",
   },
   {
     id: "crypto-drl",
     track: "research",
+    icon: "trending-down",
     name: "Deep RL for Crypto Trading",
     category: "Applied ML / Research",
     year: "2025",
@@ -271,12 +281,12 @@ export const projects: Project[] = [
     ],
     link: "https://github.com/RYANX9/deep-rl-trading",
     linkText: "View code",
-    image: "/agent_comparison.png",
   },
   // --- systems ------------------------------------------------------------
   {
     id: "specmob",
     track: "systems",
+    icon: "smartphone",
     name: "Specmob",
     category: "Full-Stack Platform",
     year: "2025",
@@ -289,16 +299,14 @@ export const projects: Project[] = [
       { label: "search", value: "typo-tolerant" },
       { label: "AI copy", value: "w/ fallback" },
     ],
-    link: "https://specmob.vercel.app",
-    linkText: "Visit site",
-    coverIcon: "database",
-    image: "/spec1.jpeg",
+    link: "https://github.com/RYANX9/Specmob",
+    linkText: "View code",
     featured: true,
-
   },
   {
     id: "day-tracker",
     track: "systems",
+    icon: "bell-ring",
     name: "Day Tracker",
     category: "Web App",
     year: "2025",
@@ -313,11 +321,11 @@ export const projects: Project[] = [
     ],
     link: "https://github.com/RYANX9/rystudio",
     linkText: "View code",
-    coverIcon: "terminal",
   },
   {
     id: "client-cms",
     track: "systems",
+    icon: "git-branch",
     name: "Portfolio + Git-Backed CMS",
     category: "Web App",
     year: "2025",
@@ -329,9 +337,8 @@ export const projects: Project[] = [
       { label: "CMS", value: "git-native" },
       { label: "backend", value: "none needed" },
     ],
-    link: "https://zaid-saad.vercel.app",
-    linkText: "Visit site",
-    coverIcon: "api",
+    link: "https://github.com/RYANX9/zaid-saad",
+    linkText: "View code",
   },
 ];
 
