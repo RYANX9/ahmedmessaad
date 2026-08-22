@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -12,6 +13,12 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+});
+
+const avantGarde = localFont({
+  src: "./fonts/ITC-Avant-Garde-Gothic-Pro-Bold.otf", // Adjust extension if .otf or .ttf
+  variable: "--font-avant-garde",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -30,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${outfit.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`${outfit.variable} ${jetbrainsMono.variable} ${avantGarde.variable}`}>
       <head>
         <link rel="icon" href="/ahmed-icon1.png" type="image/png" sizes="120x120" />
         <link rel="shortcut icon" href="/ahmed-icon1.png" type="image/png" />
