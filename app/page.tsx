@@ -242,8 +242,9 @@ export default function Portfolio() {
 
   return (
     <div className="relative overflow-x-hidden">
+
       {/* ================= NAV ================= */}
-      <nav className="sticky top-0 z-50 border-b-2 border-transparent bg-[var(--paper)]">
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b-2 border-transparent bg-[var(--paper)]/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 sm:py-7">
           <a href="#top" className="flex items-center gap-2 text-base font-bold sm:text-lg">
             <span className="h-3 w-3 rounded-full" style={{ background: "var(--orange)" }} />
