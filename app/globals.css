@@ -59,6 +59,16 @@ body {
   box-shadow: 8px 9px 0 var(--ink);
 }
 
+.font-hero {
+  font-family: var(--font-avant-garde), sans-serif;
+  font-feature-settings: "ss01" 1, "salt" 1;
+}
+
+/* Fallback/explicit swap for the specific alternate glyph \uE000 */
+.font-hero-alt {
+  font-family: var(--font-avant-garde), sans-serif;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
