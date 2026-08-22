@@ -211,19 +211,19 @@ export const projects: Project[] = [
     track: "research",
     icon: "droplet",
     name: "HemaVision",
-    category: "Object Detection",
+    category: "Object Detection — Featured on BBC News Arabic",
     year: "2023–2024",
     tagline: "45 minutes of microscopy work, down to 3",
     description:
-      "Automated hematology platform reaching 97% multi-class blood cell classification. Cut diagnostic time from 45 minutes to 3 through an optimized detection pipeline, while investigating efficient segmentation architectures for microscopy imaging.",
+      "Automated hematology platform for real-time detection and classification of red blood cells, white blood cell subtypes, and platelets. A disease classification layer flags cell morphology tied to leukemia, malaria, and anemia. Reached 97% multi-class accuracy, cut diagnostic time from 45 minutes to 3, and the pipeline was validated by a practicing clinical hematologist before being featured on BBC News Arabic's 4Tech program.",
     tech: ["YOLOv8", "U-Net", "OpenCV", "PyTorch"],
     metrics: [
       { label: "accuracy", value: "97%" },
       { label: "time", value: "3min" },
-      { label: "speedup", value: "15x" },
+      { label: "coverage", value: "BBC 4Tech" },
     ],
-    link: "https://youtu.be/YxhA877Wyn0",
-    linkText: "Watch demo",
+    link: "https://www.youtube.com/watch?v=fX77vZlHkng",
+    linkText: "BBC coverage",
   },
   {
     id: "healthcost",
@@ -299,8 +299,8 @@ export const projects: Project[] = [
       { label: "search", value: "typo-tolerant" },
       { label: "AI copy", value: "w/ fallback" },
     ],
-    link: "https://github.com/RYANX9/Specmob",
-    linkText: "View code",
+    link: "https://specmob.vercel.app",
+    linkText: "Visit site",
     featured: true,
   },
   {
@@ -331,14 +331,14 @@ export const projects: Project[] = [
     year: "2025",
     tagline: "An admin panel that commits straight to the repo",
     description:
-      "A client portfolio site with an admin panel that edits content and pushes changes directly to the repository through the GitHub Contents API — no separate CMS or content database required.",
-    tech: ["Next.js", "TypeScript", "GitHub API"],
+      "A client portfolio built for Zaid Saad, a Flutter and Firebase developer. An /admin dashboard edits site content and posts to an API route that regenerates app/data.ts and commits it straight back to the repository through the GitHub Contents API — so the live data file is always the single source of truth and every edit is a real, versioned git commit, with no separate database or CMS involved.",
+    tech: ["Next.js 15", "TypeScript", "GitHub Contents API"],
     metrics: [
       { label: "CMS", value: "git-native" },
       { label: "backend", value: "none needed" },
     ],
-    link: "https://github.com/RYANX9/zaid-saad",
-    linkText: "View code",
+    link: "https://zaid-saad.vercel.app",
+    linkText: "Visit site",
   },
 ];
 
