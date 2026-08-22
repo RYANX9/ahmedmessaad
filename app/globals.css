@@ -64,9 +64,9 @@ body {
   font-feature-settings: "ss01" 1, "salt" 1;
 }
 
-/* Fallback/explicit swap for the specific alternate glyph \uE000 */
-.font-hero-alt {
-  font-family: var(--font-avant-garde), sans-serif;
+/* Reset font feature settings to standard glyphs for specific letters */
+.font-hero .reset-glyph {
+  font-feature-settings: "ss01" 0, "salt" 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
