@@ -1,131 +1,558 @@
-type Props = {
-  projectId: string
-  label: string
-  coord: string
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap");
+
+:root{
+  --paper:#e9e7df;
+  --ink:#11110f;
+  --muted:#77766e;
+  --line:#bdbbb2;
+  --red:#e53922;
+  --blue:#1739ff;
+  --white:#f7f6f0;
+  --pad:28px;
+  --rail:72px;
 }
 
-export function ProjectVisual({ projectId, label, coord }: Props) {
-  return (
-    <div className={`project-art art-${projectId}`}>
-      <span className="art-label">{label}</span>
-      <span className="art-coord">{coord}</span>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans",sans-serif;overflow-x:hidden}
+::selection{background:var(--ink);color:var(--paper)}
+a{color:inherit;text-decoration:none}
+.mono{font-family:"DM Mono",monospace}
 
-      <div className="signal">
-        {projectId === "01" && (
-          <svg className="atlas-svg" viewBox="0 0 600 300" aria-hidden="true" fill="none" focusable="false">
-            <path className="trace" fill="none" stroke="currentColor" strokeWidth="1.2" d="M0 210 C70 210 70 170 125 170 S170 250 230 205 300 80 360 145 420 205 470 130 520 100 600 65" />
-            <path className="pulse" fill="none" stroke="var(--red)" strokeWidth="2" d="M0 220 L90 220 L115 95 L140 220 L230 220 L255 145 L280 220 L380 220 L410 50 L435 220 L600 220" />
-            <circle className="node" cx="410" cy="50" r="7" fill="var(--red)" stroke="none" />
-          </svg>
-        )}
+.intro{
+  min-height:100vh;border-bottom:1px solid var(--ink);position:relative;overflow:hidden;
+  padding:var(--pad);display:grid;grid-template-columns:72px 1fr 260px;grid-template-rows:auto 1fr auto;gap:0
+}
+.intro-rail{grid-column:1;grid-row:1/4;border-right:1px solid var(--ink);display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px}
+.intro-rail span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;letter-spacing:.18em;text-transform:uppercase}
+.topline{grid-column:2/4;grid-row:1;display:flex;justify-content:space-between;align-items:center;padding:0 0 16px 22px;border-bottom:1px solid var(--line);font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+.topline .status{display:flex;gap:16px}.status i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--red);margin-right:6px}
+.intro-main{grid-column:2;grid-row:2;align-self:center;padding:42px 5vw 30px 22px;position:relative}
+.kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px}.kicker b{font-weight:500;color:var(--red)}
+.hero-word{font-size:clamp(92px,16vw,245px);line-height:.76;letter-spacing:-.075em;font-weight:700;margin:0;position:relative;z-index:2}
+.hero-word .ghost{display:block;color:transparent;-webkit-text-stroke:1px var(--ink);transform:translateX(7vw)}
+.hero-word .solid{display:block}
+.hero-copy{max-width:530px;margin:45px 0 0 8vw;font-size:20px;line-height:1.18;letter-spacing:-.025em}.hero-copy em{font-family:"Instrument Serif",serif;font-size:1.18em}
+.intro-aside{grid-column:3;grid-row:2;align-self:end;border-left:1px solid var(--line);padding:0 0 24px 24px;margin-bottom:35px;font-size:11px;line-height:1.55;color:#4f4e48}
+.intro-aside .big{font-family:"Instrument Serif",serif;font-size:38px;color:var(--ink);line-height:.95;margin-bottom:14px}
+.scroll-note{grid-column:2/4;grid-row:3;padding:18px 0 0 22px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;display:flex;justify-content:space-between}
+.scroll-note span:last-child{color:var(--red)}
+.intro a{color:inherit;text-decoration:none;margin-left:20px}.intro a:first-child{margin-left:0}
 
-        {projectId === "02" && (
-          <svg className="atlas-svg" viewBox="0 0 600 300" aria-hidden="true" fill="none" focusable="false">
-            <g className="cells">
-              <circle cx="130" cy="95" r="28" fill="none" stroke="currentColor" strokeWidth="1" /><circle cx="215" cy="80" r="18" fill="var(--red)" stroke="var(--red)" strokeWidth="1" />
-              <circle cx="300" cy="125" r="34" fill="none" stroke="currentColor" strokeWidth="1" /><circle cx="395" cy="85" r="22" fill="var(--red)" stroke="var(--red)" strokeWidth="1" />
-              <circle cx="480" cy="125" r="30" fill="none" stroke="currentColor" strokeWidth="1" /><circle cx="170" cy="190" r="22" fill="var(--red)" stroke="var(--red)" strokeWidth="1" />
-              <circle cx="270" cy="215" r="30" fill="none" stroke="currentColor" strokeWidth="1" /><circle cx="380" cy="195" r="18" fill="var(--red)" stroke="var(--red)" strokeWidth="1" />
-              <circle cx="465" cy="220" r="25" fill="none" stroke="currentColor" strokeWidth="1" />
-            </g>
-            <line className="scan" x1="300" y1="25" x2="300" y2="275" fill="none" stroke="var(--red)" strokeWidth="2" />
-          </svg>
-        )}
+.atlas{position:relative}
+.axis{position:absolute;left:calc(var(--rail) + 36px);top:0;bottom:0;width:1px;background:var(--ink);z-index:5;pointer-events:none}
+.axis:before{content:"";position:absolute;top:0;left:-4px;width:9px;height:9px;background:var(--red)}
+.axis:after{content:"INDEX / 09";position:absolute;top:18px;left:12px;white-space:nowrap;font:9px "DM Mono";letter-spacing:.12em;transform:rotate(90deg);transform-origin:left top}
 
-        {projectId === "03" && (
-          <svg className="atlas-svg" viewBox="0 0 600 300" aria-hidden="true" fill="none" focusable="false">
-            <circle className="ring" cx="300" cy="150" r="105" fill="none" stroke="currentColor" strokeWidth="1" />
-            <circle className="ring" cx="300" cy="150" r="72" fill="none" stroke="currentColor" strokeWidth="1" />
-            <circle className="core" cx="300" cy="150" r="42" fill="none" stroke="var(--red)" strokeWidth="2" />
-            <circle className="ring" cx="300" cy="150" r="18" fill="none" stroke="currentColor" strokeWidth="1" />
-          </svg>
-        )}
+.section-head{padding:120px var(--pad) 55px calc(var(--rail) + 90px);display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end}
+.section-head h2{font-family:"Instrument Serif",serif;font-weight:400;font-size:clamp(55px,8vw,120px);line-height:.82;letter-spacing:-.055em;margin:0}
+.section-head p{max-width:370px;margin:0 0 4px;font-size:12px;line-height:1.5;color:#5f5e57}
 
-        {projectId === "04" && (
-          <svg className="atlas-svg" viewBox="0 0 600 300" aria-hidden="true" fill="none" focusable="false">
-            <path className="decision" fill="none" stroke="currentColor" strokeWidth="1" d="M80 150 H190 L260 75 L360 150 L455 75 L530 150" />
-            <path className="decision hot" fill="none" stroke="var(--red)" strokeWidth="3" d="M190 150 L260 75 L360 150" />
-            <circle className="dot" cx="80" cy="150" r="7" fill="var(--red)" stroke="none" />
-            <circle className="dot" cx="260" cy="75" r="7" fill="var(--red)" stroke="none" />
-            <circle className="dot" cx="360" cy="150" r="7" fill="var(--red)" stroke="none" />
-            <circle className="dot" cx="530" cy="150" r="7" fill="var(--red)" stroke="none" />
-          </svg>
-        )}
+.project{min-height:640px;border-top:1px solid var(--ink);display:grid;grid-template-columns:calc(var(--rail) + 72px) 1fr 34%;position:relative;overflow:hidden;transition:background .35s ease}
+.project:hover{background:#dfddd4}
+.project:nth-of-type(odd) .project-art{background:var(--ink);color:var(--paper)}
+.project:nth-of-type(even) .project-art{background:var(--white)}
+.project-index{padding:22px 18px 22px calc(var(--rail) + 14px);font:11px "DM Mono";border-right:1px solid var(--line);position:relative}
+.project-index span{display:block;writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.14em;color:#6d6c65}
+.project-body{padding:48px 46px;display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.project-type{font:10px "DM Mono";letter-spacing:.13em;text-transform:uppercase;color:#77766e}
+.project-title{font-size:clamp(45px,6.2vw,105px);line-height:.84;letter-spacing:-.06em;margin:35px 0 20px;max-width:800px}
+.project-title i{font-family:"Instrument Serif",serif;font-weight:400}
+.project-desc{font-size:15px;line-height:1.32;max-width:450px;color:#44433e;margin:0}
+.project-meta{display:flex;gap:25px;border-top:1px solid var(--line);padding-top:14px;margin-top:35px;font:9px "DM Mono";text-transform:uppercase;letter-spacing:.08em;color:#686760}
+.project-meta b{font-weight:500;color:var(--ink)}
+.project-link{display:inline-flex;align-items:center;gap:10px;margin-top:24px;font:10px "DM Mono";text-transform:uppercase;letter-spacing:.12em;width:max-content}.project-link:after{content:"↗";font-size:15px}.project-link:hover{color:var(--red)}
+.project-art{position:relative;min-height:640px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 
-        {projectId === "05" && (
-          <svg className="atlas-svg" viewBox="0 0 600 300" aria-hidden="true" fill="none" focusable="false">
-            <line className="axisline" fill="none" x1="60" y1="250" x2="550" y2="250" />
-            <line className="axisline" fill="none" x1="60" y1="45" x2="60" y2="250" />
-            <g className="bars">
-              <rect x="105" y="180" width="30" height="70" fill="currentColor" stroke="none" />
-              <rect x="155" y="205" width="30" height="45" fill="currentColor" stroke="none" />
-              <rect x="205" y="85" width="30" height="165" fill="currentColor" stroke="none" />
-              <rect x="255" y="155" width="30" height="95" fill="currentColor" stroke="none" />
-              <rect x="305" y="115" width="30" height="135" fill="currentColor" stroke="none" />
-              <rect x="355" y="195" width="30" height="55" fill="currentColor" stroke="none" />
-              <rect x="405" y="70" width="30" height="180" fill="currentColor" stroke="none" />
-              <rect x="455" y="145" width="30" height="105" fill="currentColor" stroke="none" />
-              <rect x="505" y="105" width="30" height="145" fill="currentColor" stroke="none" />
-            </g>
-          </svg>
-        )}
+.art-label{position:absolute;top:18px;left:20px;font:9px "DM Mono";letter-spacing:.12em;opacity:.65}.art-coord{position:absolute;right:18px;bottom:18px;font:9px "DM Mono";opacity:.55}
+.signal{width:88%;height:55%;position:relative}.signal svg{width:100%;height:100%;overflow:visible}.signal path,.signal line,.signal circle,.signal rect{vector-effect:non-scaling-stroke}
+.art-1 .pulse{stroke:var(--red);stroke-width:2;fill:none;stroke-dasharray:7 8;animation:dash 9s linear infinite}.art-1 .trace{stroke:currentColor;stroke-width:1.2;fill:none}.art-1 .node{fill:var(--red)}
+@keyframes dash{to{stroke-dashoffset:-150}}
+.art-2 .cells circle{fill:none;stroke:currentColor;stroke-width:1}.art-2 .cells circle:nth-child(2n){fill:var(--red);stroke:var(--red)}.art-2 .scan{stroke:var(--red);stroke-width:2;animation:scan 3.8s ease-in-out infinite alternate}@keyframes scan{from{transform:translateX(-130px)}to{transform:translateX(130px)}}
+.art-3 .ring{fill:none;stroke:currentColor;stroke-width:1}.art-3 .core{fill:none;stroke:var(--red);stroke-width:2;stroke-dasharray:2 7;animation:spin 14s linear infinite;transform-origin:center}@keyframes spin{to{transform:rotate(360deg)}}
+.art-4 .decision{stroke:currentColor;fill:none;stroke-width:1}.art-4 .decision.hot{stroke:var(--red);stroke-width:3}.art-4 .dot{fill:var(--red)}
+.art-5 .bars rect{fill:currentColor}.art-5 .bars rect:nth-child(3n){fill:var(--red)}.art-5 .axisline{stroke:currentColor;stroke-width:1}
+.art-6 .net line{stroke:currentColor;stroke-width:1}.art-6 .net circle{fill:var(--paper);stroke:currentColor;stroke-width:1}.art-6 .net circle:nth-child(4n){fill:var(--red);stroke:var(--red)}
+.art-7 .curve{fill:none;stroke:currentColor;stroke-width:1}.art-7 .winner{stroke:var(--red);stroke-width:3}.art-7 .mark{fill:var(--red)}
+.art-8 .gridline{stroke:currentColor;stroke-width:.7;opacity:.45}.art-8 .day{fill:none;stroke:currentColor;stroke-width:1}.art-8 .active{fill:var(--red);stroke:var(--red)}
+.art-9 .branch{fill:none;stroke:currentColor;stroke-width:1.2}.art-9 .commit{fill:var(--red)}
 
-        {projectId === "06" && (
-          <svg className="atlas-svg" viewBox="0 0 600 300" aria-hidden="true" fill="none" focusable="false">
-            <g className="net">
-              <line stroke="currentColor" strokeWidth="1" fill="none" x1="100" y1="70" x2="280" y2="150" />
-              <line stroke="currentColor" strokeWidth="1" fill="none" x1="100" y1="150" x2="280" y2="150" />
-              <line stroke="currentColor" strokeWidth="1" fill="none" x1="100" y1="230" x2="280" y2="150" />
-              <line stroke="currentColor" strokeWidth="1" fill="none" x1="280" y1="150" x2="480" y2="80" />
-              <line stroke="currentColor" strokeWidth="1" fill="none" x1="280" y1="150" x2="480" y2="150" />
-              <line stroke="currentColor" strokeWidth="1" fill="none" x1="280" y1="150" x2="480" y2="220" />
-              <circle cx="100" cy="70" r="18" fill="var(--paper)" stroke="currentColor" strokeWidth="1" /><circle cx="100" cy="150" r="18" fill="var(--paper)" stroke="currentColor" strokeWidth="1" />
-              <circle cx="100" cy="230" r="18" fill="var(--paper)" stroke="currentColor" strokeWidth="1" /><circle cx="280" cy="150" r="25" fill="var(--paper)" stroke="currentColor" strokeWidth="1" />
-              <circle cx="480" cy="80" r="18" fill="var(--paper)" stroke="currentColor" strokeWidth="1" /><circle cx="480" cy="150" r="18" fill="var(--paper)" stroke="currentColor" strokeWidth="1" />
-              <circle cx="480" cy="220" r="18" fill="var(--paper)" stroke="currentColor" strokeWidth="1" />
-            </g>
-          </svg>
-        )}
+.interlude{min-height:72vh;background:var(--ink);color:var(--paper);display:flex;align-items:center;padding:12vw calc(var(--rail) + 10vw);position:relative;overflow:hidden}
+.interlude:before{content:"09 / 09";position:absolute;top:30px;left:calc(var(--rail) + 45px);font:9px "DM Mono";color:#8b8980;letter-spacing:.15em}
+.interlude h3{font-family:"Instrument Serif",serif;font-size:clamp(58px,10vw,150px);font-weight:400;line-height:.82;letter-spacing:-.055em;margin:0;max-width:1050px}.interlude h3 em{color:var(--red);font-style:normal}
+.interlude .tiny{position:absolute;right:5vw;bottom:34px;font:9px "DM Mono";color:#88867e;letter-spacing:.12em;max-width:180px}
 
-        {projectId === "07" && (
-          <svg className="atlas-svg" viewBox="0 0 600 300" aria-hidden="true" fill="none" focusable="false">
-            <path className="curve" fill="none" stroke="currentColor" strokeWidth="1" d="M0 205 C55 190 80 220 125 180 S180 135 225 165 285 125 325 150 390 95 430 120 500 70 600 90" />
-            <path className="curve" fill="none" stroke="currentColor" strokeWidth="1" d="M0 225 C70 210 110 230 160 210 S235 230 290 195 350 225 410 205 470 230 600 215" />
-            <path className="winner" fill="none" stroke="var(--red)" strokeWidth="3" d="M0 215 C60 190 95 205 145 165 S230 120 280 140 355 85 405 100 485 55 600 65" />
-            <circle className="mark" cx="600" cy="65" r="6" fill="var(--red)" stroke="none" />
-          </svg>
-        )}
+.about{padding:120px var(--pad) 150px calc(var(--rail) + 90px);display:grid;grid-template-columns:1fr 1.25fr;gap:10vw;border-top:1px solid var(--ink)}
+.about h2{font-family:"Instrument Serif",serif;font-size:clamp(55px,8vw,110px);font-weight:400;line-height:.83;letter-spacing:-.055em;margin:0}
+.about p{font-size:17px;line-height:1.35;max-width:520px;margin:0}
+.about .about-heading>span{font-family:"DM Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.about-copy{display:flex;flex-direction:column;gap:25px}.about-copy p{margin:0}
+.about-facts{border-top:1px solid var(--line);margin-top:30px}
+.about-facts>div{display:grid;grid-template-columns:110px 1fr 70px;gap:20px;padding:18px 0;border-bottom:1px solid var(--line);align-items:start}
+.about-facts span,.about-facts small{font-family:"DM Mono",monospace;font-size:10px;text-transform:uppercase;color:var(--muted)}
+.about-facts strong{font-weight:400;line-height:1.35}
 
-        {projectId === "08" && (
-          <svg className="atlas-svg" viewBox="0 0 600 300" aria-hidden="true" fill="none" focusable="false">
-            <g className="gridline">
-              <path d="M60 50H540M60 100H540M60 150H540M60 200H540M60 250H540" fill="none" stroke="currentColor" strokeWidth=".7" />
-              <path d="M110 30V270M160 30V270M210 30V270M260 30V270M310 30V270M360 30V270M410 30V270M460 30V270M510 30V270" fill="none" stroke="currentColor" strokeWidth=".7" />
-            </g>
-            <g className="day">
-              <rect x="78" y="65" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1" /><rect x="128" y="115" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1" />
-              <rect className="active" fill="var(--red)" stroke="var(--red)" strokeWidth="1" x="178" y="165" width="28" height="28" /><rect x="228" y="215" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1" />
-              <rect className="active" fill="var(--red)" stroke="var(--red)" strokeWidth="1" x="278" y="65" width="28" height="28" /><rect x="328" y="115" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1" />
-              <rect className="active" fill="var(--red)" stroke="var(--red)" strokeWidth="1" x="378" y="165" width="28" height="28" /><rect x="428" y="215" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1" />
-              <rect className="active" fill="var(--red)" stroke="var(--red)" strokeWidth="1" x="478" y="65" width="28" height="28" />
-            </g>
-          </svg>
-        )}
+.contact{background:var(--red);color:var(--ink);min-height:85vh;padding:40px var(--pad) 50px calc(var(--rail) + 90px);display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.contact:after{content:"AHMED";position:absolute;right:-5vw;bottom:-10vw;font-size:30vw;line-height:.7;font-weight:700;letter-spacing:-.08em;color:rgba(17,17,15,.08);pointer-events:none}
+.contact-top{display:flex;justify-content:space-between;font:10px "DM Mono";letter-spacing:.13em;text-transform:uppercase}
+.contact h2{font-size:clamp(75px,14vw,210px);line-height:.75;letter-spacing:-.08em;margin:0;max-width:1000px;position:relative;z-index:1}
+.contact h2 span{font-family:"Instrument Serif",serif;font-weight:400}
+.contact-bottom{display:flex;justify-content:space-between;align-items:end;position:relative;z-index:1}
+.contact-links{display:flex;gap:26px;font:10px "DM Mono";text-transform:uppercase;letter-spacing:.12em}
+.contact-links a:hover{text-decoration:underline}
+.copyright{font:9px "DM Mono";letter-spacing:.1em}
 
-        {projectId === "09" && (
-          <svg className="atlas-svg" viewBox="0 0 600 300" aria-hidden="true" fill="none" focusable="false">
-            <path className="branch" fill="none" stroke="currentColor" strokeWidth="1.2" d="M80 70 H230 V150 H360 V230 H520" />
-            <path className="branch" fill="none" stroke="currentColor" strokeWidth="1.2" d="M230 150 V65 H420" />
-            <path className="branch" fill="none" stroke="currentColor" strokeWidth="1.2" d="M360 230 V150 H470" />
-            <circle className="commit" fill="var(--red)" stroke="none" cx="80" cy="70" r="7" />
-            <circle className="commit" fill="var(--red)" stroke="none" cx="230" cy="150" r="7" />
-            <circle className="commit" fill="var(--red)" stroke="none" cx="360" cy="230" r="7" />
-            <circle className="commit" fill="var(--red)" stroke="none" cx="520" cy="230" r="7" />
-            <circle className="commit" fill="var(--red)" stroke="none" cx="420" cy="65" r="7" />
-            <circle className="commit" fill="var(--red)" stroke="none" cx="470" cy="150" r="7" />
-          </svg>
-        )}
-      </div>
-    </div>
-  )
+.method-strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;grid-template-columns:1.2fr repeat(3,1fr);padding:22px var(--pad);gap:30px;font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.method-strip div{display:flex;flex-direction:column;gap:8px}.method-strip span{font-family:"DM Mono",monospace;font-size:10px;color:var(--muted)}.method-strip strong{font-weight:500}
+.work-intro{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line);padding:85px var(--pad);gap:80px}
+.work-intro>div{display:flex;flex-direction:column;justify-content:space-between}.work-intro span{font-family:"DM Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.work-intro h2{font-size:clamp(34px,4.2vw,70px);line-height:.95;max-width:700px;margin-top:50px;font-weight:400;letter-spacing:-.04em}
+.work-intro>div:last-child span{font-family:"Instrument Serif",serif;font-size:clamp(55px,7vw,110px);line-height:.72;letter-spacing:-.06em}
+.work-intro p{font-size:15px;line-height:1.6;max-width:420px;margin-top:70px;color:var(--muted)}
+
+@media(max-width:900px){
+  :root{--pad:18px;--rail:0px}
+  .intro{display:block;min-height:auto;padding-bottom:55px}.intro-rail{display:none}.topline{padding-left:0}.intro-main{padding:75px 0 20px}
+  .hero-word{font-size:22vw}.hero-word .ghost{transform:translateX(8vw)}.hero-copy{margin:35px 0 0 12vw;font-size:17px}
+  .intro-aside{border-left:0;border-top:1px solid var(--line);margin:55px 0 0;padding:20px 0 0}
+  .scroll-note{padding-left:0;margin-top:45px}.axis{display:none}
+  .section-head{padding:90px var(--pad) 40px;display:block}.section-head p{margin-top:30px}
+  .project{display:block;min-height:0}.project-index{border-right:0;border-bottom:1px solid var(--line);padding:12px var(--pad)}
+  .project-index span{writing-mode:horizontal-tb;transform:none}.project-body{padding:38px var(--pad) 42px}.project-art{min-height:390px}
+  .project-title{font-size:15vw}.project-meta{flex-wrap:wrap}
+  .interlude{min-height:60vh;padding:100px var(--pad)}.interlude:before{left:var(--pad)}
+  .about{padding:90px var(--pad);display:block}.about p{margin-top:45px}
+  .contact{padding:28px var(--pad) 38px;min-height:72vh}.contact h2{font-size:20vw}
+  .contact-bottom{display:block}.contact-links{margin-top:35px;flex-wrap:wrap;gap:16px}.copyright{margin-top:45px}
+  .method-strip{grid-template-columns:1fr 1fr}.work-intro{display:block;padding:65px var(--pad)}.work-intro>div+div{margin-top:70px}
+  .about-facts>div{grid-template-columns:80px 1fr}.about-facts small{display:none}
+}
+
+/* ---------- FINAL SPACING / TYPE / RESPONSIVE PASS ---------- */
+.topline{min-width:0}
+.topline > span:first-child{flex:0 0 auto}
+.topline .status{align-items:center;min-width:0}
+.topline .status > span:nth-child(2){white-space:nowrap;color:var(--muted)}
+
+.intro-main{min-width:0}
+.hero-word{max-width:100%;overflow:visible}
+.hero-copy{position:relative;z-index:3}
+
+.section-head{grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr)}
+.section-head p{max-width:410px}
+
+.method-strip{align-items:start}
+.method-strip strong{line-height:1.15}
+
+.work-intro{grid-template-columns:minmax(0,1.12fr) minmax(260px,.88fr);align-items:start}
+.work-intro h2{margin-bottom:0}
+.work-intro>div:last-child{padding-left:2vw}
+.work-intro p{margin-bottom:0}
+
+.project{grid-template-columns:calc(var(--rail) + 56px) minmax(0,1fr) minmax(320px,34%);min-height:680px}
+.project-index{padding-left:calc(var(--rail) + 10px);padding-right:14px}
+.project-body{padding:56px clamp(30px,4.5vw,72px) 52px}
+.project-title{max-width:760px;margin-top:30px}
+.project-desc{max-width:590px}
+.project-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.project-meta span{line-height:1.4}
+.project-meta b{display:block;margin-top:5px;text-transform:none;letter-spacing:0;font-family:"DM Sans",sans-serif;font-size:11px;line-height:1.3}
+.project-long{max-width:650px}
+.project-result{max-width:560px}
+.project-art{min-width:0}
+.art-label,.art-coord{z-index:2}
+.art-4 .decision.hot{stroke:var(--red);stroke-width:3}
+
+.about{grid-template-columns:minmax(280px,.9fr) minmax(0,1.1fr)}
+.about-copy{max-width:700px}
+.about-copy p{max-width:600px}
+
+@media (min-width:901px) and (max-width:1180px){
+  :root{--pad:22px;--rail:62px}
+  .intro{grid-template-columns:62px minmax(0,1fr) 210px}
+  .hero-word{font-size:14vw}
+  .intro-aside .big{font-size:32px}
+  .project{grid-template-columns:118px minmax(0,1fr) 31%}
+  .project-body{padding:46px 32px}
+  .project-meta{grid-template-columns:1fr}
+  .project-art{min-height:680px}
+}
+
+@media (max-width:900px){
+  :root{--pad:18px;--rail:0px}
+
+  /* ---------- MOBILE / COMPOSITION ---------- */
+  .intro{
+    padding:16px var(--pad) 30px;
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+  }
+  .topline{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:12px;
+    padding:0 0 13px;
+    border-bottom:1px solid var(--line);
+    font-size:9px;
+    line-height:1.2;
+  }
+  .topline .status{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:6px 12px;
+    justify-items:end;
+    min-width:0;
+  }
+  .topline .status > span:nth-child(2){
+    grid-column:1/-1;
+    grid-row:2;
+    justify-self:start;
+    white-space:normal;
+    color:var(--red);
+    font-size:8px;
+    letter-spacing:.105em;
+  }
+  .topline .status > span:last-child{
+    grid-column:1/-1;
+    grid-row:3;
+    justify-self:start;
+    display:flex;
+    gap:17px;
+    margin-top:1px;
+  }
+  .intro a{margin-left:0}
+
+  .intro-main{
+    padding:61px 0 0;
+    min-width:0;
+  }
+  .kicker{
+    font-size:8px;
+    letter-spacing:.13em;
+    margin-bottom:14px;
+    white-space:nowrap;
+  }
+  .hero-word{
+    font-size:clamp(68px,22.5vw,148px);
+    line-height:.79;
+    letter-spacing:-.082em;
+  }
+  .hero-word .ghost{
+    transform:translateX(8vw);
+    -webkit-text-stroke:.8px var(--ink);
+  }
+  .hero-copy{
+    margin:32px 0 0 10vw;
+    max-width:470px;
+    font-size:17px;
+    line-height:1.12;
+    letter-spacing:-.02em;
+  }
+
+  .intro-aside{
+    margin:54px 0 0;
+    padding:16px 0 0;
+    border-top:1px solid var(--line);
+    font-size:10px;
+    line-height:1.42;
+  }
+  .intro-aside .big{
+    font-size:30px;
+    line-height:.94;
+    margin-bottom:10px;
+  }
+  .scroll-note{
+    padding:0;
+    margin-top:43px;
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-items:end;
+    gap:16px;
+    font-size:8px;
+    line-height:1.25;
+    letter-spacing:.11em;
+  }
+  .scroll-note span:last-child{
+    margin-left:0;
+    text-align:right;
+    max-width:190px;
+  }
+
+  .section-head{
+    padding:70px var(--pad) 40px;
+    display:block;
+  }
+  .section-head h2{
+    font-size:clamp(47px,14.5vw,86px);
+    line-height:.84;
+  }
+  .section-head p{
+    margin-top:30px;
+    max-width:470px;
+    font-size:13px;
+    line-height:1.5;
+  }
+
+  .method-strip{
+    grid-template-columns:1fr 1fr;
+    padding:18px var(--pad);
+    gap:21px 17px;
+    font-size:10px;
+    line-height:1.25;
+  }
+  .method-strip span{font-size:8px}
+  .method-strip strong{line-height:1.2}
+
+  .work-intro{
+    display:block;
+    padding:58px var(--pad) 64px;
+  }
+  .work-intro>div:last-child{
+    padding-left:0;
+    margin-top:55px;
+  }
+  .work-intro h2{
+    font-size:clamp(34px,9.8vw,57px);
+    line-height:.94;
+    margin-top:35px;
+    max-width:580px;
+  }
+  .work-intro>div:last-child span{
+    display:block;
+    font-size:clamp(62px,17vw,102px);
+    line-height:.72;
+  }
+  .work-intro p{
+    font-size:14px;
+    line-height:1.48;
+    margin-top:39px;
+    max-width:460px;
+  }
+
+  /* Project pages: keep every block visually separated and predictable. */
+  .project{
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+  }
+  .project-index{
+    order:0;
+    border-right:0;
+    border-bottom:1px solid var(--line);
+    padding:11px var(--pad) 10px;
+    min-height:39px;
+  }
+  .project-index span{
+    writing-mode:horizontal-tb;
+    transform:none;
+    font-size:8px;
+    line-height:1.2;
+    letter-spacing:.12em;
+  }
+  .project-body{
+    order:1;
+    padding:40px var(--pad) 52px;
+    display:block;
+  }
+  .project-type{
+    font-size:8px;
+    line-height:1.3;
+    letter-spacing:.12em;
+  }
+  .project-title{
+    font-size:clamp(52px,15.8vw,91px);
+    line-height:.82;
+    letter-spacing:-.066em;
+    margin:24px 0 22px;
+    max-width:100%;
+  }
+  .project-desc{
+    font-size:15px;
+    line-height:1.43;
+    max-width:580px;
+  }
+  .project-meta{
+    grid-template-columns:1fr;
+    gap:0;
+    margin-top:31px;
+    padding-top:0;
+    border-top:1px solid var(--line);
+  }
+  .project-meta span{
+    display:block;
+    padding:13px 0 14px;
+    border-bottom:1px solid var(--line);
+    font-size:8px;
+    line-height:1.25;
+  }
+  .project-meta b{
+    font-size:11px;
+    line-height:1.35;
+    margin-top:4px;
+  }
+  .project-long{
+    margin-top:28px;
+    max-width:580px;
+    font-size:15px;
+    line-height:1.46;
+  }
+  .project-link{
+    margin-top:24px;
+    font-size:9px;
+    line-height:1.2;
+  }
+  .project-result{
+    margin-top:40px;
+    padding-top:17px;
+    border-top:1px solid var(--line);
+    max-width:100%;
+  }
+  .project-result strong{
+    font-size:clamp(50px,15.5vw,82px);
+    line-height:.82;
+  }
+  .project-result span{
+    font-size:9px;
+    line-height:1.25;
+  }
+  .project-result small{font-size:8px}
+
+  .project-art{
+    order:2;
+    min-height:280px;
+    height:280px;
+  }
+  .signal{
+    width:90%;
+    height:68%;
+  }
+  .art-label{
+    top:14px;
+    left:15px;
+    font-size:8px;
+  }
+  .art-coord{
+    right:15px;
+    bottom:14px;
+    font-size:8px;
+  }
+
+  .interlude{
+    min-height:64svh;
+    padding:88px var(--pad) 74px;
+  }
+  .interlude h3{
+    font-size:clamp(54px,14.8vw,92px);
+    line-height:.84;
+    letter-spacing:-.06em;
+  }
+  .interlude .tiny{
+    right:var(--pad);
+    bottom:23px;
+    font-size:8px;
+    max-width:175px;
+    line-height:1.35;
+  }
+
+  .about{
+    padding:84px var(--pad) 100px;
+    display:block;
+  }
+  .about h2{font-size:clamp(57px,15.5vw,98px)}
+  .about-copy{
+    margin-top:43px;
+    gap:22px;
+  }
+  .about-copy p{
+    font-size:16px;
+    line-height:1.43;
+  }
+  .about-facts{margin-top:32px}
+  .about-facts>div{
+    grid-template-columns:72px minmax(0,1fr);
+    gap:14px;
+    padding:16px 0;
+  }
+  .about-facts strong{
+    font-size:13px;
+    line-height:1.4;
+  }
+  .about-facts small{display:none}
+
+  .contact{
+    padding:24px var(--pad) 30px;
+    min-height:72svh;
+  }
+  .contact-top{
+    font-size:8px;
+    line-height:1.35;
+    gap:18px;
+  }
+  .contact-top span:last-child{
+    text-align:right;
+    max-width:145px;
+  }
+  .contact h2{
+    font-size:clamp(70px,19.5vw,122px);
+    line-height:.78;
+    letter-spacing:-.08em;
+  }
+  .contact-links{
+    gap:16px;
+    font-size:8px;
+  }
+  .copyright{
+    font-size:8px;
+    margin-top:42px;
+  }
+}
+
+@media (max-width:380px){
+  .intro{padding-left:15px;padding-right:15px}
+  .topline{font-size:8px}
+  .topline .status > span:last-child{gap:13px}
+  .hero-word{font-size:22vw}
+  .hero-copy{margin-left:9vw;font-size:16px}
+  .project-title{font-size:17vw}
+  .project-art{height:255px;min-height:255px}
+  .method-strip{gap:18px 12px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .art-1 .pulse,.art-2 .scan,.art-3 .core{animation:none}
+}
+
+/* ---------- FIXED TOP NAVIGATION ---------- */
+.topline{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:1000;
+  background:var(--paper);
+  padding-left:calc(var(--rail) + var(--pad) + 22px);
+  padding-right:var(--pad);
+  box-shadow:0 1px 0 var(--line);
+}
+
+/* Keep the hero/content clear of the fixed navigation bar. */
+.intro{
+  padding-top:88px;
+}
+
+@media (max-width:900px){
+  .topline{
+    padding:12px var(--pad) 13px;
+  }
+
+  .intro{
+    padding-top:84px;
+  }
+}
+
+@media (max-width:380px){
+  .topline{padding:10px 15px 11px}
+  .intro{padding-top:76px}
 }
