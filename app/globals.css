@@ -659,6 +659,13 @@ main {
   }
   .topbar {
     height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    background: var(--paper);
+  }
+  .topbar > span {
+    display: none;
   }
   .hero-grid,
   .work-intro,
@@ -696,9 +703,7 @@ main {
   }
   .nav {
     gap: 16px;
-  }
-  .nav a:nth-child(3) {
-    display: none;
+    margin-left: auto;
   }
 }
 
