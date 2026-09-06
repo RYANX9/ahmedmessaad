@@ -1,175 +1,136 @@
-import { about, cases, contact, hero, rail, sectionHeads, topbar, workIntro } from "./data";
-import { CaseStudyCard } from "./components/case-study";
-import { ProgressBar } from "./components/progress-bar";
-import { Reveal } from "./components/reveal";
+import { About } from "@/components/About"
+import { Contact } from "@/components/Contact"
+import { Intro } from "@/components/Intro"
+import { ProjectVisual } from "@/components/ProjectVisual"
+import { projects } from "@/lib/data"
 
-export default function Portfolio() {
+export default function Page() {
   return (
     <>
-      <ProgressBar />
-      <div className="layout">
-        <aside className="rail">
-          <div className="rail-top">
-            <span className="mark">{rail.mark}</span>
-            <span className="year">{rail.year}</span>
-          </div>
+      <Intro />
 
-          <div className="rail-center">
-            <div className="name">
-              <span>{rail.firstName}</span>
-              <span className="serif">{rail.lastName}</span>
+      <main className="atlas" id="work">
+        <div className="axis" aria-hidden="true" />
+
+        <section className="section-head">
+          <h2>
+            My work sits
+            <br />
+            <i>between intelligence and systems.</i>
+          </h2>
+          <p>
+            I build the model. Then I build what runs it.
+            <br />
+            <br />
+            My work sits between machine learning research and the software
+            that makes a model useful: clinical AI, medical imaging, decision
+            support, and full-stack products.
+          </p>
+        </section>
+
+        <section className="method-strip">
+          <div>
+            <span>Method / 01</span>
+            <strong>Observe the problem.</strong>
+          </div>
+          <div><strong>Build the intelligence.</strong></div>
+          <div><strong>Ship the interface.</strong></div>
+          <div><strong>Measure what happened.</strong></div>
+        </section>
+
+        <section className="work-intro">
+          <div>
+            <span>Selected work</span>
+            <h2>
+              Research becomes interesting when it survives contact with a
+              real workflow.
+            </h2>
+          </div>
+          <div>
+            <span>Case<br />files.</span>
+            <p>
+              Not a gallery of screenshots. A record of problems, systems,
+              decisions and outcomes.
+              <br />
+              Nine projects across clinical intelligence, applied ML, products
+              and research.
+            </p>
+          </div>
+        </section>
+
+        {projects.map((project) => (
+          <article className={`project project-${project.id}`} key={project.id}>
+            <div className="project-index">
+              <span>{project.rail}</span>
             </div>
-            <div className="rail-mid">
-              <p>
-                {rail.roles.map((role, i) => (
-                  <span key={role}>
-                    {role}
-                    {i < rail.roles.length - 1 && <br />}
-                  </span>
-                ))}
-              </p>
-            </div>
-          </div>
 
-          <div className="rail-bottom">
-            <span>{rail.location}</span>
-            <span>{rail.hint}</span>
-          </div>
-        </aside>
-
-        <main>
-          <header className="topbar">
-            <span>{topbar.label}</span>
-            <nav className="nav">
-              {topbar.nav.map((link) => (
-                <a key={link.href} href={link.href}>
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-          </header>
-
-          <section className="hero">
-            <div className="hero-grid">
+            <div className="project-body">
               <div>
-                <div className="eyebrow">{hero.eyebrow}</div>
-                <h1>
-                  {hero.headline[0]}
-                  <em>{hero.headline[1]}</em>
-                </h1>
-                <p className="hero-statement">
-                  {hero.statement.map((segment, i) =>
-                    segment.bold ? <b key={i}>{segment.text}</b> : <span key={i}>{segment.text}</span>
+                <div className="project-type">
+                  {project.id} / {project.type}
+                </div>
+
+                <h3 className="project-title">
+                  {project.title}
+                  {project.titleItalic && (
+                    <>
+                      <br />
+                      <i>{project.titleItalic}</i>
+                    </>
                   )}
-                </p>
+                </h3>
+
+                <p className="project-desc">{project.description}</p>
               </div>
-              <div className="hero-note">
-                <strong>{hero.method.label}</strong>
-                {hero.method.steps.map((step, i) => (
-                  <span key={step}>
-                    {step}
-                    {i < hero.method.steps.length - 1 && <br />}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="orbit" aria-hidden="true">
-              <i />
-            </div>
-          </section>
 
-          <section id="work" className="section">
-            <div className="section-head">
-              <span>{sectionHeads.work.label}</span>
-              <span className="right">{sectionHeads.work.note}</span>
-            </div>
-
-            <Reveal className="work-intro">
-              <h2>
-                {workIntro.heading[0]}
-                <br />
-                <i>{workIntro.heading[1]}</i>
-              </h2>
-              <p>
-                {workIntro.paragraph}
-                <br />
-                <span>{workIntro.note}</span>
-              </p>
-            </Reveal>
-
-            {cases.map((study) => (
-              <CaseStudyCard key={study.num} study={study} />
-            ))}
-          </section>
-
-          <section id="about" className="section">
-            <div className="section-head">
-              <span>{sectionHeads.about.label}</span>
-              <span className="right">{sectionHeads.about.note}</span>
-            </div>
-
-            <Reveal className="about">
-              <h2>
-                {about.heading[0]}
-                <br />
-                <i>{about.heading[1]}</i>
-              </h2>
-              <div className="about-copy">
-                <p>
-                  {about.lead.before}
-                  <em>{about.lead.emphasis}</em>
-                  {about.lead.after}
-                </p>
-                <p>{about.body}</p>
-                <div className="timeline">
-                  {about.timeline.map((row) => (
-                    <div key={row.period} className="time-row">
-                      <span>{row.period}</span>
-                      <span>{row.detail}</span>
-                      <span>{row.tag}</span>
-                    </div>
+              <div>
+                <div className="project-meta">
+                  {project.meta.map((item) => (
+                    <span key={item.label}>
+                      {item.label} <b>{item.value}</b>
+                    </span>
                   ))}
                 </div>
-              </div>
-            </Reveal>
-          </section>
 
-          <section id="contact" className="section" style={{ borderBottom: 0 }}>
-            <Reveal>
-              <div className="contact">
-                <div className="contact-grid">
-                  <div>
-                    <h2>
-                      {contact.heading[0]}
-                      <br />
-                      <em>{contact.heading[1]}</em>
-                    </h2>
-                  </div>
-                  <div className="contact-copy">
-                    <p>{contact.paragraph}</p>
-                    <div className="links">
-                      {contact.links.map((link) => (
-                        <a
-                          key={link.label}
-                          href={link.href}
-                          target={link.href.startsWith("http") ? "_blank" : undefined}
-                          rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-                        >
-                          {link.label}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                <div className="footer">
-                  <span>{contact.footerLeft}</span>
-                  <span>{contact.footerRight}</span>
+                <p className="project-desc project-long">
+                  {project.longDescription}
+                </p>
+
+                <a
+                  className="project-link"
+                  href={project.link}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {project.linkLabel}
+                </a>
+
+                <div className="project-result">
+                  <strong>{project.result}</strong>
+                  <span>{project.resultLabel}</span>
+                  <small>{project.resultNote}</small>
                 </div>
               </div>
-            </Reveal>
-          </section>
-        </main>
-      </div>
+            </div>
+
+            <ProjectVisual projectId={project.id} label={project.artLabel} coord={project.artCoord} />
+          </article>
+        ))}
+
+        <section className="interlude">
+          <h3>
+            The interesting part is not the <em>model.</em>
+            <br />
+            It&apos;s what happens after it works.
+          </h3>
+          <div className="tiny">
+            RESEARCH → ENGINEERING → INTERFACE → REAL USE
+          </div>
+        </section>
+      </main>
+
+      <About />
+      <Contact />
     </>
-  );
+  )
 }
