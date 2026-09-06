@@ -1,0 +1,158 @@
+// Sprite is generated from public/visuals.svg (kept in sync manually).
+// Rendered once, hidden, so every <use href="#id"> resolves same-document —
+// this avoids cross-file <use> quirks (Safari caching, CSP, static export)
+// while the standalone public/visuals.svg remains available as a portable asset.
+const SPRITE_MARKUP = `<defs>
+    <style>
+      .line{fill:none;stroke:#a33b2d;stroke-width:2.5;vector-effect:non-scaling-stroke}
+      .thin{fill:none;stroke:#8c887f;stroke-width:1;vector-effect:non-scaling-stroke}
+      .dash{fill:none;stroke:#b9b6aa;stroke-width:1;stroke-dasharray:5 5;vector-effect:non-scaling-stroke}
+      .dot{fill:#e9e6dc;stroke:#a33b2d;stroke-width:1.5;vector-effect:non-scaling-stroke}
+      .label{font-family:'DM Mono',monospace;font-size:12px;fill:#74736b;text-anchor:end}
+    </style>
+  </defs>
+
+<symbol id="specmob" viewBox="0 0 1200 300">
+    <rect x="1" y="1" width="1198" height="298" class="thin"/>
+    <path d="M0 184 C180 180 275 170 420 164 S690 143 835 128 S1040 108 1200 92" class="line"/>
+    <path d="M0 215 H1200" class="dash"/>
+    <path d="M420 0 V300 M835 0 V300" class="dash"/>
+    <circle cx="420" cy="164" r="6" class="dot"/>
+    <circle cx="835" cy="128" r="6" class="dot"/>
+    <text x="1190" y="28" class="label">QUERY &#8594; SIGNAL &#8594; CHOICE</text>
+  </symbol>
+
+<symbol id="hemavision" viewBox="0 0 1200 300">
+    <rect x="1" y="1" width="1198" height="298" class="thin"/>
+    <path d="M0 205 C170 199 295 190 430 178 S700 155 860 133 S1040 113 1200 96" class="line"/>
+    <path d="M0 205 H1200" class="dash"/>
+    <path d="M445 0 V300 M900 0 V300" class="dash"/>
+    <g class="thin">
+      <circle cx="185" cy="116" r="31"/><circle cx="238" cy="151" r="20"/>
+      <circle cx="145" cy="171" r="15"/><circle cx="270" cy="104" r="13"/>
+    </g>
+    <g class="dot">
+      <circle cx="430" cy="178" r="6"/><circle cx="860" cy="133" r="6"/>
+    </g>
+    <path d="M1025 185 l30 -30 l28 21 l42 -55" class="line"/>
+    <text x="1190" y="28" class="label">IMAGE &#8594; SEGMENTATION &#8594; DIAGNOSIS</text>
+  </symbol>
+
+<symbol id="airm" viewBox="0 0 1200 300">
+    <rect x="1" y="1" width="1198" height="298" class="thin"/>
+    <path d="M0 208 H1200" class="dash"/>
+    <path d="M0 198 C160 198 250 186 390 175 S660 148 820 129 S1030 109 1200 96" class="line"/>
+    <path d="M400 0 V300 M820 0 V300" class="dash"/>
+    <g class="thin">
+      <ellipse cx="185" cy="150" rx="62" ry="84"/>
+      <ellipse cx="185" cy="150" rx="42" ry="61"/>
+      <ellipse cx="185" cy="150" rx="18" ry="29"/>
+    </g>
+    <circle cx="400" cy="175" r="6" class="dot"/>
+    <circle cx="820" cy="129" r="6" class="dot"/>
+    <path d="M1015 166 h105 M1015 184 h78 M1015 202 h91" class="thin"/>
+    <text x="1190" y="28" class="label">SCAN &#8594; CLASSIFICATION &#8594; REPORT</text>
+  </symbol>
+
+<symbol id="medical-drl" viewBox="0 0 1200 300">
+    <rect x="1" y="1" width="1198" height="298" class="thin"/>
+    <path d="M0 218 H1200" class="dash"/>
+    <path d="M0 218 C130 218 170 196 280 196 S405 226 520 172 S670 116 760 140 S930 198 1020 136 S1110 103 1200 82" class="line"/>
+    <path d="M270 0 V300 M590 0 V300 M930 0 V300" class="dash"/>
+    <g class="dot">
+      <circle cx="270" cy="196" r="6"/><circle cx="590" cy="144" r="6"/><circle cx="930" cy="175" r="6"/>
+    </g>
+    <g class="thin">
+      <path d="M210 118 L270 196 L330 118 M530 78 L590 144 L650 78 M870 105 L930 175 L990 105"/>
+    </g>
+    <text x="1190" y="28" class="label">STATE &#8594; POLICY &#8594; ACTION</text>
+  </symbol>
+
+<symbol id="healthcare-cost" viewBox="0 0 1200 300">
+    <rect x="1" y="1" width="1198" height="298" class="thin"/>
+    <path d="M0 232 H1200" class="dash"/>
+    <path d="M0 220 C170 220 250 206 370 195 S610 166 760 145 S1020 110 1200 86" class="line"/>
+    <path d="M410 0 V300 M800 0 V300" class="dash"/>
+    <g class="thin">
+      <rect x="120" y="150" width="18" height="82"/><rect x="154" y="128" width="18" height="104"/>
+      <rect x="188" y="171" width="18" height="61"/><rect x="222" y="108" width="18" height="124"/>
+      <rect x="256" y="145" width="18" height="87"/>
+    </g>
+    <circle cx="410" cy="192" r="6" class="dot"/>
+    <circle cx="800" cy="140" r="6" class="dot"/>
+    <path d="M1000 172 l26 -20 l24 12 l30 -38 l30 17" class="line"/>
+    <text x="1190" y="28" class="label">FEATURES &#8594; MODEL &#8594; ESTIMATE</text>
+  </symbol>
+
+<symbol id="my-daily-health" viewBox="0 0 1200 300">
+    <rect x="1" y="1" width="1198" height="298" class="thin"/>
+    <path d="M0 222 H1200" class="dash"/>
+    <g class="thin">
+      <circle cx="140" cy="90" r="16"/><circle cx="140" cy="150" r="16"/><circle cx="140" cy="210" r="16"/>
+      <circle cx="300" cy="72" r="13"/><circle cx="300" cy="132" r="13"/><circle cx="300" cy="192" r="13"/><circle cx="300" cy="252" r="13"/>
+      <circle cx="470" cy="112" r="17"/><circle cx="470" cy="190" r="17"/>
+      <circle cx="650" cy="150" r="25"/>
+    </g>
+    <g class="thin">
+      <path d="M156 90 L287 72 M156 90 L287 132 M156 150 L287 132 M156 150 L287 192 M156 210 L287 192 M156 210 L287 252"/>
+      <path d="M313 72 L453 112 M313 132 L453 112 M313 132 L453 190 M313 192 L453 190 M313 252 L453 190"/>
+      <path d="M487 112 L625 150 M487 190 L625 150"/>
+    </g>
+    <path d="M650 150 C790 150 875 125 1010 125 S1120 110 1200 92" class="line"/>
+    <circle cx="650" cy="150" r="6" class="dot"/>
+    <text x="1190" y="28" class="label">INPUTS &#8594; MODELS &#8594; DIAGNOSIS</text>
+  </symbol>
+
+<symbol id="crypto-rl" viewBox="0 0 1200 300">
+    <rect x="1" y="1" width="1198" height="298" class="thin"/>
+    <path d="M0 155 C55 112 95 210 145 150 S235 115 285 178 S375 225 425 145 S510 80 555 162 S650 218 700 130 S790 92 835 158 S920 210 970 135 S1080 92 1200 148" class="thin"/>
+    <path d="M0 175 C120 175 190 165 300 174 S520 183 650 176 S850 164 1000 174 S1110 184 1200 178" class="line"/>
+    <path d="M400 0 V300 M800 0 V300" class="dash"/>
+    <circle cx="400" cy="174" r="6" class="dot"/>
+    <circle cx="800" cy="171" r="6" class="dot"/>
+    <path d="M1030 85 L1120 205 M1120 85 L1030 205" class="thin"/>
+    <text x="1190" y="28" class="label">SIGNAL &#8594; POLICY &#8594; REALITY</text>
+  </symbol>
+
+<symbol id="day-tracker" viewBox="0 0 1200 300">
+    <rect x="1" y="1" width="1198" height="298" class="thin"/>
+    <path d="M0 222 H1200" class="dash"/>
+    <path d="M0 205 C160 205 280 196 390 181 S650 145 810 132 S1040 110 1200 92" class="line"/>
+    <path d="M360 0 V300 M760 0 V300" class="dash"/>
+    <g class="thin">
+      <rect x="115" y="75" width="135" height="105"/>
+      <path d="M115 105 H250 M160 75 V180 M205 75 V180"/>
+      <circle cx="144" cy="126" r="4"/><circle cx="184" cy="126" r="4"/><circle cx="224" cy="126" r="4"/>
+      <circle cx="144" cy="158" r="4"/><circle cx="184" cy="158" r="4"/><circle cx="224" cy="158" r="4"/>
+    </g>
+    <circle cx="760" cy="132" r="6" class="dot"/>
+    <path d="M960 180 l20 -20 l20 20 l20 -20 l20 20 l20 -20 l20 20" class="thin"/>
+    <text x="1190" y="28" class="label">TIME &#8594; ACTION &#8594; CONTINUITY</text>
+  </symbol>
+
+<symbol id="git-cms" viewBox="0 0 1200 300">
+    <rect x="1" y="1" width="1198" height="298" class="thin"/>
+    <path d="M0 218 H1200" class="dash"/>
+    <path d="M0 210 C170 210 250 200 380 185 S650 155 800 132 S1030 105 1200 90" class="line"/>
+    <path d="M370 0 V300 M790 0 V300" class="dash"/>
+    <g class="thin">
+      <circle cx="160" cy="142" r="10"/><circle cx="250" cy="142" r="10"/>
+      <circle cx="250" cy="202" r="10"/><circle cx="340" cy="202" r="10"/>
+      <path d="M170 142 H240 M260 142 V202 M260 202 H330"/>
+    </g>
+    <g class="dot">
+      <circle cx="370" cy="186" r="6"/><circle cx="790" cy="132" r="6"/>
+    </g>
+    <path d="M960 178 C1000 140 1040 140 1080 178 S1160 216 1200 178" class="thin"/>
+    <text x="1190" y="28" class="label">EDIT &#8594; COMMIT &#8594; PUBLISH</text>
+  </symbol>`;
+
+export function VisualSprite() {
+  return (
+    <svg
+      aria-hidden="true"
+      style={{ position: "absolute", width: 0, height: 0, overflow: "hidden" }}
+      dangerouslySetInnerHTML={{ __html: SPRITE_MARKUP }}
+    />
+  );
+}
