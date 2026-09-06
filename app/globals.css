@@ -191,7 +191,7 @@ a{color:inherit;text-decoration:none}
   .intro-main{padding:70px 0 0}
   .kicker{font-size:8px;letter-spacing:.14em;margin-bottom:15px;white-space:nowrap}
   .hero-word{font-size:clamp(70px,23vw,150px);line-height:.78;letter-spacing:-.08em}
-  .hero-word .ghost{transform:translateX:8vw;-webkit-text-stroke:.8px var(--ink)}
+  .hero-word .ghost{transform:translateX(8vw);-webkit-text-stroke:.8px var(--ink)}
   .hero-copy{margin:38px 0 0 12vw;font-size:18px;line-height:1.08;letter-spacing:-.025em}
 
   .intro-aside{margin:64px 0 0;padding:17px 0 0;border-top:1px solid var(--line);font-size:10px;line-height:1.45}
