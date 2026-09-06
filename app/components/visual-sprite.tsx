@@ -1,14 +1,13 @@
 // Sprite is generated from public/visuals.svg (kept in sync manually).
 // Rendered once, hidden, so every <use href="#id"> resolves same-document —
-// this avoids cross-file <use> quirks (Safari caching, CSP, static export)
-// while the standalone public/visuals.svg remains available as a portable asset.
+// avoids cross-file <use> quirks (Safari caching, CSP, static export) while
+// public/visuals.svg stays available as a portable, standalone asset.
 const SPRITE_MARKUP = `<defs>
     <style>
       .line{fill:none;stroke:#a33b2d;stroke-width:2.5;vector-effect:non-scaling-stroke}
       .thin{fill:none;stroke:#8c887f;stroke-width:1;vector-effect:non-scaling-stroke}
       .dash{fill:none;stroke:#b9b6aa;stroke-width:1;stroke-dasharray:5 5;vector-effect:non-scaling-stroke}
       .dot{fill:#e9e6dc;stroke:#a33b2d;stroke-width:1.5;vector-effect:non-scaling-stroke}
-      .label{font-family:'DM Mono',monospace;font-size:12px;fill:#74736b;text-anchor:end}
     </style>
   </defs>
 
@@ -19,7 +18,6 @@ const SPRITE_MARKUP = `<defs>
     <path d="M420 0 V300 M835 0 V300" class="dash"/>
     <circle cx="420" cy="164" r="6" class="dot"/>
     <circle cx="835" cy="128" r="6" class="dot"/>
-    <text x="1190" y="28" class="label">QUERY &#8594; SIGNAL &#8594; CHOICE</text>
   </symbol>
 
 <symbol id="hemavision" viewBox="0 0 1200 300">
@@ -35,7 +33,6 @@ const SPRITE_MARKUP = `<defs>
       <circle cx="430" cy="178" r="6"/><circle cx="860" cy="133" r="6"/>
     </g>
     <path d="M1025 185 l30 -30 l28 21 l42 -55" class="line"/>
-    <text x="1190" y="28" class="label">IMAGE &#8594; SEGMENTATION &#8594; DIAGNOSIS</text>
   </symbol>
 
 <symbol id="airm" viewBox="0 0 1200 300">
@@ -51,7 +48,6 @@ const SPRITE_MARKUP = `<defs>
     <circle cx="400" cy="175" r="6" class="dot"/>
     <circle cx="820" cy="129" r="6" class="dot"/>
     <path d="M1015 166 h105 M1015 184 h78 M1015 202 h91" class="thin"/>
-    <text x="1190" y="28" class="label">SCAN &#8594; CLASSIFICATION &#8594; REPORT</text>
   </symbol>
 
 <symbol id="medical-drl" viewBox="0 0 1200 300">
@@ -65,7 +61,6 @@ const SPRITE_MARKUP = `<defs>
     <g class="thin">
       <path d="M210 118 L270 196 L330 118 M530 78 L590 144 L650 78 M870 105 L930 175 L990 105"/>
     </g>
-    <text x="1190" y="28" class="label">STATE &#8594; POLICY &#8594; ACTION</text>
   </symbol>
 
 <symbol id="healthcare-cost" viewBox="0 0 1200 300">
@@ -81,7 +76,6 @@ const SPRITE_MARKUP = `<defs>
     <circle cx="410" cy="192" r="6" class="dot"/>
     <circle cx="800" cy="140" r="6" class="dot"/>
     <path d="M1000 172 l26 -20 l24 12 l30 -38 l30 17" class="line"/>
-    <text x="1190" y="28" class="label">FEATURES &#8594; MODEL &#8594; ESTIMATE</text>
   </symbol>
 
 <symbol id="my-daily-health" viewBox="0 0 1200 300">
@@ -100,7 +94,6 @@ const SPRITE_MARKUP = `<defs>
     </g>
     <path d="M650 150 C790 150 875 125 1010 125 S1120 110 1200 92" class="line"/>
     <circle cx="650" cy="150" r="6" class="dot"/>
-    <text x="1190" y="28" class="label">INPUTS &#8594; MODELS &#8594; DIAGNOSIS</text>
   </symbol>
 
 <symbol id="crypto-rl" viewBox="0 0 1200 300">
@@ -111,7 +104,6 @@ const SPRITE_MARKUP = `<defs>
     <circle cx="400" cy="174" r="6" class="dot"/>
     <circle cx="800" cy="171" r="6" class="dot"/>
     <path d="M1030 85 L1120 205 M1120 85 L1030 205" class="thin"/>
-    <text x="1190" y="28" class="label">SIGNAL &#8594; POLICY &#8594; REALITY</text>
   </symbol>
 
 <symbol id="day-tracker" viewBox="0 0 1200 300">
@@ -127,7 +119,6 @@ const SPRITE_MARKUP = `<defs>
     </g>
     <circle cx="760" cy="132" r="6" class="dot"/>
     <path d="M960 180 l20 -20 l20 20 l20 -20 l20 20 l20 -20 l20 20" class="thin"/>
-    <text x="1190" y="28" class="label">TIME &#8594; ACTION &#8594; CONTINUITY</text>
   </symbol>
 
 <symbol id="git-cms" viewBox="0 0 1200 300">
@@ -144,7 +135,6 @@ const SPRITE_MARKUP = `<defs>
       <circle cx="370" cy="186" r="6"/><circle cx="790" cy="132" r="6"/>
     </g>
     <path d="M960 178 C1000 140 1040 140 1080 178 S1160 216 1200 178" class="thin"/>
-    <text x="1190" y="28" class="label">EDIT &#8594; COMMIT &#8594; PUBLISH</text>
   </symbol>`;
 
 export function VisualSprite() {

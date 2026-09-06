@@ -61,7 +61,7 @@ export const workIntro = {
   heading: ["Case", "files."],
   paragraph:
     "Not a gallery of screenshots. A record of problems, systems, decisions and outcomes.",
-  note: "Eight projects across clinical intelligence, applied ML, products and research.",
+  note: "Nine projects across clinical intelligence, applied ML, products and research.",
 };
 
 export type CaseStudy = {
@@ -71,7 +71,7 @@ export type CaseStudy = {
   titleLines: [string, string];
   summary: string;
   extra?: string;
-  link?: { href: string; label: string };
+  link: { href: string; label: string };
   facts: { label: string; value: string }[];
   description: string;
   metric: { big: string; small: string };
@@ -106,6 +106,8 @@ export const cases: CaseStudy[] = [
     titleLines: ["Blood", "understood."],
     summary:
       "A hematology platform that turns microscope imagery into a structured diagnostic workflow.",
+    extra: "Validated by a practicing clinical hematologist, then featured on BBC News Arabic's 4Tech program.",
+    link: { href: "https://www.youtube.com/watch?v=fX77vZlHkng", label: "BBC coverage" },
     facts: [
       { label: "Result", value: "97% multi-class accuracy" },
       { label: "Workflow", value: "45 min \u2192 3 min diagnostic time" },
@@ -123,6 +125,7 @@ export const cases: CaseStudy[] = [
     tag: "AIRM",
     titleLines: ["Read the", "scan."],
     summary: "A hospital-oriented MRI pipeline for four-class brain-tumor classification.",
+    link: { href: "https://youtu.be/2OeqBKF3X_A", label: "Watch demo" },
     facts: [
       { label: "Result", value: "99% classification accuracy" },
       { label: "Input", value: "DICOM MRI pipeline" },
@@ -140,6 +143,7 @@ export const cases: CaseStudy[] = [
     tag: "Medical Treatment DRL",
     titleLines: ["When should", "treatment happen?"],
     summary: "A reinforcement-learning system for ICU treatment timing.",
+    link: { href: "https://github.com/RYANX9/medical-treatment-drl/", label: "View code" },
     facts: [
       { label: "Data", value: "MIMIC-III" },
       { label: "Agent", value: "A2C" },
@@ -157,6 +161,7 @@ export const cases: CaseStudy[] = [
     tag: "Healthcare Cost",
     titleLines: ["Find the", "drivers."],
     summary: "A cost-prediction model designed to explain its own decisions.",
+    link: { href: "https://github.com/RYANX9/healthcare-cost-prediction", label: "View code" },
     facts: [
       { label: "Model", value: "Conv1D" },
       { label: "Result", value: "R\u00b2 0.88" },
@@ -174,6 +179,7 @@ export const cases: CaseStudy[] = [
     tag: "My Daily Health",
     titleLines: ["One interface.", "Five diseases."],
     summary: "A multi-disease diagnostic platform developed as an M.Sc. thesis.",
+    link: { href: "https://youtu.be/kh7WBjNPpEM", label: "Watch demo" },
     facts: [
       { label: "Domains", value: "Five disease areas" },
       { label: "Architectures", value: "12 evaluated" },
@@ -191,6 +197,7 @@ export const cases: CaseStudy[] = [
     tag: "Crypto Trading",
     titleLines: ["The useful", "failure."],
     summary: "An honest experiment where PPO/A2C did not beat a simple SMA strategy.",
+    link: { href: "https://github.com/RYANX9/deep-rl-trading", label: "View code" },
     facts: [
       { label: "Agents", value: "PPO / A2C" },
       { label: "Baseline", value: "SMA" },
@@ -209,6 +216,7 @@ export const cases: CaseStudy[] = [
     titleLines: ["Life,", "structured."],
     summary:
       "A personal productivity system for tasks, budgets, streaks, reminders and notes.",
+    link: { href: "https://github.com/RYANX9/rystudio", label: "View code" },
     facts: [
       { label: "Storage", value: "PostgreSQL" },
       { label: "Features", value: "Todos / budget / streaks / notes" },
@@ -219,6 +227,26 @@ export const cases: CaseStudy[] = [
     metric: { big: "24/7", small: "A system built for daily use" },
     artSymbol: "day-tracker",
     artLabel: "intent \u2192 routine \u2192 memory",
+  },
+  {
+    num: "09",
+    category: "Software / Systems",
+    tag: "Git-Backed CMS",
+    titleLines: ["Ship without", "a database."],
+    summary: "A client portfolio whose admin panel commits straight back to the repo.",
+    extra:
+      "Built for Zaid Saad, a Flutter and Firebase developer, with no separate database or CMS involved.",
+    link: { href: "https://zaid-saad.vercel.app", label: "Visit site" },
+    facts: [
+      { label: "Client", value: "Zaid Saad \u2014 Flutter / Firebase developer" },
+      { label: "Storage", value: "None \u2014 git is the database" },
+      { label: "Write path", value: "GitHub Contents API" },
+    ],
+    description:
+      "An /admin dashboard edits site content and posts to an API route that regenerates the data file and commits it straight back to the repository through the GitHub Contents API. The live data file stays the single source of truth, and every edit is a real, versioned git commit.",
+    metric: { big: "0", small: "Databases required" },
+    artSymbol: "git-cms",
+    artLabel: "edit \u2192 commit \u2192 publish",
   },
 ];
 

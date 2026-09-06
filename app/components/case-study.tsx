@@ -25,14 +25,10 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
               {study.extra}
             </>
           )}
-          {study.link && (
-            <>
-              <br />
-              <a className="case-link" href={study.link.href} target="_blank" rel="noopener noreferrer">
-                {study.link.label}
-              </a>
-            </>
-          )}
+          <br />
+          <a className="case-link" href={study.link.href} target="_blank" rel="noopener noreferrer">
+            {study.link.label}
+          </a>
         </div>
       </div>
 
