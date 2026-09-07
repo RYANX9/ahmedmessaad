@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useRef } from "react";
 import {
   rail,
   topbar,
@@ -13,48 +10,6 @@ import {
 } from "./data";
 
 export default function Home() {
-  const deckRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLElement | null)[]>([]);
-
-  // Cards subtly separate while scrolling: they feel like physical
-  // photographs being dealt out rather than ordinary page sections.
-  useEffect(() => {
-    let ticking = false;
-
-    function arrange() {
-      ticking = false;
-      if (window.innerWidth <= 760) return;
-      const deck = deckRef.current;
-      if (!deck) return;
-      const rect = deck.getBoundingClientRect();
-      const progress = Math.max(
-        0,
-        Math.min(1, (window.innerHeight - rect.top) / (window.innerHeight * 0.95))
-      );
-      cardRefs.current.forEach((card, i) => {
-        if (!card) return;
-        const spread = Math.max(0, progress - 0.08) * 28;
-        const direction = i % 2 ? 1 : -1;
-        card.style.translate = `${direction * spread}px ${i * spread * 0.15}px`;
-      });
-    }
-
-    function onScroll() {
-      if (!ticking) {
-        requestAnimationFrame(arrange);
-        ticking = true;
-      }
-    }
-
-    arrange();
-    window.addEventListener("scroll", onScroll);
-    window.addEventListener("resize", arrange);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", arrange);
-    };
-  }, []);
-
   return (
     <>
       <header className="top">
@@ -126,50 +81,51 @@ export default function Home() {
           <span className="gallery-note">{workIntro.note}</span>
         </div>
 
-        <div className="deck" ref={deckRef}>
-          {cases.map((c, i) => (
-            <article
-              className="card"
-              key={c.num}
-              ref={(el) => {
-                cardRefs.current[i] = el;
-              }}
-            >
-              <div className="card-top">
-                <span className="card-number">{c.num}</span>
-                <span className="card-kind">{c.category}</span>
-              </div>
-
-              <div className="card-main">
-                <div>
-                  <h3>
-                    {c.titleLines[0]} <em>{c.titleLines[1]}</em>
-                  </h3>
+        <div className="deck">
+          {cases.map((c) => (
+            <div className="stack-item" key={c.num}>
+              <article className="card" data-index={c.num}>
+                <div className="card-top">
+                  <span className="card-number">{c.num}</span>
+                  <span className="card-kind">{c.category}</span>
                 </div>
-                <div className="card-info">
-                  <p>{c.summary}</p>
-                  {c.extra && <p className="card-extra">{c.extra}</p>}
-                  {c.facts.map((f) => (
-                    <p className="card-meta" key={f.label}>
-                      {f.label}: {f.value}
-                    </p>
-                  ))}
-                  <a className="card-link" href={c.link.href} target="_blank" rel="noreferrer">
-                    {c.link.label} ↗
-                  </a>
+
+                <div className="card-main">
+                  <div>
+                    <h3>
+                      {c.titleLines[0]} <em>{c.titleLines[1]}</em>
+                    </h3>
+                  </div>
+                  <div className="card-info">
+                    <p>{c.summary}</p>
+                    {c.extra && <p className="card-extra">{c.extra}</p>}
+                    {c.facts.map((f) => (
+                      <p className="card-meta" key={f.label}>
+                        {f.label}: {f.value}
+                      </p>
+                    ))}
+                    <a
+                      className="card-link"
+                      href={c.link.href}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {c.link.label} ↗
+                    </a>
+                  </div>
                 </div>
-              </div>
 
-              <div className="card-photo" data-symbol={c.artSymbol}>
-                <div className="mark" />
-                <span>{c.artLabel}</span>
-              </div>
+                <div className="card-photo" data-symbol={c.artSymbol}>
+                  <div className="mark" />
+                  <span>{c.artLabel}</span>
+                </div>
 
-              <div className="stamp">
-                <b>{c.metric.big}</b>
-                {c.metric.small}
-              </div>
-            </article>
+                <div className="stamp">
+                  <b>{c.metric.big}</b>
+                  {c.metric.small}
+                </div>
+              </article>
+            </div>
           ))}
         </div>
       </section>
