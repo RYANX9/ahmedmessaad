@@ -320,10 +320,7 @@ export default function Home() {
         </div>
 
         <div>
-          <div className="contact-bottom">
-            <span>
-              {rail.firstName} {rail.lastName} / {rail.location} / {rail.year}
-            </span>
+          <div className="contact-links-row">
             <div className="contact-links">
               {contact.links.map((link) => (
                 <a
@@ -337,8 +334,14 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <div className="contact-footer-right">
-            {contact.footerLeft} — {contact.footerRight}
+
+          <div className="contact-bottom">
+            <span>
+              {rail.firstName} {rail.lastName} / {rail.location} / {rail.year}
+            </span>
+            <div className="contact-footer-right">
+              {contact.footerLeft} — {contact.footerRight}
+            </div>
           </div>
         </div>
       </section>
