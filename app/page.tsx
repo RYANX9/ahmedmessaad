@@ -2,12 +2,126 @@ import {
   rail,
   topbar,
   hero,
-  sectionHeads,
   workIntro,
   cases,
+  sectionHeads,
   about,
   contact,
+  type CaseStudy,
 } from "./data";
+
+// Each project gets a small technical "visual" widget in the card footer.
+// The widget TYPE is derived from artSymbol (stable per project), and where
+// possible its content (node labels) is derived from artLabel — e.g.
+// "query → signal → choice" becomes three flow nodes — so nothing here is
+// hardcoded per project; it all comes from data.ts.
+type VisualKind =
+  | "flow"
+  | "scan"
+  | "model"
+  | "rl"
+  | "graph"
+  | "architecture"
+  | "experiment";
+
+const VISUAL_KIND: Record<string, VisualKind> = {
+  specmob: "flow",
+  hemavision: "scan",
+  airm: "model",
+  "medical-drl": "rl",
+  "healthcare-cost": "graph",
+  "my-daily-health": "architecture",
+  "crypto-rl": "experiment",
+  "day-tracker": "flow",
+  "git-cms": "flow",
+};
+
+function splitArrow(label: string): string[] {
+  return label
+    .split("→")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+function ProjectVisual({ c }: { c: CaseStudy }) {
+  const kind = VISUAL_KIND[c.artSymbol] ?? "flow";
+
+  switch (kind) {
+    case "flow": {
+      const nodes = splitArrow(c.artLabel);
+      return (
+        <div className="flow">
+          {nodes.flatMap((n, i) => [
+            <div className="flow-node" key={`n${i}`}>
+              {n}
+            </div>,
+            i < nodes.length - 1 ? (
+              <div className="flow-line" key={`l${i}`} />
+            ) : null,
+          ])}
+        </div>
+      );
+    }
+    case "rl": {
+      const nodes = splitArrow(c.artLabel);
+      return (
+        <div className="rl">
+          {nodes.flatMap((n, i) => [
+            <div className="rl-node" key={`n${i}`}>
+              {n}
+            </div>,
+            i < nodes.length - 1 ? (
+              <div className="rl-arrow" key={`a${i}`} />
+            ) : null,
+          ])}
+        </div>
+      );
+    }
+    case "scan":
+      return (
+        <div className="scan">
+          {Array.from({ length: 80 }).map((_, i) => (
+            <span key={i} />
+          ))}
+          <div className="scan-target" />
+        </div>
+      );
+    case "model":
+      return (
+        <div className="model">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div className="model-bar" key={i} />
+          ))}
+        </div>
+      );
+    case "graph":
+      return (
+        <div className="graph">
+          <svg viewBox="0 0 600 72" preserveAspectRatio="none">
+            <polyline points="0,58 50,53 100,56 150,40 200,45 250,28 300,35 350,17 400,25 460,9 520,16 600,7" />
+          </svg>
+        </div>
+      );
+    case "architecture":
+      return (
+        <div className="architecture">
+          {["Input", "Model", "Decision", "Interface"].map((label) => (
+            <div className="arch-box" key={label}>
+              {label}
+            </div>
+          ))}
+        </div>
+      );
+    case "experiment":
+      return (
+        <div className="experiment">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div className="exp" key={i} />
+          ))}
+        </div>
+      );
+  }
+}
 
 export default function Home() {
   return (
@@ -40,30 +154,21 @@ export default function Home() {
           </div>
         </div>
 
-        <div>
-          <div className="hero-title">
-            {hero.headline.map((line, i) => (
-              <div key={i}>{line}</div>
-            ))}
-          </div>
-
-          <div className="hero-method">
-            <span className="method-label">{hero.method.label}</span>
-            <ol>
-              {hero.method.steps.map((step, i) => (
-                <li key={step} data-i={i + 1}>
-                  {step}
-                </li>
-              ))}
-            </ol>
-          </div>
+        <div className="hero-title">
+          {hero.headline.map((line, i) => (
+            <div key={i}>{line}</div>
+          ))}
         </div>
 
         <div className="hero-bottom">
           <span>{rail.hint}</span>
           <p>
             {hero.statement.map((seg, i) =>
-              seg.bold ? <strong key={i}>{seg.text}</strong> : <span key={i}>{seg.text}</span>
+              seg.bold ? (
+                <strong key={i}>{seg.text}</strong>
+              ) : (
+                <span key={i}>{seg.text}</span>
+              )
             )}
           </p>
         </div>
@@ -71,41 +176,46 @@ export default function Home() {
 
       <section className="gallery" id="work">
         <div className="gallery-head">
-          <div className="gallery-eyebrow">{sectionHeads.work.label}</div>
           <h2>
             {workIntro.heading.map((line, i) => (
               <div key={i}>{line}</div>
             ))}
           </h2>
-          <p>{workIntro.paragraph}</p>
-          <span className="gallery-note">{workIntro.note}</span>
+          <span>{workIntro.note}</span>
         </div>
 
         <div className="deck">
           {cases.map((c) => (
             <div className="stack-item" key={c.num}>
               <article className="card" data-index={c.num}>
-                <div className="card-top">
-                  <span className="card-number">{c.num}</span>
-                  <span className="card-kind">{c.category}</span>
+                <div className="project-line">
+                  <span className="project-number">{c.num}</span>
+                  <span className="project-rule" />
+                  <span className="project-type">{c.category}</span>
                 </div>
 
-                <div className="card-main">
-                  <div>
-                    <h3>
-                      {c.titleLines[0]} <em>{c.titleLines[1]}</em>
-                    </h3>
-                  </div>
-                  <div className="card-info">
-                    <p>{c.summary}</p>
-                    {c.extra && <p className="card-extra">{c.extra}</p>}
-                    {c.facts.map((f) => (
-                      <p className="card-meta" key={f.label}>
-                        {f.label}: {f.value}
-                      </p>
-                    ))}
+                <div className="card-content">
+                  <h3 className="project-title">
+                    {c.titleLines[0]} <em>{c.titleLines[1]}</em>
+                  </h3>
+
+                  <div className="project-info">
+                    <p className="project-description">
+                      {c.summary}
+                      {c.extra ? ` ${c.extra}` : ""}
+                    </p>
+
+                    <div className="project-meta">
+                      {c.facts.map((f) => (
+                        <div className="meta" key={f.label}>
+                          <span className="meta-label">{f.label}</span>
+                          <span className="meta-value">{f.value}</span>
+                        </div>
+                      ))}
+                    </div>
+
                     <a
-                      className="card-link"
+                      className="project-link"
                       href={c.link.href}
                       target="_blank"
                       rel="noreferrer"
@@ -115,14 +225,11 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="card-photo" data-symbol={c.artSymbol}>
-                  <div className="mark" />
-                  <span>{c.artLabel}</span>
-                </div>
-
-                <div className="stamp">
-                  <b>{c.metric.big}</b>
-                  {c.metric.small}
+                <div className="card-bottom">
+                  <span className="bottom-label">{c.artLabel}</span>
+                  <div className="visual">
+                    <ProjectVisual c={c} />
+                  </div>
                 </div>
               </article>
             </div>
@@ -131,38 +238,24 @@ export default function Home() {
       </section>
 
       <section className="after" id="about">
-        <div>
-          <div className="after-label">{sectionHeads.about.label}</div>
-          <span className="after-note">{sectionHeads.about.note}</span>
-        </div>
+        <div className="after-label">{sectionHeads.about.label}</div>
         <div>
           <h2>
             {about.heading.map((line, i) => (
               <div key={i}>{line}</div>
             ))}
           </h2>
-          <p className="about-lead">
+          <p className="about-copy">
             {about.lead.before}
             <em>{about.lead.emphasis}</em>
             {about.lead.after}
           </p>
-          <p className="about-copy">{about.body}</p>
-
-          <div className="timeline">
-            {about.timeline.map((row) => (
-              <div className="timeline-row" key={row.detail}>
-                <span className="timeline-period">{row.period}</span>
-                <span className="timeline-detail">{row.detail}</span>
-                <span className="timeline-tag">{row.tag}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
       <section className="contact" id="contact">
         <div>
-          <div className="after-label" style={{ color: "var(--paper)" }}>
+          <div className="after-label">
             Contact / {cases.length.toString().padStart(2, "0")}
           </div>
           <h2>
@@ -170,28 +263,23 @@ export default function Home() {
               <div key={i}>{line}</div>
             ))}
           </h2>
-          <p className="contact-paragraph">{contact.paragraph}</p>
         </div>
-        <div>
-          <div className="contact-bottom">
-            <span>
-              {rail.firstName} {rail.lastName} / {rail.location} / {rail.year}
-            </span>
-            <div className="contact-links">
-              {contact.links.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target={link.href.startsWith("mailto:") ? undefined : "_blank"}
-                  rel="noreferrer"
-                >
-                  {link.label} ↗
-                </a>
-              ))}
-            </div>
-          </div>
-          <div className="contact-footer-right">
-            {contact.footerLeft} — {contact.footerRight}
+
+        <div className="contact-bottom">
+          <span>
+            {rail.firstName} {rail.lastName} / {rail.location} / {rail.year}
+          </span>
+          <div className="contact-links">
+            {contact.links.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+                rel="noreferrer"
+              >
+                {link.label} ↗
+              </a>
+            ))}
           </div>
         </div>
       </section>
