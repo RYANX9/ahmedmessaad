@@ -394,7 +394,7 @@ a{color:inherit;text-decoration:none}
 }
 .contact h2{margin:50px 0 0;max-width:8ch;font-size:clamp(60px,12vw,180px);line-height:.78;letter-spacing:-.08em}
 .contact-paragraph{
-  max-width:46ch;margin:24px 0 0;
+  max-width:46ch;margin:40px 0 0;
   font-size:clamp(15px,1.6vw,18px);line-height:1.35;
   color:rgba(245,242,235,.75);
 }
@@ -503,7 +503,7 @@ a{color:inherit;text-decoration:none}
 
   .contact{min-height:75vh;padding:18px}
   .contact h2{margin-top:60px;font-size:64px}
-  .contact-paragraph{max-width:none}
+  .contact-paragraph{max-width:none;margin-top:28px}
   .contact-links-row{justify-content:flex-start;margin-bottom:20px}
   .contact-links{gap:12px}
   .contact-bottom{display:block}
