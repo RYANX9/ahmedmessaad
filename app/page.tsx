@@ -3,6 +3,7 @@ import {
   topbar,
   hero,
   workIntro,
+  contents,
   cases,
   sectionHeads,
   about,
@@ -129,6 +130,7 @@ export default function Home() {
       <header className="top">
         <a className="logo" href="#">
           {rail.mark}
+          <span className="topbar-label">{topbar.label}</span>
         </a>
         <nav className="nav">
           {topbar.nav.map((item) => (
@@ -154,10 +156,24 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="hero-title">
-          {hero.headline.map((line, i) => (
-            <div key={i}>{line}</div>
-          ))}
+        <div>
+          <span className="hero-eyebrow">{hero.eyebrow}</span>
+          <div className="hero-title">
+            {hero.headline.map((line, i) => (
+              <div key={i}>{line}</div>
+            ))}
+          </div>
+
+          <div className="hero-method">
+            <span className="method-label">{hero.method.label}</span>
+            <ol>
+              {hero.method.steps.map((step, i) => (
+                <li key={step} data-i={i + 1}>
+                  {step}
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
 
         <div className="hero-bottom">
@@ -174,13 +190,34 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="contents-toc">
+        <div className="contents-head">
+          <span>{contents.eyebrow}</span>
+          <span>{contents.count}</span>
+        </div>
+        <div className="contents-list">
+          {contents.groups.map((g) => (
+            <div className="contents-row" key={g.num}>
+              <span className="contents-num">{g.num}</span>
+              <h3 className="contents-title">{g.title}</h3>
+              <p className="contents-desc">{g.description}</p>
+              <span className="contents-projects">{g.projects}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="gallery" id="work">
         <div className="gallery-head">
-          <h2>
-            {workIntro.heading.map((line, i) => (
-              <div key={i}>{line}</div>
-            ))}
-          </h2>
+          <div>
+            <span className="gallery-eyebrow">{sectionHeads.work.label}</span>
+            <h2>
+              {workIntro.heading.map((line, i) => (
+                <div key={i}>{line}</div>
+              ))}
+            </h2>
+            <p className="gallery-lead">{workIntro.paragraph}</p>
+          </div>
           <span>{workIntro.note}</span>
         </div>
 
@@ -191,7 +228,12 @@ export default function Home() {
                 <div className="project-line">
                   <span className="project-number">{c.num}</span>
                   <span className="project-rule" />
-                  <span className="project-type">{c.category}</span>
+                  <span className="project-type-group">
+                    {c.feature && (
+                      <span className="project-feature">{c.feature}</span>
+                    )}
+                    <span className="project-type">{c.category}</span>
+                  </span>
                 </div>
 
                 <div className="card-content">
@@ -200,19 +242,16 @@ export default function Home() {
                   </h3>
 
                   <div className="project-info">
-                    <p className="project-description">
-                      {c.summary}
-                      {c.extra ? ` ${c.extra}` : ""}
-                    </p>
+                    <p className="project-description">{c.description}</p>
+                    {c.extra && <p className="project-extra">{c.extra}</p>}
+                    <p className="project-insight">{c.insight}</p>
 
-                    <div className="project-meta">
-                      {c.facts.map((f) => (
-                        <div className="meta" key={f.label}>
-                          <span className="meta-label">{f.label}</span>
-                          <span className="meta-value">{f.value}</span>
-                        </div>
+                    <ul className="field-notes">
+                      {c.fieldNotes.map((note) => (
+                        <li key={note}>{note}</li>
                       ))}
-                    </div>
+                    </ul>
+
 
                     <a
                       className="project-link"
@@ -238,24 +277,38 @@ export default function Home() {
       </section>
 
       <section className="after" id="about">
-        <div className="after-label">{sectionHeads.about.label}</div>
+        <div>
+          <div className="after-label">{sectionHeads.about.label}</div>
+          <span className="after-note">{sectionHeads.about.note}</span>
+        </div>
         <div>
           <h2>
             {about.heading.map((line, i) => (
               <div key={i}>{line}</div>
             ))}
           </h2>
-          <p className="about-copy">
+          <p className="about-lead">
             {about.lead.before}
             <em>{about.lead.emphasis}</em>
             {about.lead.after}
           </p>
+          <p className="about-copy">{about.body}</p>
+
+          <div className="timeline">
+            {about.timeline.map((row) => (
+              <div className="timeline-row" key={row.detail}>
+                <span className="timeline-period">{row.period}</span>
+                <span className="timeline-detail">{row.detail}</span>
+                <span className="timeline-tag">{row.tag}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className="contact" id="contact">
         <div>
-          <div className="after-label">
+          <div className="after-label" style={{ color: "var(--paper)" }}>
             Contact / {cases.length.toString().padStart(2, "0")}
           </div>
           <h2>
@@ -263,23 +316,29 @@ export default function Home() {
               <div key={i}>{line}</div>
             ))}
           </h2>
+          <p className="contact-paragraph">{contact.paragraph}</p>
         </div>
 
-        <div className="contact-bottom">
-          <span>
-            {rail.firstName} {rail.lastName} / {rail.location} / {rail.year}
-          </span>
-          <div className="contact-links">
-            {contact.links.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target={link.href.startsWith("mailto:") ? undefined : "_blank"}
-                rel="noreferrer"
-              >
-                {link.label} ↗
-              </a>
-            ))}
+        <div>
+          <div className="contact-bottom">
+            <span>
+              {rail.firstName} {rail.lastName} / {rail.location} / {rail.year}
+            </span>
+            <div className="contact-links">
+              {contact.links.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+                  rel="noreferrer"
+                >
+                  {link.label} ↗
+                </a>
+              ))}
+            </div>
+          </div>
+          <div className="contact-footer-right">
+            {contact.footerLeft} — {contact.footerRight}
           </div>
         </div>
       </section>
