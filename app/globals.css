@@ -398,15 +398,23 @@ a{color:inherit;text-decoration:none}
   font-size:clamp(15px,1.6vw,18px);line-height:1.35;
   color:rgba(245,242,235,.75);
 }
+
+/* Links row now sits above the border-top line, its own block */
+.contact-links-row{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:18px;
+}
+
 .contact-bottom{
   border-top:1px solid rgba(245,242,235,.25);padding-top:14px;
-  display:flex;justify-content:space-between;
+  display:flex;justify-content:space-between;align-items:flex-end;
   font:10px "Space Mono",monospace;text-transform:uppercase;
 }
 .contact-links{display:flex;gap:18px;flex-wrap:wrap}
 .contact-links a{text-decoration:underline;text-underline-offset:4px}
 .contact-footer-right{
-  margin-top:10px;text-align:right;color:rgba(245,242,235,.5);
+  margin:0;text-align:right;color:rgba(245,242,235,.5);
   font:10px "Space Mono",monospace;text-transform:uppercase;
 }
 
@@ -496,8 +504,9 @@ a{color:inherit;text-decoration:none}
   .contact{min-height:75vh;padding:18px}
   .contact h2{margin-top:60px;font-size:64px}
   .contact-paragraph{max-width:none}
+  .contact-links-row{justify-content:flex-start;margin-bottom:20px}
+  .contact-links{gap:12px}
   .contact-bottom{display:block}
-  .contact-links{margin-top:20px;gap:12px}
   .contact-footer-right{text-align:left;margin-top:14px}
 }
 
