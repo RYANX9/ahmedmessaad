@@ -26,7 +26,7 @@ export const topbar = {
 };
 
 export const hero = {
-  eyebrow: "A working portfolio — not a résumé",
+  eyebrow: "",
   headline: ["I build the model.", "Then the system."],
   statement: [
     { text: "My work sits between " },
@@ -36,7 +36,7 @@ export const hero = {
     },
   ],
   method: {
-    label: "Method / 01",
+    label: "",
     steps: [
       "Observe the problem.",
       "Build the intelligence.",
