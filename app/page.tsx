@@ -14,7 +14,7 @@ import {
 } from "./data";
 import { useState } from "react";
 import { MinimalPortfolio } from "./components/minimal-portfolio";
-import { EditorialPortfolio } from "./components/editorial-portfolio";
+import EditorialPortfolio from "./components/editorial-portfolio";
 import { DesignToggle, type DesignMode } from "./components/design-toggle";
 
 // Each project gets a small technical "visual" widget in the card footer.
