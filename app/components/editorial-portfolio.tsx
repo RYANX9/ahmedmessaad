@@ -8,49 +8,81 @@ const projects = [
     number: "01",
     type: "Medical AI / Computer Vision",
     title: "HemaVision",
-    intro:
-      "A computer-vision system for hematology analysis, built to reduce the distance between microscopic images and a usable clinical result.",
+    subtitle: "Automated hematology analysis from microscope imagery.",
     description:
-      "The system combines YOLOv8, U-Net and OpenCV to detect and segment blood-cell imagery before classification. The work reached 97% multi-class accuracy and reduced an analysis workflow from roughly 45 minutes to around 3 minutes.",
-    facts: ["97% accuracy", "45 → 3 min", "YOLOv8 / U-Net", "PyTorch"],
-    linkLabel: "View research",
-    link: "https://www.linkedin.com/in/ahmedmessaad/",
+      "A computer-vision system designed to reduce the time required for hematological image analysis. The pipeline combines object detection and segmentation to identify and classify blood-cell patterns from microscope imagery.",
+    metrics: [
+      ["97%", "multi-class accuracy"],
+      ["45 → 3", "minutes per analysis"],
+    ],
+    stack: "YOLOv8 · U-Net · OpenCV · PyTorch",
+    details: [
+      "Multi-class blood-cell analysis",
+      "Detection and segmentation pipeline",
+      "Clinical validation with a hematologist",
+      "Featured on BBC News Arabic 4Tech",
+    ],
+    href: "https://www.linkedin.com/",
   },
   {
     number: "02",
     type: "Medical Imaging / Deep Learning",
     title: "AIRM",
-    intro:
-      "A medical-imaging system for brain-tumor classification from MRI data, designed as a complete application rather than a model in isolation.",
+    subtitle: "Brain-tumor classification for MRI imaging.",
     description:
-      "AIRM works with DICOM MRI data and a four-class classification pipeline. The underlying model reached around 99% accuracy, while a PyQt5 application turned the research model into an interface suitable for practical experimentation.",
-    facts: ["~99% accuracy", "4 classes", "DICOM / MRI", "PyTorch / PyQt5"],
-    linkLabel: "View research",
-    link: "https://www.linkedin.com/in/ahmedmessaad/",
+      "A medical-imaging application for classifying brain tumors from DICOM MRI data. The project combines deep transfer learning with a desktop clinical interface designed around practical medical-image workflows.",
+    metrics: [
+      ["~99%", "four-class accuracy"],
+      ["DICOM", "MRI workflow"],
+    ],
+    stack: "EfficientNet · PyTorch · DICOM · PyQt5",
+    details: [
+      "Four-class brain-tumor classification",
+      "DICOM MRI image processing",
+      "Transfer-learning architecture",
+      "Clinical review by a radiologist",
+    ],
+    href: "https://www.linkedin.com/",
   },
   {
     number: "03",
-    type: "Deep Reinforcement Learning / Clinical Decision Support",
+    type: "Deep Reinforcement Learning",
     title: "Treatment DRL",
-    intro:
-      "An experimental reinforcement-learning environment for studying treatment decisions in intensive-care data.",
+    subtitle: "Reinforcement learning for ICU treatment timing.",
     description:
-      "Using MIMIC-III data, the system models treatment timing as a sequential decision problem. An A2C agent operates inside a 26-dimensional environment and is constrained by a custom safety filter designed to keep recommendations within clinically acceptable boundaries.",
-    facts: ["MIMIC-III", "A2C", "26-dimensional state", "Safety filter"],
-    linkLabel: "View research",
-    link: "https://www.linkedin.com/in/ahmedmessaad/",
+      "A clinical decision-support experiment using reinforcement learning to investigate treatment policies from intensive-care data. The system was built around a custom environment and a safety layer intended to constrain unsafe recommendations.",
+    metrics: [
+      ["99.5%", "reported clinical appropriateness"],
+      ["26D", "state representation"],
+    ],
+    stack: "A2C · MIMIC-III · Python · Clinical RL",
+    details: [
+      "MIMIC-III intensive-care data",
+      "Actor-Critic reinforcement learning",
+      "Custom 26-dimensional environment",
+      "Safety filtering layer",
+    ],
+    href: "https://www.linkedin.com/",
   },
   {
     number: "04",
-    type: "Product / Full-stack Engineering",
+    type: "Product / Full-Stack Engineering",
     title: "Specmob",
-    intro:
-      "A smartphone research platform built around one question: how can a person make a better phone decision without being pushed toward a sponsored choice?",
+    subtitle: "A specification-first way to choose a smartphone.",
     description:
-      "Specmob combines a large phone catalogue with search, filtering, comparison, recommendation and scoring systems. The product is built with Next.js, FastAPI and PostgreSQL, with a published scoring methodology and a consistent Smart Score across the experience.",
-    facts: ["Next.js", "FastAPI", "PostgreSQL", "Comparison + recommendation"],
-    linkLabel: "Visit Specmob",
-    link: "https://specmob.vercel.app/",
+      "A phone research and comparison platform built around structured specifications rather than sponsored recommendations. Users can compare devices, explore category rankings, and get recommendations based on their priorities.",
+    metrics: [
+      ["4", "phone comparison"],
+      ["5", "priority-based picks"],
+    ],
+    stack: "Next.js · FastAPI · PostgreSQL",
+    details: [
+      "Specification-based comparison engine",
+      "Priority-driven recommendation workflow",
+      "Typo-tolerant phone search",
+      "Structured phone and pricing data",
+    ],
+    href: "https://specmob.vercel.app",
   },
 ];
 
@@ -58,46 +90,41 @@ const experiments = [
   {
     number: "05",
     title: "Healthcare Cost Prediction",
-    meta: "Machine Learning / Explainability",
-    text:
-      "A Conv1D prediction system using 47 engineered features, with SHAP used to expose which variables influenced the model.",
+    description:
+      "Conv1D-based healthcare cost prediction using 47 engineered features, with SHAP used to inspect feature contribution.",
     result: "R² 0.88",
   },
   {
     number: "06",
     title: "My Daily Health",
-    meta: "Medical AI / Thesis",
-    text:
-      "A multi-disease diagnostic platform developed as the foundation of the master’s research work, exploring multiple disease areas and deep-learning architectures.",
+    description:
+      "Master's thesis project exploring multi-disease diagnosis across five disease areas and twelve deep-learning architectures.",
     result: "5 disease areas",
   },
   {
     number: "07",
     title: "Crypto Trading",
-    meta: "Deep Reinforcement Learning / Experiment",
-    text:
-      "An experiment comparing PPO and A2C against a simpler SMA strategy, exploring where reinforcement learning does — and does not — make sense in noisy markets.",
-    result: "RL vs baseline",
+    description:
+      "A reinforcement-learning trading experiment comparing PPO and A2C against a simpler SMA baseline.",
+    result: "RL vs SMA",
   },
   {
     number: "08",
     title: "Day Tracker",
-    meta: "Product Engineering",
-    text:
-      "A personal productivity system combining tasks, budgets, streaks, reminders and notes around a PostgreSQL-backed application.",
-    result: "Full-stack system",
+    description:
+      "A productivity system combining tasks, budgets, streaks, notes and reminder workflows.",
+    result: "PostgreSQL",
   },
   {
     number: "09",
     title: "Git-Backed CMS",
-    meta: "Software Engineering",
-    text:
-      "An administrative publishing system using GitHub as the source of truth, with a dashboard built around the GitHub Contents API.",
+    description:
+      "An administration system using GitHub as the source of truth for managing portfolio content.",
     result: "GitHub API",
   },
 ];
 
-const researchAreas = [
+const researchFields = [
   "Medical AI",
   "Computer Vision",
   "Deep Learning",
@@ -117,100 +144,134 @@ const stack = [
   "OpenCV",
 ];
 
-export default function EditorialPortfolio() {
+export function EditorialPortfolio() {
+  const [activeSection, setActiveSection] = useState("work");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("top");
   const [scrollProgress, setScrollProgress] = useState(0);
-  const cursorRef = useRef<HTMLDivElement>(null);
+  const [cursorVisible, setCursorVisible] = useState(false);
+
+  const cursorRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      const max =
+      const scrollTop = window.scrollY;
+      const documentHeight =
         document.documentElement.scrollHeight - window.innerHeight;
 
-      setScrollProgress(max > 0 ? window.scrollY / max : 0);
+      setScrollProgress(
+        documentHeight > 0 ? (scrollTop / documentHeight) * 100 : 0
+      );
 
-      const sections = ["top", "work", "experiments", "profile", "contact"];
+      const sections = ["work", "research", "experiments", "about", "contact"];
 
-      let current = "top";
+      let current = "work";
 
       for (const id of sections) {
         const element = document.getElementById(id);
 
-        if (element && window.scrollY >= element.offsetTop - 180) {
-          current = id;
+        if (element) {
+          const rect = element.getBoundingClientRect();
+
+          if (rect.top <= window.innerHeight * 0.35) {
+            current = id;
+          }
         }
       }
 
       setActiveSection(current);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const handlePointer = (event: PointerEvent) => {
+    const handleMouseMove = (event: MouseEvent) => {
       if (!cursorRef.current || window.innerWidth < 900) return;
+
+      setCursorVisible(true);
 
       cursorRef.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
     };
 
-    window.addEventListener("pointermove", handlePointer);
+    const handleMouseLeave = () => {
+      setCursorVisible(false);
+    };
 
-    return () => window.removeEventListener("pointermove", handlePointer);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseleave", handleMouseLeave);
+
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+    };
   }, []);
 
   const scrollTo = (id: string) => {
-    setMenuOpen(false);
+    const element = document.getElementById(id);
 
-    document.getElementById(id)?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+
+    setMenuOpen(false);
   };
 
   return (
     <main className={styles.page}>
       <div
         className={styles.progress}
-        style={{ transform: `scaleX(${scrollProgress})` }}
+        style={{ width: `${scrollProgress}%` }}
       />
 
-      <div ref={cursorRef} className={styles.cursor} />
+      <div
+        ref={cursorRef}
+        className={`${styles.cursor} ${
+          cursorVisible ? styles.cursorVisible : ""
+        }`}
+      />
 
+      {/* HEADER */}
       <header className={styles.header}>
         <button
           className={styles.logo}
           onClick={() => scrollTo("top")}
           aria-label="Back to top"
         >
-          <span>AM</span>
-          <span className={styles.logoLine} />
-          <span>AI / ML</span>
+          AM
         </button>
 
-        <nav className={styles.desktopNav} aria-label="Main navigation">
+        <nav className={styles.desktopNav}>
           <button
             className={activeSection === "work" ? styles.navActive : ""}
             onClick={() => scrollTo("work")}
           >
             Work
           </button>
+
+          <button
+            className={activeSection === "research" ? styles.navActive : ""}
+            onClick={() => scrollTo("research")}
+          >
+            Research
+          </button>
+
           <button
             className={activeSection === "experiments" ? styles.navActive : ""}
             onClick={() => scrollTo("experiments")}
           >
             Experiments
           </button>
+
           <button
-            className={activeSection === "profile" ? styles.navActive : ""}
-            onClick={() => scrollTo("profile")}
+            className={activeSection === "about" ? styles.navActive : ""}
+            onClick={() => scrollTo("about")}
           >
-            Profile
+            About
           </button>
+
           <button
             className={activeSection === "contact" ? styles.navActive : ""}
             onClick={() => scrollTo("contact")}
@@ -220,386 +281,342 @@ export default function EditorialPortfolio() {
         </nav>
 
         <button
-          className={`${styles.menuButton} ${
-            menuOpen ? styles.menuButtonOpen : ""
-          }`}
+          className={styles.menuButton}
           onClick={() => setMenuOpen((value) => !value)}
           aria-label="Toggle navigation"
           aria-expanded={menuOpen}
         >
-          <span />
-          <span />
+          <span>{menuOpen ? "Close" : "Menu"}</span>
         </button>
       </header>
 
+      {/* MOBILE NAV */}
       <div
-        className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`}
+        className={`${styles.mobileMenu} ${
+          menuOpen ? styles.mobileMenuOpen : ""
+        }`}
       >
         <button onClick={() => scrollTo("work")}>01 / Work</button>
+        <button onClick={() => scrollTo("research")}>02 / Research</button>
         <button onClick={() => scrollTo("experiments")}>
-          02 / Experiments
+          03 / Experiments
         </button>
-        <button onClick={() => scrollTo("profile")}>03 / Profile</button>
-        <button onClick={() => scrollTo("contact")}>04 / Contact</button>
+        <button onClick={() => scrollTo("about")}>04 / About</button>
+        <button onClick={() => scrollTo("contact")}>05 / Contact</button>
       </div>
 
+      {/* HERO */}
       <section id="top" className={styles.hero}>
         <div className={styles.heroMeta}>
           <span>AHMED MESSAAD</span>
-          <span>ALGERIA / 2026</span>
+          <span>AI / ML ENGINEER</span>
         </div>
 
-        <div className={styles.heroMain}>
-          <div className={styles.heroIndex}>00</div>
+        <div className={styles.heroContent}>
+          <p className={styles.eyebrow}>RESEARCH · SYSTEMS · SOFTWARE</p>
 
-          <div className={styles.heroCopy}>
-            <p className={styles.eyebrow}>AI / ML ENGINEER · RESEARCHER</p>
-
-            <h1>
-              I build
-              <br />
-              intelligent
-              <br />
-              <em>systems.</em>
-            </h1>
-
-            <div className={styles.heroBottom}>
-              <p>
-                From medical imaging and clinical decision support to full-stack
-                products. I work where research has to become something usable.
-              </p>
-
-              <button
-                className={styles.textLink}
-                onClick={() => scrollTo("work")}
-              >
-                <span>Explore the work</span>
-                <span className={styles.arrow}>↓</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.heroAside}>
-          <span>01</span>
-          <span>09</span>
-        </div>
-
-        <div className={styles.heroFooter}>
-          <span>MEDICAL AI</span>
-          <span>COMPUTER VISION</span>
-          <span>DEEP LEARNING</span>
-          <span>REINFORCEMENT LEARNING</span>
-        </div>
-      </section>
-
-      <section className={styles.statement}>
-        <div className={styles.statementNumber}>—</div>
-
-        <div className={styles.statementContent}>
-          <p className={styles.sectionKicker}>THE APPROACH</p>
-
-          <h2>
-            A model is only
+          <h1>
+            I build the model.
             <br />
-            the beginning.
-          </h2>
+            Then the <em>system.</em>
+          </h1>
 
-          <p className={styles.statementText}>
-            The interesting part is what happens after it works: when an
-            experiment becomes an application, when a prediction needs an
-            interface, or when a research idea has to survive contact with a
-            real problem.
-          </p>
+          <div className={styles.heroBottom}>
+            <p className={styles.heroStatement}>
+              Medical AI researcher and full-stack engineer working across
+              machine learning, computer vision, reinforcement learning and
+              the software required to make those systems useful.
+            </p>
+
+            <button
+              className={styles.scrollHint}
+              onClick={() => scrollTo("work")}
+            >
+              <span>SCROLL TO EXPLORE</span>
+              <span className={styles.arrow}>↓</span>
+            </button>
+          </div>
         </div>
       </section>
 
-      <section id="work" className={styles.workSection}>
-        <div className={styles.sectionHeader}>
-          <div>
-            <span className={styles.sectionNumber}>01</span>
-            <span className={styles.sectionLabel}>SELECTED WORK</span>
-          </div>
+      {/* STATEMENT */}
+      <section className={styles.statement}>
+        <div className={styles.sectionIndex}>00 / POSITION</div>
+
+        <div className={styles.statementText}>
+          <p>
+            My work sits between{" "}
+            <strong>research and implementation.</strong>
+          </p>
 
           <p>
-            Four projects that best describe
-            <br />
-            how I think and build.
+            I am interested in what happens after a model works: how it is
+            validated, constrained, connected to data, placed inside an
+            application, and ultimately used by a person.
           </p>
+        </div>
+      </section>
+
+      {/* WORK */}
+      <section id="work" className={styles.work}>
+        <div className={styles.sectionHeader}>
+          <div className={styles.sectionIndex}>01 / SELECTED WORK</div>
+          <p>FOUR PROJECTS ACROSS RESEARCH AND PRODUCT</p>
         </div>
 
         <div className={styles.projects}>
           {projects.map((project) => (
             <article className={styles.project} key={project.number}>
-              <div className={styles.projectNumberWrap}>
-                <span className={styles.stickyNumber}>{project.number}</span>
-              </div>
+              <div className={styles.projectNumber}>{project.number}</div>
 
-              <div className={styles.projectContent}>
+              <div className={styles.projectBody}>
                 <div className={styles.projectTop}>
-                  <span className={styles.projectType}>{project.type}</span>
+                  <div>
+                    <p className={styles.projectType}>{project.type}</p>
 
-                  <span className={styles.projectCounter}>
-                    {project.number} / 04
-                  </span>
+                    <h2>{project.title}</h2>
+
+                    <p className={styles.projectSubtitle}>
+                      {project.subtitle}
+                    </p>
+                  </div>
+
+                  <a
+                    href={project.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.projectLink}
+                  >
+                    VIEW PROJECT <span>↗</span>
+                  </a>
                 </div>
 
-                <h3>{project.title}</h3>
+                <div className={styles.projectContent}>
+                  <div className={styles.projectDescription}>
+                    <p>{project.description}</p>
+                  </div>
 
-                <p className={styles.projectIntro}>{project.intro}</p>
-
-                <div className={styles.projectRule} />
-
-                <div className={styles.projectDetails}>
-                  <p>{project.description}</p>
-
-                  <div className={styles.projectFacts}>
-                    {project.facts.map((fact) => (
-                      <span key={fact}>{fact}</span>
+                  <div className={styles.projectDetails}>
+                    {project.metrics.map(([value, label]) => (
+                      <div className={styles.metric} key={label}>
+                        <strong>{value}</strong>
+                        <span>{label}</span>
+                      </div>
                     ))}
+
+                    <div className={styles.stackLine}>
+                      <span>STACK</span>
+                      <p>{project.stack}</p>
+                    </div>
                   </div>
                 </div>
 
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={styles.projectLink}
-                >
-                  <span>{project.linkLabel}</span>
-                  <span>↗</span>
-                </a>
+                <div className={styles.projectFooter}>
+                  {project.details.map((detail) => (
+                    <span key={detail}>{detail}</span>
+                  ))}
+                </div>
               </div>
             </article>
           ))}
         </div>
       </section>
 
-      <section className={styles.researchSection}>
-        <div className={styles.researchSide}>
-          <span className={styles.sectionNumber}>—</span>
-          <span className={styles.sectionLabel}>RESEARCH FIELD</span>
+      {/* RESEARCH */}
+      <section id="research" className={styles.research}>
+        <div className={styles.sectionHeader}>
+          <div className={styles.sectionIndex}>02 / RESEARCH</div>
+          <p>AREAS OF FOCUS</p>
         </div>
 
-        <div className={styles.researchMain}>
-          <p className={styles.sectionKicker}>WHERE THE WORK LIVES</p>
+        <div className={styles.researchLayout}>
+          <div className={styles.researchIntro}>
+            <p>
+              The common thread is not a specific architecture. It is the
+              attempt to turn complex data into systems that can support a
+              meaningful decision.
+            </p>
+          </div>
 
-          <h2>
-            Research when
-            <br />
-            the problem
-            <br />
-            <em>deserves it.</em>
-          </h2>
-
-          <div className={styles.researchGrid}>
-            {researchAreas.map((area, index) => (
-              <div className={styles.researchItem} key={area}>
+          <div className={styles.researchList}>
+            {researchFields.map((field, index) => (
+              <div className={styles.researchItem} key={field}>
                 <span>0{index + 1}</span>
-                <strong>{area}</strong>
+                <strong>{field}</strong>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="experiments" className={styles.experimentsSection}>
+      {/* EXPERIMENTS */}
+      <section id="experiments" className={styles.experiments}>
         <div className={styles.sectionHeader}>
-          <div>
-            <span className={styles.sectionNumber}>02</span>
-            <span className={styles.sectionLabel}>EXPERIMENTS / BUILDS</span>
-          </div>
-
-          <p>
-            Not everything needs a case study.
-            <br />
-            Some work is here because it taught me something.
-          </p>
+          <div className={styles.sectionIndex}>03 / EXPERIMENTS</div>
+          <p>SMALLER SYSTEMS · FAILED HYPOTHESES · SIDE PROJECTS</p>
         </div>
 
-        <div className={styles.experimentsList}>
+        <div className={styles.experimentList}>
           {experiments.map((experiment) => (
-            <article
-              className={styles.experiment}
-              key={experiment.number}
-            >
+            <article className={styles.experiment} key={experiment.number}>
               <span className={styles.experimentNumber}>
                 {experiment.number}
               </span>
 
-              <div className={styles.experimentTitle}>
-                <span>{experiment.meta}</span>
+              <div className={styles.experimentMain}>
                 <h3>{experiment.title}</h3>
+                <p>{experiment.description}</p>
               </div>
 
-              <p>{experiment.text}</p>
-
-              <strong className={styles.experimentResult}>
+              <span className={styles.experimentResult}>
                 {experiment.result}
-              </strong>
+              </span>
             </article>
           ))}
         </div>
       </section>
 
+      {/* STACK */}
       <section className={styles.stackSection}>
-        <div className={styles.stackIntro}>
-          <span className={styles.sectionNumber}>—</span>
-
-          <div>
-            <p className={styles.sectionKicker}>TOOLS</p>
-            <h2>
-              Enough
-              <br />
-              to build
-              <br />
-              <em>the thing.</em>
-            </h2>
-          </div>
+        <div className={styles.sectionHeader}>
+          <div className={styles.sectionIndex}>04 / TOOLKIT</div>
+          <p>TOOLS I USE TO MOVE FROM EXPERIMENT TO SYSTEM</p>
         </div>
 
-        <div className={styles.stackList}>
+        <div className={styles.stackGrid}>
           {stack.map((item, index) => (
             <div className={styles.stackItem} key={item}>
               <span>0{index + 1}</span>
-              <span>{item}</span>
+              <strong>{item}</strong>
             </div>
           ))}
         </div>
       </section>
 
-      <section id="profile" className={styles.profileSection}>
+      {/* ABOUT */}
+      <section id="about" className={styles.about}>
         <div className={styles.sectionHeader}>
-          <div>
-            <span className={styles.sectionNumber}>03</span>
-            <span className={styles.sectionLabel}>PROFILE</span>
-          </div>
-
-          <p>Researcher by training. Builder by practice.</p>
+          <div className={styles.sectionIndex}>05 / PROFILE</div>
+          <p>BACKGROUND</p>
         </div>
 
-        <div className={styles.profileLayout}>
-          <div className={styles.profileLead}>
+        <div className={styles.aboutLayout}>
+          <div className={styles.aboutTitle}>
             <h2>
-              Ahmed
+              Researcher
               <br />
-              Messaad
+              <em>and</em> builder.
             </h2>
-
-            <p>
-              AI / ML Engineer, researcher and full-stack developer focused on
-              intelligent systems with real-world applications.
-            </p>
           </div>
 
-          <div className={styles.profileDetails}>
-            <div className={styles.profileBlock}>
-              <span>EDUCATION</span>
-              <p>
-                M.Sc. Electronics of Embedded Systems
-                <br />
-                Université Mohamed Boudiaf de M&apos;sila
-                <br />
-                2023
-              </p>
-            </div>
+          <div className={styles.aboutContent}>
+            <p className={styles.aboutLead}>
+              I hold a Master&apos;s degree in Electronics of Embedded Systems
+              from Université Mohamed Boudiaf de M&apos;sila.
+            </p>
 
-            <div className={styles.profileBlock}>
-              <span>FOCUS</span>
-              <p>
-                Medical AI
-                <br />
-                Computer Vision
-                <br />
-                Deep Learning
-                <br />
-                Clinical Decision Support
-              </p>
-            </div>
+            <div className={styles.aboutColumns}>
+              <div>
+                <span className={styles.label}>EDUCATION</span>
+                <p>
+                  M.Sc. Electronics of Embedded Systems
+                  <br />
+                  Université Mohamed Boudiaf de M&apos;sila
+                  <br />
+                  2023
+                </p>
+              </div>
 
-            <div className={styles.profileBlock}>
-              <span>WORK</span>
-              <p>
-                Medical AI systems
-                <br />
-                Research prototypes
-                <br />
-                Full-stack products
-                <br />
-                Applied machine learning
-              </p>
-            </div>
+              <div>
+                <span className={styles.label}>FOCUS</span>
+                <p>
+                  Medical AI
+                  <br />
+                  Computer Vision
+                  <br />
+                  Deep Reinforcement Learning
+                  <br />
+                  Clinical Decision Support
+                </p>
+              </div>
 
-            <div className={styles.profileBlock}>
-              <span>RECOGNITION</span>
-              <p>
-                Research award
-                <br />
-                Academic recognitions
-                <br />
-                Clinical collaboration
-              </p>
+              <div>
+                <span className={styles.label}>WORK</span>
+                <p>
+                  Research projects
+                  <br />
+                  AI systems
+                  <br />
+                  Full-stack applications
+                  <br />
+                  Data-driven products
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="contact" className={styles.contactSection}>
-        <div className={styles.contactTop}>
-          <span className={styles.sectionNumber}>04</span>
-          <span className={styles.sectionLabel}>CONTACT</span>
-        </div>
+      {/* CONTACT */}
+      <section id="contact" className={styles.contact}>
+        <div className={styles.sectionIndex}>06 / CONTACT</div>
 
         <div className={styles.contactContent}>
-          <p className={styles.sectionKicker}>HAVE A PROBLEM WORTH BUILDING?</p>
+          <p className={styles.eyebrow}>OPEN TO RESEARCH · ENGINEERING</p>
 
           <h2>
-            Let&apos;s make
+            Let&apos;s build
             <br />
-            something
-            <br />
-            <em>useful.</em>
+            something <em>useful.</em>
           </h2>
 
           <a
-            className={styles.emailLink}
             href="mailto:ahmed.messaad@outlook.com"
+            className={styles.email}
           >
             ahmed.messaad@outlook.com
             <span>↗</span>
           </a>
         </div>
-
-        <footer className={styles.footer}>
-          <span>AHMED MESSAAD</span>
-
-          <div>
-            <a
-              href="https://www.linkedin.com/in/ahmedmessaad/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="https://github.com/RYANX9"
-              target="_blank"
-              rel="noreferrer"
-            >
-              GitHub
-            </a>
-            <a
-              href="https://ahmed-messaad.vercel.app/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Portfolio
-            </a>
-          </div>
-
-          <span>© 2026</span>
-        </footer>
       </section>
+
+      {/* FOOTER */}
+      <footer className={styles.footer}>
+        <div>
+          <strong>AHMED MESSAAD</strong>
+          <span>AI / ML ENGINEER · RESEARCHER · DEVELOPER</span>
+        </div>
+
+        <div className={styles.footerLinks}>
+          <a
+            href="https://github.com/RYANX9"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub
+          </a>
+
+          <a
+            href="https://www.linkedin.com/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            LinkedIn
+          </a>
+
+          <a
+            href="mailto:ahmed.messaad@outlook.com"
+          >
+            Email
+          </a>
+        </div>
+
+        <span className={styles.copyright}>
+          © {new Date().getFullYear()} AHMED MESSAAD
+        </span>
+      </footer>
     </main>
   );
 }
+
+export default EditorialPortfolio;
