@@ -15,7 +15,7 @@ import {
   honors,
   contact,
   type Track,
-} from "./data";
+} from "../data";
 
 const TRACK_COLOR: Record<Track, string> = {
   research: "#2563eb",
