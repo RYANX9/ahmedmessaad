@@ -13,7 +13,6 @@ import {
   type CaseStudy,
 } from "./data";
 import { useState } from "react";
-import { MinimalPortfolio } from "./components/minimal-portfolio";
 import { EditorialPortfolio } from "./components/editorial-portfolio";
 import { DesignToggle, type DesignMode } from "./components/design-toggle";
 
