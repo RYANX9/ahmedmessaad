@@ -41,11 +41,11 @@ function ProjectChapter({ study, index }: { study: CaseStudy; index: number }) {
               <span className="metric-label">{study.metric.small.toUpperCase()}</span>
             </div>
             <div className="project-tech">
-              {study.fieldNotes.map((note) => (
-                <span key={note}>
-                  {note.toUpperCase()}
-                  <br />
-                </span>
+              {study.facts.map((fact) => (
+                <div className="tech-row" key={fact.label}>
+                  <span className="tech-label">{fact.label.toUpperCase()}</span>
+                  <span className="tech-value">{fact.value.toUpperCase()}</span>
+                </div>
               ))}
             </div>
           </div>
@@ -69,10 +69,10 @@ function ExperimentRow({ study }: { study: CaseStudy }) {
         <span className="experiment-number">{study.num}</span>
         <span className="experiment-name">{study.tag}</span>
         <span className="experiment-tech">
-          {study.fieldNotes.slice(0, 3).join(" · ").toUpperCase()}
+          {study.facts.map((f) => f.value).slice(0, 2).join(" · ").toUpperCase()}
         </span>
         <span className="experiment-result">{study.metric.big}</span>
-        <span className="experiment-toggle">{open ? "\u2212" : "+"}</span>
+        <span className="experiment-toggle">{open ? "−" : "+"}</span>
       </button>
 
       {open && (
@@ -89,6 +89,12 @@ function ExperimentRow({ study }: { study: CaseStudy }) {
 }
 
 export function EditorialPortfolio() {
+  const featuredCount = String(featuredCases.length).padStart(2, "0");
+  const experimentRange =
+    experimentCases.length > 0
+      ? `${experimentCases[0].num}–${experimentCases[experimentCases.length - 1].num}`
+      : "";
+
   return (
     <div className="editorial-page">
       <header>
@@ -105,13 +111,9 @@ export function EditorialPortfolio() {
 
       <section className="hero section">
         <div className="hero-main">
-          <div className="hero-eyebrow">AI / ML ENGINEER &nbsp;\u00b7&nbsp; RESEARCHER</div>
+          <div className="hero-eyebrow">AI / ML ENGINEER · RESEARCHER</div>
           <h1>
-            I build
-            <br />
-            <span style={{ marginLeft: "10vw" }}>
-              <em>intelligent</em>
-            </span>
+            I build <em>intelligent</em>
             <br />
             systems.
           </h1>
@@ -136,13 +138,7 @@ export function EditorialPortfolio() {
 
       <section className="introduction section">
         <div className="introduction-grid">
-          <h2>
-            Models are
-            <br />
-            only the
-            <br />
-            beginning.
-          </h2>
+          <h2>Models are only the beginning.</h2>
           <div className="introduction-text">
             <p>
               My work sits between research and implementation: understanding a problem,
@@ -157,13 +153,9 @@ export function EditorialPortfolio() {
 
       <section className="work-intro section" id="work">
         <div className="work-intro-inner">
-          <div className="label mono">
-            SELECTED WORK / 01\u201401{featuredCases.length > 1 ? `\u2014${String(featuredCases.length).padStart(2, "0")}` : ""}
-          </div>
+          <div className="label mono">SELECTED WORK / 01–{featuredCount}</div>
           <h2>
-            Four systems that
-            <br />
-            <em>explain what I do.</em>
+            Four systems that <em>explain what I do.</em>
           </h2>
         </div>
       </section>
@@ -176,9 +168,7 @@ export function EditorialPortfolio() {
         <div className="experiments-inner">
           <div className="experiments-heading">
             <h2>Experiments.</h2>
-            <div className="mono">
-              {experimentCases[0]?.num}\u2014{experimentCases[experimentCases.length - 1]?.num} / OTHER WORK
-            </div>
+            <div className="mono">{experimentRange} / OTHER WORK</div>
           </div>
 
           {experimentCases.map((study) => (
@@ -190,20 +180,14 @@ export function EditorialPortfolio() {
       <section className="approach section">
         <div className="approach-inner">
           <div className="approach-top">
-            <h2>
-              Research
-              <br />
-              becomes
-              <br />
-              <em>systems.</em>
-            </h2>
+            <h2>Research becomes systems.</h2>
             <div className="approach-copy">
               <p>I am interested in the space between a promising model and a useful system.</p>
               <p>
                 That means working across data, modeling, evaluation, interfaces and
                 deployment rather than treating the model as the finished product.
               </p>
-              <div className="mono">FROM HYPOTHESIS \u2192 EXPERIMENT \u2192 SYSTEM</div>
+              <div className="mono">FROM HYPOTHESIS → EXPERIMENT → SYSTEM</div>
             </div>
           </div>
 
@@ -241,7 +225,7 @@ export function EditorialPortfolio() {
               <div className="mono">
                 CURRENTLY INTERESTED IN
                 <br />
-                MEDICAL AI \u00b7 COMPUTER VISION \u00b7 DEEP LEARNING \u00b7 DRL
+                MEDICAL AI · COMPUTER VISION · DEEP LEARNING · DRL
               </div>
             </div>
           </div>
@@ -261,20 +245,18 @@ export function EditorialPortfolio() {
         <div className="contact-inner">
           <div className="contact-label">10 / CONTACT</div>
           <h2>
-            Let&apos;s build
-            <br />
-            something <em>useful.</em>
+            Let&apos;s build something <em>useful.</em>
           </h2>
           <a className="contact-email" href={`mailto:${profile.email}`}>
-            {profile.email.toUpperCase()} \u2197
+            {profile.email.toUpperCase()} ↗
           </a>
         </div>
       </section>
 
       <footer>
         <span>{rail.firstName.toUpperCase()} {rail.lastName.toUpperCase()}</span>
-        <span>AI / ML \u00b7 RESEARCH \u00b7 ENGINEERING</span>
-        <span>\u00a9 {rail.year}</span>
+        <span>AI / ML · RESEARCH · ENGINEERING</span>
+        <span>© {rail.year}</span>
       </footer>
 
       <style jsx>{`
@@ -291,6 +273,7 @@ export function EditorialPortfolio() {
           color: var(--text);
           font-family: var(--sans);
           -webkit-font-smoothing: antialiased;
+          overflow-x: hidden;
         }
         .editorial-page * { box-sizing: border-box; }
         .editorial-page a { color: inherit; text-decoration: none; }
@@ -302,6 +285,14 @@ export function EditorialPortfolio() {
         }
         .editorial-page .section { position: relative; border-bottom: 1px solid var(--line); }
         .editorial-page .container { width: 86%; max-width: 1450px; margin: 0 auto; }
+
+        .editorial-page h1,
+        .editorial-page h2,
+        .editorial-page h3 {
+          overflow-wrap: break-word;
+          word-break: break-word;
+          hyphens: auto;
+        }
 
         .editorial-page header {
           position: fixed; z-index: 100; top: 0; left: 0; width: 100%;
@@ -323,7 +314,7 @@ export function EditorialPortfolio() {
         .editorial-page .hero-eyebrow { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 48px; }
         .editorial-page .hero h1 {
           margin: 0; font-family: var(--serif); font-weight: 400;
-          font-size: clamp(65px, 9vw, 145px); line-height: .86; letter-spacing: -.065em;
+          font-size: clamp(48px, 8vw, 120px); line-height: 1; letter-spacing: -.05em;
         }
         .editorial-page .hero h1 em { font-style: italic; }
         .editorial-page .hero-bottom {
@@ -341,7 +332,7 @@ export function EditorialPortfolio() {
         .editorial-page .introduction-grid { margin-left: 16%; width: 68%; display: grid; grid-template-columns: 1fr 1fr; gap: 9vw; }
         .editorial-page .introduction h2 {
           margin: 0; font-family: var(--serif); font-weight: 400;
-          font-size: clamp(42px, 5vw, 76px); line-height: .95; letter-spacing: -.055em;
+          font-size: clamp(36px, 4.5vw, 64px); line-height: 1.05; letter-spacing: -.04em;
         }
         .editorial-page .introduction-text { padding-top: 10px; font-size: 17px; line-height: 1.55; max-width: 430px; }
         .editorial-page .introduction-text p { margin: 0 0 28px; }
@@ -351,7 +342,7 @@ export function EditorialPortfolio() {
         .editorial-page .work-intro .label { margin-bottom: 55px; }
         .editorial-page .work-intro h2 {
           margin: 0; max-width: 850px; font-family: var(--serif);
-          font-size: clamp(50px, 7vw, 110px); font-weight: 400; line-height: .9; letter-spacing: -.065em;
+          font-size: clamp(38px, 6vw, 90px); font-weight: 400; line-height: 1.05; letter-spacing: -.05em;
         }
         .editorial-page .work-intro h2 em { font-style: italic; }
 
@@ -365,7 +356,7 @@ export function EditorialPortfolio() {
         .editorial-page .project-kicker { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 30px; }
         .editorial-page .project h3 {
           margin: 0; font-family: var(--serif); font-weight: 400;
-          font-size: clamp(50px, 6.5vw, 100px); line-height: .88; letter-spacing: -.06em;
+          font-size: clamp(40px, 5.5vw, 84px); line-height: 1.02; letter-spacing: -.04em;
         }
         .editorial-page .project h3 em { font-style: italic; }
         .editorial-page .project-description { margin-top: 55px; max-width: 600px; font-size: 20px; line-height: 1.35; letter-spacing: -.025em; }
@@ -374,25 +365,24 @@ export function EditorialPortfolio() {
         .editorial-page .project-side .metric { border-top: 1px solid var(--line); padding: 18px 0; }
         .editorial-page .metric-value { display: block; font-family: var(--serif); font-size: 38px; line-height: 1; margin-bottom: 8px; }
         .editorial-page .metric-label { font-family: var(--mono); font-size: 9px; color: var(--muted); line-height: 1.6; }
-        .editorial-page .project-tech { margin-top: 35px; font-family: var(--mono); font-size: 9px; line-height: 2; color: var(--muted); }
+        .editorial-page .project-tech { margin-top: 35px; display: flex; flex-direction: column; gap: 10px; }
+        .editorial-page .tech-row { display: flex; justify-content: space-between; gap: 12px; }
+        .editorial-page .tech-label { font-family: var(--mono); font-size: 8px; color: var(--muted); white-space: nowrap; }
+        .editorial-page .tech-value { font-family: var(--mono); font-size: 9px; text-align: right; }
         .editorial-page .project-link {
           display: inline-block; margin-top: 35px; font-family: var(--mono); font-size: 10px;
           border-bottom: 1px solid #111; padding-bottom: 5px;
         }
 
         .editorial-page .project-01 .project-main { padding-top: 3vh; }
-        .editorial-page .project-01 h3 { max-width: 700px; }
         .editorial-page .project-02 { padding-top: 18vh; }
         .editorial-page .project-02 .project-grid { grid-template-columns: 10% 45% 34%; }
-        .editorial-page .project-02 h3 { max-width: 650px; }
         .editorial-page .project-02 .project-description { max-width: 530px; }
         .editorial-page .project-03 { padding-top: 17vh; }
-        .editorial-page .project-03 h3 { max-width: 800px; }
         .editorial-page .project-03 .project-description { max-width: 650px; }
         .editorial-page .project-03 .project-side { align-self: center; }
         .editorial-page .project-04 { padding-top: 16vh; padding-bottom: 20vh; }
         .editorial-page .project-04 .project-grid { grid-template-columns: 10% 50% 30%; }
-        .editorial-page .project-04 h3 { max-width: 800px; }
         .editorial-page .project-04 .project-description { max-width: 620px; }
 
         .editorial-page .experiments { padding: 15vh 0 17vh; }
@@ -402,8 +392,8 @@ export function EditorialPortfolio() {
           border-bottom: 1px solid var(--line); padding-bottom: 25px;
         }
         .editorial-page .experiments-heading h2 {
-          margin: 0; font-family: var(--serif); font-size: clamp(48px, 6vw, 90px);
-          font-weight: 400; letter-spacing: -.06em;
+          margin: 0; font-family: var(--serif); font-size: clamp(36px, 5vw, 72px);
+          font-weight: 400; letter-spacing: -.05em;
         }
 
         .editorial-page .experiment-item { border-bottom: 1px solid var(--line); }
@@ -428,8 +418,8 @@ export function EditorialPortfolio() {
         .editorial-page .approach-inner { margin-left: 16%; width: 68%; }
         .editorial-page .approach-top { display: grid; grid-template-columns: 1fr 1fr; gap: 10vw; }
         .editorial-page .approach h2 {
-          margin: 0; font-family: var(--serif); font-size: clamp(48px, 6vw, 90px);
-          font-weight: 400; line-height: .92; letter-spacing: -.06em;
+          margin: 0; font-family: var(--serif); font-size: clamp(36px, 5vw, 72px);
+          font-weight: 400; line-height: 1.05; letter-spacing: -.05em;
         }
         .editorial-page .approach-copy { font-size: 17px; line-height: 1.5; max-width: 430px; }
         .editorial-page .approach-copy p { margin: 0 0 25px; }
@@ -444,8 +434,8 @@ export function EditorialPortfolio() {
         .editorial-page .profile-inner { margin-left: 16%; width: 68%; }
         .editorial-page .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10vw; }
         .editorial-page .profile h2 {
-          margin: 0; font-family: var(--serif); font-size: clamp(50px, 6vw, 92px);
-          font-weight: 400; line-height: .9; letter-spacing: -.06em;
+          margin: 0; font-family: var(--serif); font-size: clamp(40px, 5.5vw, 76px);
+          font-weight: 400; line-height: 1.05; letter-spacing: -.05em;
         }
         .editorial-page .profile-copy { font-size: 17px; line-height: 1.5; max-width: 450px; }
         .editorial-page .profile-copy p { margin: 0 0 28px; }
@@ -459,7 +449,7 @@ export function EditorialPortfolio() {
         .editorial-page .contact-label { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 45px; }
         .editorial-page .contact h2 {
           margin: 0; font-family: var(--serif); font-weight: 400;
-          font-size: clamp(60px, 9vw, 140px); line-height: .84; letter-spacing: -.07em;
+          font-size: clamp(44px, 7vw, 110px); line-height: 1; letter-spacing: -.05em;
         }
         .editorial-page .contact h2 em { font-style: italic; }
         .editorial-page .contact-email {
@@ -475,7 +465,6 @@ export function EditorialPortfolio() {
           .editorial-page header { padding: 18px 24px; }
           .editorial-page nav { gap: 15px; }
           .editorial-page .hero { padding: 120px 24px 70px; }
-          .editorial-page .hero h1 { font-size: 17vw; }
           .editorial-page .hero-bottom { grid-template-columns: 1fr; gap: 40px; margin-top: 60px; }
           .editorial-page .hero-fields { max-width: none; }
           .editorial-page .hero-scroll { display: none; }
@@ -497,10 +486,9 @@ export function EditorialPortfolio() {
           .editorial-page .project { padding: 100px 24px; }
           .editorial-page .project-grid,
           .editorial-page .project-02 .project-grid,
-          .editorial-page .project-04 .project-grid { grid-template-columns: 45px 1fr; gap: 25px; }
-          .editorial-page .project-side { grid-column: 2; margin-top: 45px; }
-          .editorial-page .project h3 { font-size: 15vw; }
-          .editorial-page .project-description { font-size: 17px; }
+          .editorial-page .project-04 .project-grid { grid-template-columns: 1fr; gap: 25px; }
+          .editorial-page .project-index { position: static; }
+          .editorial-page .project-side { margin-top: 45px; align-self: start; }
           .editorial-page .method-list { grid-template-columns: 1fr 1fr; }
           .editorial-page .method:nth-child(2) { border-right: 0; }
           .editorial-page .method:nth-child(3),
@@ -508,25 +496,15 @@ export function EditorialPortfolio() {
           .editorial-page .experiment-row { grid-template-columns: 40px 1fr 24px; }
           .editorial-page .experiment-tech,
           .editorial-page .experiment-result { display: none; }
-          .editorial-page footer { padding: 20px 24px; }
+          .editorial-page footer { padding: 20px 24px; flex-wrap: wrap; gap: 8px; }
         }
 
         @media (max-width: 550px) {
           .editorial-page nav a:nth-child(2) { display: none; }
-          .editorial-page .hero h1 { font-size: 18vw; }
-          .editorial-page .introduction h2,
-          .editorial-page .work-intro h2,
-          .editorial-page .approach h2,
-          .editorial-page .profile h2 { font-size: 13vw; }
-          .editorial-page .project-grid,
-          .editorial-page .project-02 .project-grid,
-          .editorial-page .project-04 .project-grid { grid-template-columns: 30px 1fr; }
-          .editorial-page .project h3 { font-size: 17vw; }
           .editorial-page .method-list { grid-template-columns: 1fr; }
           .editorial-page .method { border-right: 0 !important; border-bottom: 1px solid var(--line); padding-bottom: 35px; }
           .editorial-page .method:last-child { border-bottom: 0; }
           .editorial-page .profile-detail { grid-template-columns: 100px 1fr; }
-          .editorial-page .contact h2 { font-size: 18vw; }
         }
       `}</style>
     </div>
