@@ -14,6 +14,7 @@ import {
 } from "./data";
 import { useState } from "react";
 import { MinimalPortfolio } from "./components/minimal-portfolio";
+import { EditorialPortfolio } from "./components/editorial-portfolio";
 import { DesignToggle, type DesignMode } from "./components/design-toggle";
 
 // Each project gets a small technical "visual" widget in the card footer.
@@ -109,21 +110,7 @@ function ProjectVisual({ c }: { c: CaseStudy }) {
   }
 }
 
-export default function Home() {
-  const [designMode, setDesignMode] = useState<DesignMode>("dossier");
-
-  if (designMode === "minimal") {
-    return (
-      <>
-        <MinimalPortfolio />
-        <DesignToggle
-          mode={designMode}
-          onToggle={() => setDesignMode("dossier")}
-        />
-      </>
-    );
-  }
-
+function DossierPortfolio() {
   return (
     <>
       <header className="top">
@@ -249,7 +236,7 @@ export default function Home() {
                       ))}
                     </ul>
 
-                    <a
+                    
                       className="project-link"
                       href={c.link.href}
                       target="_blank"
@@ -319,7 +306,7 @@ export default function Home() {
           <div className="contact-links-row">
             <div className="contact-links">
               {contact.links.map((link) => (
-                <a
+                
                   key={link.label}
                   href={link.href}
                   target={link.href.startsWith("mailto:") ? undefined : "_blank"}
@@ -341,12 +328,20 @@ export default function Home() {
           </div>
         </div>
       </section>
+    </>
+  );
+}
 
-      {/* Fixed toggle — always visible in the bottom-right corner */}
-      <DesignToggle
-        mode={designMode}
-        onToggle={() => setDesignMode("minimal")}
-      />
+export default function Home() {
+  const [designMode, setDesignMode] = useState<DesignMode>("dossier");
+
+  return (
+    <>
+      {designMode === "dossier" && <DossierPortfolio />}
+      {designMode === "minimal" && <MinimalPortfolio />}
+      {designMode === "editorial" && <EditorialPortfolio />}
+
+      <DesignToggle mode={designMode} onChange={setDesignMode} />
     </>
   );
 }
