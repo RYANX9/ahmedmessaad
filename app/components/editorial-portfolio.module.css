@@ -36,11 +36,6 @@
   color: #f5f5f1;
 }
 
-
-/* =========================================================
-   GLOBAL
-   ========================================================= */
-
 .mono {
   font-family: var(--portfolio-mono);
   font-size: 10px;
@@ -60,11 +55,6 @@
   margin: 0 auto;
 }
 
-
-/* =========================================================
-   HEADER
-   ========================================================= */
-
 .header {
   position: fixed;
   z-index: 100;
@@ -72,14 +62,11 @@
   left: 0;
   width: 100%;
   padding: 22px 4vw;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   mix-blend-mode: difference;
   color: white;
-
   pointer-events: none;
 }
 
@@ -109,20 +96,12 @@
   opacity: 0.4;
 }
 
-
-/* =========================================================
-   HERO
-   ========================================================= */
-
 .hero {
   min-height: 100vh;
   position: relative;
-
   padding: 16vh 7vw 9vh;
-
   display: flex;
   align-items: center;
-
   overflow: hidden;
 }
 
@@ -140,13 +119,10 @@
 
 .hero h1 {
   margin: 0;
-
   font-family: var(--portfolio-serif);
   font-weight: 400;
-
   font-size: clamp(65px, 9vw, 145px);
   line-height: 0.86;
-
   letter-spacing: -0.065em;
 }
 
@@ -161,29 +137,28 @@
 
 .heroBottom {
   margin-top: 9vh;
-
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12vw;
-
   align-items: end;
 }
 
 .heroDescription {
   max-width: 510px;
-
   font-size: 18px;
   line-height: 1.4;
   letter-spacing: -0.02em;
 }
 
+.heroDescription strong {
+  font-weight: 400;
+}
+
 .heroFields {
   max-width: 310px;
-
   font-family: var(--portfolio-mono);
   font-size: 10px;
   line-height: 2;
-
   color: var(--portfolio-muted);
 }
 
@@ -193,22 +168,13 @@
 
 .heroScroll {
   position: absolute;
-
   right: 4vw;
   bottom: 7vh;
-
   font-family: var(--portfolio-mono);
   font-size: 9px;
-
   color: var(--portfolio-muted);
-
   writing-mode: vertical-rl;
 }
-
-
-/* =========================================================
-   INTRODUCTION
-   ========================================================= */
 
 .introduction {
   min-height: 85vh;
@@ -218,42 +184,30 @@
 .introductionGrid {
   margin-left: 16%;
   width: 68%;
-
   display: grid;
   grid-template-columns: 1fr 1fr;
-
   gap: 9vw;
 }
 
 .introduction h2 {
   margin: 0;
-
   font-family: var(--portfolio-serif);
   font-weight: 400;
-
   font-size: clamp(42px, 5vw, 76px);
   line-height: 0.95;
-
   letter-spacing: -0.055em;
 }
 
 .introductionText {
   padding-top: 10px;
-
   font-size: 17px;
   line-height: 1.55;
-
   max-width: 430px;
 }
 
 .introductionText p {
   margin: 0 0 28px;
 }
-
-
-/* =========================================================
-   WORK INTRO
-   ========================================================= */
 
 .workIntro {
   min-height: 55vh;
@@ -270,13 +224,10 @@
 
 .workIntro h2 {
   margin: 0;
-
   max-width: 850px;
-
   font-family: var(--portfolio-serif);
   font-size: clamp(50px, 7vw, 110px);
   font-weight: 400;
-
   line-height: 0.9;
   letter-spacing: -0.065em;
 }
@@ -285,11 +236,6 @@
   font-style: italic;
 }
 
-
-/* =========================================================
-   PROJECT CHAPTER
-   ========================================================= */
-
 .project {
   min-height: 100vh;
   padding: 13vh 0 15vh;
@@ -297,24 +243,18 @@
 
 .projectGrid {
   display: grid;
-
   grid-template-columns: 10% 52% 28%;
   gap: 5%;
-
   min-height: 72vh;
 }
 
 .projectIndex {
   padding-top: 4px;
-
   font-family: var(--portfolio-mono);
   font-size: 12px;
-
   color: var(--portfolio-muted);
-
   position: sticky;
   top: 25vh;
-
   height: fit-content;
 }
 
@@ -327,21 +267,16 @@
 .projectKicker {
   font-family: var(--portfolio-mono);
   font-size: 10px;
-
   color: var(--portfolio-muted);
-
   margin-bottom: 30px;
 }
 
 .project h3 {
   margin: 0;
-
   font-family: var(--portfolio-serif);
   font-weight: 400;
-
   font-size: clamp(50px, 6.5vw, 100px);
   line-height: 0.88;
-
   letter-spacing: -0.06em;
 }
 
@@ -351,12 +286,9 @@
 
 .projectDescription {
   margin-top: 55px;
-
   max-width: 600px;
-
   font-size: 20px;
   line-height: 1.35;
-
   letter-spacing: -0.025em;
 }
 
@@ -375,50 +307,35 @@
 
 .metricValue {
   display: block;
-
   font-family: var(--portfolio-serif);
   font-size: 38px;
   line-height: 1;
-
   margin-bottom: 8px;
 }
 
 .metricLabel {
   font-family: var(--portfolio-mono);
   font-size: 9px;
-
   color: var(--portfolio-muted);
-
   line-height: 1.6;
 }
 
 .projectTech {
   margin-top: 35px;
-
   font-family: var(--portfolio-mono);
   font-size: 9px;
   line-height: 2;
-
   color: var(--portfolio-muted);
 }
 
 .projectLink {
   display: inline-block;
-
   margin-top: 35px;
-
   font-family: var(--portfolio-mono);
   font-size: 10px;
-
   border-bottom: 1px solid #111;
-
   padding-bottom: 5px;
 }
-
-
-/* =========================================================
-   PROJECT 01 — HEMAVISION
-   ========================================================= */
 
 .project01 .projectMain {
   padding-top: 3vh;
@@ -427,11 +344,6 @@
 .project01 h3 {
   max-width: 700px;
 }
-
-
-/* =========================================================
-   PROJECT 02 — AIRM
-   ========================================================= */
 
 .project02 {
   padding-top: 18vh;
@@ -449,11 +361,6 @@
   max-width: 530px;
 }
 
-
-/* =========================================================
-   PROJECT 03 — DRL
-   ========================================================= */
-
 .project03 {
   padding-top: 17vh;
 }
@@ -469,11 +376,6 @@
 .project03 .projectSide {
   align-self: center;
 }
-
-
-/* =========================================================
-   PROJECT 04 — SPECMOB
-   ========================================================= */
 
 .project04 {
   padding-top: 16vh;
@@ -492,11 +394,6 @@
   max-width: 620px;
 }
 
-
-/* =========================================================
-   EXPERIMENTS
-   ========================================================= */
-
 .experiments {
   padding: 15vh 0 17vh;
 }
@@ -510,34 +407,25 @@
   display: flex;
   justify-content: space-between;
   align-items: end;
-
   border-bottom: 1px solid var(--portfolio-line);
-
   padding-bottom: 25px;
   margin-bottom: 0;
 }
 
 .experimentsHeading h2 {
   margin: 0;
-
   font-family: var(--portfolio-serif);
   font-size: clamp(48px, 6vw, 90px);
   font-weight: 400;
-
   letter-spacing: -0.06em;
 }
 
 .experimentRow {
   display: grid;
-
   grid-template-columns: 70px 1fr 1fr 100px;
-
   gap: 25px;
-
   padding: 27px 0;
-
   border-bottom: 1px solid var(--portfolio-line);
-
   align-items: baseline;
 }
 
@@ -567,11 +455,6 @@
   text-align: right;
 }
 
-
-/* =========================================================
-   APPROACH
-   ========================================================= */
-
 .approach {
   min-height: 80vh;
   padding: 16vh 0;
@@ -584,19 +467,15 @@
 
 .approachTop {
   display: grid;
-
   grid-template-columns: 1fr 1fr;
-
   gap: 10vw;
 }
 
 .approach h2 {
   margin: 0;
-
   font-family: var(--portfolio-serif);
   font-size: clamp(48px, 6vw, 90px);
   font-weight: 400;
-
   line-height: 0.92;
   letter-spacing: -0.06em;
 }
@@ -608,7 +487,6 @@
 .approachCopy {
   font-size: 17px;
   line-height: 1.5;
-
   max-width: 430px;
 }
 
@@ -618,16 +496,13 @@
 
 .methodList {
   margin-top: 13vh;
-
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-
   border-top: 1px solid var(--portfolio-line);
 }
 
 .method {
   padding: 25px 25px 25px 0;
-
   border-right: 1px solid var(--portfolio-line);
 }
 
@@ -638,13 +513,11 @@
 .methodNumber {
   font-family: var(--portfolio-mono);
   font-size: 10px;
-
   color: var(--portfolio-muted);
 }
 
 .method h4 {
   margin: 40px 0 15px;
-
   font-family: var(--portfolio-serif);
   font-size: 25px;
   font-weight: 400;
@@ -652,17 +525,10 @@
 
 .method p {
   margin: 0;
-
   font-size: 12px;
   line-height: 1.5;
-
   max-width: 180px;
 }
-
-
-/* =========================================================
-   PROFILE
-   ========================================================= */
 
 .profile {
   min-height: 80vh;
@@ -676,19 +542,15 @@
 
 .profileGrid {
   display: grid;
-
   grid-template-columns: 1fr 1fr;
-
   gap: 10vw;
 }
 
 .profile h2 {
   margin: 0;
-
   font-family: var(--portfolio-serif);
   font-size: clamp(50px, 6vw, 92px);
   font-weight: 400;
-
   line-height: 0.9;
   letter-spacing: -0.06em;
 }
@@ -696,7 +558,6 @@
 .profileCopy {
   font-size: 17px;
   line-height: 1.5;
-
   max-width: 450px;
 }
 
@@ -706,24 +567,19 @@
 
 .profileDetails {
   margin-top: 13vh;
-
   border-top: 1px solid var(--portfolio-line);
 }
 
 .profileDetail {
   display: grid;
-
   grid-template-columns: 170px 1fr;
-
   border-bottom: 1px solid var(--portfolio-line);
-
   padding: 18px 0;
 }
 
 .profileLabel {
   font-family: var(--portfolio-mono);
   font-size: 9px;
-
   color: var(--portfolio-muted);
 }
 
@@ -731,16 +587,9 @@
   font-size: 13px;
 }
 
-
-/* =========================================================
-   CONTACT
-   ========================================================= */
-
 .contact {
   min-height: 80vh;
-
   padding: 17vh 0 12vh;
-
   display: flex;
   align-items: center;
 }
@@ -752,20 +601,15 @@
 .contactLabel {
   font-family: var(--portfolio-mono);
   font-size: 10px;
-
   color: var(--portfolio-muted);
-
   margin-bottom: 45px;
 }
 
 .contact h2 {
   margin: 0;
-
   font-family: var(--portfolio-serif);
   font-weight: 400;
-
   font-size: clamp(60px, 9vw, 140px);
-
   line-height: 0.84;
   letter-spacing: -0.07em;
 }
@@ -776,40 +620,22 @@
 
 .contactEmail {
   display: inline-block;
-
   margin-top: 70px;
-
   font-family: var(--portfolio-mono);
   font-size: 11px;
-
   border-bottom: 1px solid #111;
-
   padding-bottom: 7px;
 }
 
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
-
 .footer {
   border-top: 1px solid var(--portfolio-line);
-
   padding: 20px 4vw;
-
   display: flex;
   justify-content: space-between;
-
   font-family: var(--portfolio-mono);
   font-size: 9px;
-
   color: var(--portfolio-muted);
 }
-
-
-/* =========================================================
-   RESPONSIVE — TABLET
-   ========================================================= */
 
 @media (max-width: 900px) {
   .header {
@@ -924,11 +750,6 @@
   }
 }
 
-
-/* =========================================================
-   RESPONSIVE — PHONE
-   ========================================================= */
-
 @media (max-width: 550px) {
   .nav a:nth-child(2) {
     display: none;
@@ -977,11 +798,6 @@
     font-size: 18vw;
   }
 }
-
-
-/* =========================================================
-   SMALL PHONE SAFETY
-   ========================================================= */
 
 @media (max-width: 380px) {
   .header {
