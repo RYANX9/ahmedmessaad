@@ -1,3 +1,5 @@
+"use client";
+
 import {
   rail,
   topbar,
@@ -10,12 +12,11 @@ import {
   contact,
   type CaseStudy,
 } from "./data";
+import { useState } from "react";
+import { MinimalPortfolio } from "./components/minimal-portfolio";
+import { DesignToggle, type DesignMode } from "./components/design-toggle";
 
 // Each project gets a small technical "visual" widget in the card footer.
-// The widget TYPE is derived from artSymbol (stable per project), and where
-// possible its content (node labels) is derived from artLabel — e.g.
-// "query → signal → choice" becomes three flow nodes — so nothing here is
-// hardcoded per project; it all comes from data.ts.
 type VisualKind =
   | "flow"
   | "scan"
@@ -53,12 +54,8 @@ function ProjectVisual({ c }: { c: CaseStudy }) {
       return (
         <div className="flow">
           {nodes.flatMap((n, i) => [
-            <div className="flow-node" key={`n${i}`}>
-              {n}
-            </div>,
-            i < nodes.length - 1 ? (
-              <div className="flow-line" key={`l${i}`} />
-            ) : null,
+            <div className="flow-node" key={`n${i}`}>{n}</div>,
+            i < nodes.length - 1 ? <div className="flow-line" key={`l${i}`} /> : null,
           ])}
         </div>
       );
@@ -68,12 +65,8 @@ function ProjectVisual({ c }: { c: CaseStudy }) {
       return (
         <div className="rl">
           {nodes.flatMap((n, i) => [
-            <div className="rl-node" key={`n${i}`}>
-              {n}
-            </div>,
-            i < nodes.length - 1 ? (
-              <div className="rl-arrow" key={`a${i}`} />
-            ) : null,
+            <div className="rl-node" key={`n${i}`}>{n}</div>,
+            i < nodes.length - 1 ? <div className="rl-arrow" key={`a${i}`} /> : null,
           ])}
         </div>
       );
@@ -81,18 +74,14 @@ function ProjectVisual({ c }: { c: CaseStudy }) {
     case "scan":
       return (
         <div className="scan">
-          {Array.from({ length: 80 }).map((_, i) => (
-            <span key={i} />
-          ))}
+          {Array.from({ length: 80 }).map((_, i) => <span key={i} />)}
           <div className="scan-target" />
         </div>
       );
     case "model":
       return (
         <div className="model">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div className="model-bar" key={i} />
-          ))}
+          {Array.from({ length: 8 }).map((_, i) => <div className="model-bar" key={i} />)}
         </div>
       );
     case "graph":
@@ -107,24 +96,34 @@ function ProjectVisual({ c }: { c: CaseStudy }) {
       return (
         <div className="architecture">
           {["Input", "Model", "Decision", "Interface"].map((label) => (
-            <div className="arch-box" key={label}>
-              {label}
-            </div>
+            <div className="arch-box" key={label}>{label}</div>
           ))}
         </div>
       );
     case "experiment":
       return (
         <div className="experiment">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div className="exp" key={i} />
-          ))}
+          {Array.from({ length: 8 }).map((_, i) => <div className="exp" key={i} />)}
         </div>
       );
   }
 }
 
 export default function Home() {
+  const [designMode, setDesignMode] = useState<DesignMode>("dossier");
+
+  if (designMode === "minimal") {
+    return (
+      <>
+        <MinimalPortfolio />
+        <DesignToggle
+          mode={designMode}
+          onToggle={() => setDesignMode("dossier")}
+        />
+      </>
+    );
+  }
+
   return (
     <>
       <header className="top">
@@ -168,9 +167,7 @@ export default function Home() {
             <span className="method-label">{hero.method.label}</span>
             <ol>
               {hero.method.steps.map((step, i) => (
-                <li key={step} data-i={i + 1}>
-                  {step}
-                </li>
+                <li key={step} data-i={i + 1}>{step}</li>
               ))}
             </ol>
           </div>
@@ -251,7 +248,6 @@ export default function Home() {
                         <li key={note}>{note}</li>
                       ))}
                     </ul>
-
 
                     <a
                       className="project-link"
@@ -345,6 +341,12 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Fixed toggle — always visible in the bottom-right corner */}
+      <DesignToggle
+        mode={designMode}
+        onToggle={() => setDesignMode("minimal")}
+      />
     </>
   );
 }
