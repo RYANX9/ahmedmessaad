@@ -236,7 +236,7 @@ function DossierPortfolio() {
                       ))}
                     </ul>
 
-                    
+                    <a
                       className="project-link"
                       href={c.link.href}
                       target="_blank"
