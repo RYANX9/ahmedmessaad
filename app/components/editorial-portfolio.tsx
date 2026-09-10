@@ -498,8 +498,8 @@ export default function EditorialPortfolio() {
               <div className={styles.methodNumber}>04</div>
               <h4>Deploy</h4>
               <p>
-                Turn validated ideas into applications that people can
-                actually use.
+                Turn validated ideas into applications that
+                people can actually use.
               </p>
             </div>
           </div>
