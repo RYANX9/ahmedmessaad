@@ -5,6 +5,7 @@ import {
   rail,
   topbar,
   hero,
+  workIntro,
   contents,
   cases,
   about,
