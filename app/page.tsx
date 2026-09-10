@@ -52,39 +52,57 @@ function ProjectVisual({ c }: { c: CaseStudy }) {
   switch (kind) {
     case "flow": {
       const nodes = splitArrow(c.artLabel);
+
       return (
         <div className="flow">
           {nodes.flatMap((n, i) => [
-            <div className="flow-node" key={`n${i}`}>{n}</div>,
-            i < nodes.length - 1 ? <div className="flow-line" key={`l${i}`} /> : null,
+            <div className="flow-node" key={`n${i}`}>
+              {n}
+            </div>,
+            i < nodes.length - 1 ? (
+              <div className="flow-line" key={`l${i}`} />
+            ) : null,
           ])}
         </div>
       );
     }
+
     case "rl": {
       const nodes = splitArrow(c.artLabel);
+
       return (
         <div className="rl">
           {nodes.flatMap((n, i) => [
-            <div className="rl-node" key={`n${i}`}>{n}</div>,
-            i < nodes.length - 1 ? <div className="rl-arrow" key={`a${i}`} /> : null,
+            <div className="rl-node" key={`n${i}`}>
+              {n}
+            </div>,
+            i < nodes.length - 1 ? (
+              <div className="rl-arrow" key={`a${i}`} />
+            ) : null,
           ])}
         </div>
       );
     }
+
     case "scan":
       return (
         <div className="scan">
-          {Array.from({ length: 80 }).map((_, i) => <span key={i} />)}
+          {Array.from({ length: 80 }).map((_, i) => (
+            <span key={i} />
+          ))}
           <div className="scan-target" />
         </div>
       );
+
     case "model":
       return (
         <div className="model">
-          {Array.from({ length: 8 }).map((_, i) => <div className="model-bar" key={i} />)}
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div className="model-bar" key={i} />
+          ))}
         </div>
       );
+
     case "graph":
       return (
         <div className="graph">
@@ -93,20 +111,29 @@ function ProjectVisual({ c }: { c: CaseStudy }) {
           </svg>
         </div>
       );
+
     case "architecture":
       return (
         <div className="architecture">
           {["Input", "Model", "Decision", "Interface"].map((label) => (
-            <div className="arch-box" key={label}>{label}</div>
+            <div className="arch-box" key={label}>
+              {label}
+            </div>
           ))}
         </div>
       );
+
     case "experiment":
       return (
         <div className="experiment">
-          {Array.from({ length: 8 }).map((_, i) => <div className="exp" key={i} />)}
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div className="exp" key={i} />
+          ))}
         </div>
       );
+
+    default:
+      return null;
   }
 }
 
@@ -118,6 +145,7 @@ function DossierPortfolio() {
           {rail.mark}
           <span className="topbar-label">{topbar.label}</span>
         </a>
+
         <nav className="nav">
           {topbar.nav.map((item) => (
             <a key={item.href} href={item.href}>
@@ -132,6 +160,7 @@ function DossierPortfolio() {
           <div className="hero-index">
             {rail.firstName} {rail.lastName} / {rail.location} / {rail.year}
           </div>
+
           <div className="hero-note">
             {rail.roles.map((role, i) => (
               <span key={role}>
@@ -144,6 +173,7 @@ function DossierPortfolio() {
 
         <div>
           <span className="hero-eyebrow">{hero.eyebrow}</span>
+
           <div className="hero-title">
             {hero.headline.map((line, i) => (
               <div key={i}>{line}</div>
@@ -152,9 +182,12 @@ function DossierPortfolio() {
 
           <div className="hero-method">
             <span className="method-label">{hero.method.label}</span>
+
             <ol>
               {hero.method.steps.map((step, i) => (
-                <li key={step} data-i={i + 1}>{step}</li>
+                <li key={step} data-i={i + 1}>
+                  {step}
+                </li>
               ))}
             </ol>
           </div>
@@ -162,6 +195,7 @@ function DossierPortfolio() {
 
         <div className="hero-bottom">
           <span>{rail.hint}</span>
+
           <p>
             {hero.statement.map((seg, i) =>
               seg.bold ? (
@@ -179,6 +213,7 @@ function DossierPortfolio() {
           <span>{contents.eyebrow}</span>
           <span>{contents.count}</span>
         </div>
+
         <div className="contents-list">
           {contents.groups.map((g) => (
             <div className="contents-row" key={g.num}>
@@ -194,14 +229,19 @@ function DossierPortfolio() {
       <section className="gallery" id="work">
         <div className="gallery-head">
           <div>
-            <span className="gallery-eyebrow">{sectionHeads.work.label}</span>
+            <span className="gallery-eyebrow">
+              {sectionHeads.work.label}
+            </span>
+
             <h2>
               {workIntro.heading.map((line, i) => (
                 <div key={i}>{line}</div>
               ))}
             </h2>
+
             <p className="gallery-lead">{workIntro.paragraph}</p>
           </div>
+
           <span>{workIntro.note}</span>
         </div>
 
@@ -212,10 +252,12 @@ function DossierPortfolio() {
                 <div className="project-line">
                   <span className="project-number">{c.num}</span>
                   <span className="project-rule" />
+
                   <span className="project-type-group">
                     {c.feature && (
                       <span className="project-feature">{c.feature}</span>
                     )}
+
                     <span className="project-type">{c.category}</span>
                   </span>
                 </div>
@@ -227,7 +269,11 @@ function DossierPortfolio() {
 
                   <div className="project-info">
                     <p className="project-description">{c.description}</p>
-                    {c.extra && <p className="project-extra">{c.extra}</p>}
+
+                    {c.extra && (
+                      <p className="project-extra">{c.extra}</p>
+                    )}
+
                     <p className="project-insight">{c.insight}</p>
 
                     <ul className="field-notes">
@@ -249,6 +295,7 @@ function DossierPortfolio() {
 
                 <div className="card-bottom">
                   <span className="bottom-label">{c.artLabel}</span>
+
                   <div className="visual">
                     <ProjectVisual c={c} />
                   </div>
@@ -261,20 +308,28 @@ function DossierPortfolio() {
 
       <section className="after" id="about">
         <div>
-          <div className="after-label">{sectionHeads.about.label}</div>
-          <span className="after-note">{sectionHeads.about.note}</span>
+          <div className="after-label">
+            {sectionHeads.about.label}
+          </div>
+
+          <span className="after-note">
+            {sectionHeads.about.note}
+          </span>
         </div>
+
         <div>
           <h2>
             {about.heading.map((line, i) => (
               <div key={i}>{line}</div>
             ))}
           </h2>
+
           <p className="about-lead">
             {about.lead.before}
             <em>{about.lead.emphasis}</em>
             {about.lead.after}
           </p>
+
           <p className="about-copy">{about.body}</p>
 
           <div className="timeline">
@@ -291,25 +346,36 @@ function DossierPortfolio() {
 
       <section className="contact" id="contact">
         <div>
-          <div className="after-label" style={{ color: "var(--paper)" }}>
+          <div
+            className="after-label"
+            style={{ color: "var(--paper)" }}
+          >
             Contact / {cases.length.toString().padStart(2, "0")}
           </div>
+
           <h2>
             {contact.heading.map((line, i) => (
               <div key={i}>{line}</div>
             ))}
           </h2>
-          <p className="contact-paragraph">{contact.paragraph}</p>
+
+          <p className="contact-paragraph">
+            {contact.paragraph}
+          </p>
         </div>
 
         <div>
           <div className="contact-links-row">
             <div className="contact-links">
               {contact.links.map((link) => (
-                
+                <a
                   key={link.label}
                   href={link.href}
-                  target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+                  target={
+                    link.href.startsWith("mailto:")
+                      ? undefined
+                      : "_blank"
+                  }
                   rel="noreferrer"
                 >
                   {link.label} ↗
@@ -320,8 +386,10 @@ function DossierPortfolio() {
 
           <div className="contact-bottom">
             <span>
-              {rail.firstName} {rail.lastName} / {rail.location} / {rail.year}
+              {rail.firstName} {rail.lastName} / {rail.location} /{" "}
+              {rail.year}
             </span>
+
             <div className="contact-footer-right">
               {contact.footerLeft} — {contact.footerRight}
             </div>
@@ -333,7 +401,8 @@ function DossierPortfolio() {
 }
 
 export default function Home() {
-  const [designMode, setDesignMode] = useState<DesignMode>("dossier");
+  const [designMode, setDesignMode] =
+    useState<DesignMode>("dossier");
 
   return (
     <>
@@ -341,7 +410,10 @@ export default function Home() {
       {designMode === "minimal" && <MinimalPortfolio />}
       {designMode === "editorial" && <EditorialPortfolio />}
 
-      <DesignToggle mode={designMode} onChange={setDesignMode} />
+      <DesignToggle
+        mode={designMode}
+        onChange={setDesignMode}
+      />
     </>
   );
 }
