@@ -418,19 +418,30 @@
   letter-spacing: -0.06em;
 }
 
+.experimentItem {
+  border-bottom: 1px solid var(--portfolio-line);
+}
+
 .experimentRow {
   display: grid;
-  grid-template-columns: 70px 1fr 1fr 100px;
+  grid-template-columns: 70px 1fr 1fr 100px 24px;
   gap: 25px;
-  padding: 27px 0;
-  border-bottom: 1px solid var(--portfolio-line);
   align-items: baseline;
+
+  width: 100%;
+  padding: 27px 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 .experimentNumber,
 .experimentTech,
 .experimentResult,
-.experimentArrow {
+.experimentToggle {
   font-family: var(--portfolio-mono);
   font-size: 9px;
   line-height: 1.7;
@@ -449,8 +460,44 @@
   color: var(--portfolio-muted);
 }
 
-.experimentArrow {
+.experimentToggle {
+  font-size: 14px;
   text-align: right;
+  color: var(--portfolio-muted);
+}
+
+.experimentDetail {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.experimentDetail[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+.experimentDetailInner {
+  overflow: hidden;
+}
+
+.experimentDetailInner p {
+  margin: 0 0 20px;
+  max-width: 640px;
+
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--portfolio-muted);
+}
+
+.experimentLink {
+  display: inline-block;
+  margin-bottom: 28px;
+
+  font-family: var(--portfolio-mono);
+  font-size: 10px;
+
+  border-bottom: 1px solid #111;
+  padding-bottom: 5px;
 }
 
 .approach {
@@ -625,6 +672,27 @@
   padding-bottom: 7px;
 }
 
+.contactLinksRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 28px;
+}
+
+.contactLink {
+  font-family: var(--portfolio-mono);
+  font-size: 10px;
+  color: var(--portfolio-muted);
+  border-bottom: 1px solid var(--portfolio-line);
+  padding-bottom: 5px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.contactLink:hover {
+  color: var(--portfolio-text);
+  border-color: var(--portfolio-text);
+}
+
 .footer {
   border-top: 1px solid var(--portfolio-line);
   padding: 20px 4vw;
@@ -734,12 +802,11 @@
   }
 
   .experimentRow {
-    grid-template-columns: 40px 1fr;
+    grid-template-columns: 40px 1fr 24px;
   }
 
   .experimentTech,
-  .experimentResult,
-  .experimentArrow {
+  .experimentResult {
     display: none;
   }
 
