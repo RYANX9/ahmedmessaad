@@ -8,6 +8,7 @@ const HERO_IMAGE = "/images/ahmed-hero.png";
 const secondaryWork = [
   {
     number: "04",
+
     title: "Healthcare Cost Prediction",
     category: "MACHINE LEARNING",
     description:
@@ -146,8 +147,8 @@ export function BrutalistPortfolio() {
 
         <div className={styles.heroVisual}>
           <div className={styles.heroVisualFrame}>
-            <div className={styles.heroCross heroCrossTop}>+</div>
-            <div className={styles.heroCross heroCrossBottom}>+</div>
+            <div className={`${styles.heroCross} ${styles.heroCrossTop}`}>+</div>
+            <div className={`${styles.heroCross} ${styles.heroCrossBottom}`}>+</div>
 
             <div className={styles.heroImageWrap}>
               <img
