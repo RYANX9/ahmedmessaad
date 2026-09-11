@@ -3,13 +3,8 @@
   --portfolio-text: #111;
   --portfolio-muted: #777;
   --portfolio-line: #d2d2cc;
-
-  /* Fluid spacing tokens — one source of truth for horizontal breathing
-     room. These never resolve to 0, so nothing ever sits flush against
-     the screen edge, and they scale continuously instead of snapping
-     at a breakpoint. */
-  --portfolio-gutter: clamp(20px, 5vw, 72px);
-  --portfolio-indent: clamp(24px, 14vw, 220px);
+  --portfolio-gutter: clamp(16px, 4vw, 72px);
+  --portfolio-indent: clamp(16px, 8vw, 180px);
 }
 
 .page {
@@ -25,21 +20,9 @@
   overflow: clip;
 }
 
-.page *,
-.page *::before,
-.page *::after {
-  box-sizing: border-box;
-}
-
-.page a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.page ::selection {
-  background: #111;
-  color: #f5f5f1;
-}
+.page *, .page *::before, .page *::after { box-sizing: border-box; }
+.page a { color: inherit; text-decoration: none; }
+.page ::selection { background: #111; color: #f5f5f1; }
 
 .mono {
   font-family: var(--portfolio-mono);
@@ -61,11 +44,14 @@
   padding: 0 var(--portfolio-gutter);
 }
 
+/* =========================================================
+   HEADER
+   ========================================================= */
+
 .header {
   position: fixed;
   z-index: 100;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   width: 100%;
   padding: 22px var(--portfolio-gutter);
   display: flex;
@@ -76,10 +62,7 @@
   pointer-events: none;
 }
 
-.brand,
-.nav {
-  pointer-events: auto;
-}
+.brand, .nav { pointer-events: auto; }
 
 .brand {
   font-family: var(--portfolio-mono);
@@ -98,14 +81,16 @@
   transition: opacity 0.25s ease;
 }
 
-.nav:hover a:not(:hover) {
-  opacity: 0.4;
-}
+.nav:hover a:not(:hover) { opacity: 0.4; }
+
+/* =========================================================
+   HERO
+   ========================================================= */
 
 .hero {
-  min-height: 100vh;
+  min-height: 100svh;
   position: relative;
-  padding: clamp(96px, 16vh, 200px) var(--portfolio-gutter) clamp(56px, 9vh, 140px);
+  padding: clamp(88px, 14vh, 180px) var(--portfolio-gutter) clamp(48px, 8vh, 120px);
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -113,64 +98,55 @@
 
 .heroMain {
   width: 100%;
-  margin-top: -3vh;
+  margin-top: 0;
 }
 
 .heroEyebrow {
   font-family: var(--portfolio-mono);
   font-size: 10px;
   color: var(--portfolio-muted);
-  margin-bottom: 48px;
+  margin-bottom: clamp(24px, 5vh, 48px);
 }
 
 .hero h1 {
   margin: 0;
   font-family: var(--portfolio-serif);
   font-weight: 400;
-  font-size: clamp(48px, 9vw, 145px);
-  line-height: 0.86;
-  letter-spacing: -0.065em;
+  font-size: clamp(52px, 9vw, 145px);
+  line-height: 0.88;
+  letter-spacing: -0.055em;
 }
 
-.hero h1 em {
-  font-style: italic;
-}
+.hero h1 em { font-style: italic; }
 
 .heroIndented {
   display: inline-block;
-  margin-left: clamp(0px, 10vw, 10vw);
+  margin-left: clamp(0px, 8vw, 10vw);
 }
 
 .heroBottom {
-  margin-top: 9vh;
+  margin-top: clamp(40px, 7vh, 100px);
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(24px, 12vw, 12vw);
+  gap: clamp(24px, 6vw, 80px);
   align-items: end;
 }
 
 .heroDescription {
   max-width: 510px;
-  font-size: clamp(15px, 2.4vw, 18px);
-  line-height: 1.4;
-  letter-spacing: -0.02em;
-}
-
-.heroDescription strong {
-  font-weight: 400;
+  font-size: clamp(15px, 2vw, 18px);
+  line-height: 1.45;
+  letter-spacing: -0.015em;
 }
 
 .heroFields {
-  max-width: 310px;
   font-family: var(--portfolio-mono);
   font-size: 10px;
   line-height: 2;
   color: var(--portfolio-muted);
 }
 
-.heroFields span {
-  color: var(--portfolio-text);
-}
+.heroFields span { color: var(--portfolio-text); }
 
 .heroScroll {
   position: absolute;
@@ -182,77 +158,79 @@
   writing-mode: vertical-rl;
 }
 
+/* =========================================================
+   INTRODUCTION
+   ========================================================= */
+
 .introduction {
-  min-height: 85vh;
-  padding: clamp(72px, 16vh, 200px) 0;
+  padding: clamp(56px, 10vh, 140px) 0;
 }
 
 .introductionGrid {
   margin-left: var(--portfolio-indent);
-  width: calc(100% - var(--portfolio-indent) * 2);
+  width: calc(100% - var(--portfolio-indent) * 1.5);
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(32px, 9vw, 9vw);
+  gap: clamp(32px, 6vw, 80px);
 }
 
 .introduction h2 {
   margin: 0;
   font-family: var(--portfolio-serif);
   font-weight: 400;
-  font-size: clamp(36px, 5vw, 76px);
+  font-size: clamp(34px, 5vw, 76px);
   line-height: 0.95;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.05em;
 }
 
 .introductionText {
-  padding-top: 10px;
-  font-size: clamp(15px, 2vw, 17px);
-  line-height: 1.55;
+  padding-top: 8px;
+  font-size: clamp(14px, 1.8vw, 17px);
+  line-height: 1.6;
   max-width: 430px;
 }
 
-.introductionText p {
-  margin: 0 0 28px;
-}
+.introductionText p { margin: 0 0 24px; }
+
+/* =========================================================
+   WORK INTRO
+   ========================================================= */
 
 .workIntro {
-  min-height: 55vh;
-  padding: clamp(64px, 14vh, 180px) 0 clamp(48px, 10vh, 130px);
+  padding: clamp(48px, 10vh, 140px) 0 clamp(36px, 7vh, 100px);
 }
 
 .workIntroInner {
   margin-left: var(--portfolio-indent);
-  width: calc(100% - var(--portfolio-indent) * 2);
+  width: calc(100% - var(--portfolio-indent) * 1.5);
 }
 
-.label {
-  margin-bottom: 55px;
-}
+.label { margin-bottom: clamp(28px, 5vh, 55px); }
 
 .workIntro h2 {
   margin: 0;
   max-width: 850px;
   font-family: var(--portfolio-serif);
-  font-size: clamp(38px, 7vw, 110px);
+  font-size: clamp(36px, 7vw, 110px);
   font-weight: 400;
   line-height: 0.9;
-  letter-spacing: -0.065em;
+  letter-spacing: -0.06em;
 }
 
-.workIntro h2 em {
-  font-style: italic;
-}
+.workIntro h2 em { font-style: italic; }
+
+/* =========================================================
+   PROJECTS
+   ========================================================= */
 
 .project {
-  min-height: 100vh;
-  padding: clamp(64px, 13vh, 170px) 0 clamp(90px, 15vh, 200px);
+  padding: clamp(48px, 9vh, 140px) 0 clamp(56px, 11vh, 160px);
 }
 
 .projectGrid {
   display: grid;
-  grid-template-columns: 10% 52% 28%;
-  gap: 5%;
-  min-height: 72vh;
+  grid-template-columns: 60px 1fr 240px;
+  gap: clamp(16px, 3vw, 40px);
 }
 
 .projectIndex {
@@ -269,53 +247,48 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: clamp(32px, 5vh, 56px);
 }
 
 .projectKicker {
   font-family: var(--portfolio-mono);
   font-size: 10px;
   color: var(--portfolio-muted);
-  margin-bottom: 30px;
+  margin-bottom: clamp(16px, 3vh, 30px);
 }
 
 .project h3 {
   margin: 0;
   font-family: var(--portfolio-serif);
   font-weight: 400;
-  font-size: clamp(38px, 6.5vw, 100px);
+  font-size: clamp(36px, 6vw, 100px);
   line-height: 0.88;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.055em;
 }
 
-.project h3 em {
-  font-style: italic;
-}
+.project h3 em { font-style: italic; }
 
 .projectDescription {
-  margin-top: clamp(32px, 6vh, 55px);
+  margin-top: clamp(24px, 4vh, 55px);
   max-width: 600px;
-  font-size: clamp(16px, 3.2vw, 20px);
-  line-height: 1.35;
-  letter-spacing: -0.025em;
+  font-size: clamp(15px, 2.4vw, 20px);
+  line-height: 1.4;
+  letter-spacing: -0.02em;
 }
 
-.projectDescription p {
-  margin: 0;
-}
+.projectDescription p { margin: 0; }
 
-.projectSide {
-  align-self: end;
-}
+.projectSide { align-self: end; }
 
 .metric {
   border-top: 1px solid var(--portfolio-line);
-  padding: 18px 0;
+  padding: 16px 0;
 }
 
 .metricValue {
   display: block;
   font-family: var(--portfolio-serif);
-  font-size: clamp(28px, 4vw, 38px);
+  font-size: clamp(26px, 3.5vw, 38px);
   line-height: 1;
   margin-bottom: 8px;
 }
@@ -328,7 +301,7 @@
 }
 
 .projectTech {
-  margin-top: 35px;
+  margin-top: 28px;
   font-family: var(--portfolio-mono);
   font-size: 9px;
   line-height: 2;
@@ -337,77 +310,32 @@
 
 .projectLink {
   display: inline-block;
-  margin-top: 35px;
+  margin-top: 28px;
   font-family: var(--portfolio-mono);
   font-size: 10px;
   border-bottom: 1px solid #111;
   padding-bottom: 5px;
+  transition: opacity 0.2s;
 }
 
-.project01 .projectMain {
-  padding-top: 3vh;
-}
+.projectLink:hover { opacity: 0.5; }
 
-.project01 h3 {
-  max-width: 700px;
-}
+/* project variant offsets — only meaningful on wide screens */
+.project02 { padding-top: clamp(48px, 13vh, 180px); }
+.project03 { padding-top: clamp(48px, 12vh, 170px); }
+.project04 { padding-top: clamp(48px, 11vh, 160px); padding-bottom: clamp(64px, 16vh, 220px); }
 
-.project02 {
-  padding-top: clamp(72px, 18vh, 220px);
-}
-
-.project02 .projectGrid {
-  grid-template-columns: 10% 45% 34%;
-}
-
-.project02 h3 {
-  max-width: 650px;
-}
-
-.project02 .projectDescription {
-  max-width: 530px;
-}
-
-.project03 {
-  padding-top: clamp(68px, 17vh, 210px);
-}
-
-.project03 h3 {
-  max-width: 800px;
-}
-
-.project03 .projectDescription {
-  max-width: 650px;
-}
-
-.project03 .projectSide {
-  align-self: center;
-}
-
-.project04 {
-  padding-top: clamp(64px, 16vh, 200px);
-  padding-bottom: clamp(96px, 20vh, 240px);
-}
-
-.project04 .projectGrid {
-  grid-template-columns: 10% 50% 30%;
-}
-
-.project04 h3 {
-  max-width: 800px;
-}
-
-.project04 .projectDescription {
-  max-width: 620px;
-}
+/* =========================================================
+   EXPERIMENTS
+   ========================================================= */
 
 .experiments {
-  padding: clamp(64px, 15vh, 190px) 0 clamp(72px, 17vh, 210px);
+  padding: clamp(56px, 11vh, 160px) 0 clamp(64px, 13vh, 190px);
 }
 
 .experimentsInner {
   margin-left: var(--portfolio-indent);
-  width: calc(100% - var(--portfolio-indent) * 2);
+  width: calc(100% - var(--portfolio-indent) * 1.5);
 }
 
 .experimentsHeading {
@@ -415,16 +343,15 @@
   justify-content: space-between;
   align-items: flex-end;
   border-bottom: 1px solid var(--portfolio-line);
-  padding-bottom: 25px;
-  margin-bottom: 0;
-  gap: 24px;
+  padding-bottom: 20px;
+  gap: 16px;
   flex-wrap: wrap;
 }
 
 .experimentsHeading h2 {
   margin: 0;
   font-family: var(--portfolio-serif);
-  font-size: clamp(34px, 6vw, 90px);
+  font-size: clamp(32px, 6vw, 90px);
   font-weight: 400;
   letter-spacing: -0.06em;
 }
@@ -435,12 +362,11 @@
 
 .experimentRow {
   display: grid;
-  grid-template-columns: 50px 1fr 1fr 100px 24px;
-  gap: clamp(12px, 2.5vw, 25px);
-  align-items: baseline;
-
+  grid-template-columns: 44px 1fr 1fr 90px 24px;
+  gap: clamp(10px, 2vw, 25px);
+  align-items: center;
   width: 100%;
-  padding: 27px 0;
+  padding: 22px 0;
   border: 0;
   background: none;
   font: inherit;
@@ -448,6 +374,8 @@
   text-align: left;
   cursor: pointer;
 }
+
+.experimentRow:hover .experimentName { opacity: 0.55; }
 
 .experimentNumber,
 .experimentTech,
@@ -458,29 +386,31 @@
   line-height: 1.7;
 }
 
-.experimentNumber {
-  color: var(--portfolio-muted);
-}
+.experimentNumber { color: var(--portfolio-muted); }
 
 .experimentName {
   font-family: var(--portfolio-serif);
-  font-size: clamp(18px, 3vw, 25px);
+  font-size: clamp(17px, 2.5vw, 25px);
+  transition: opacity 0.2s;
 }
 
-.experimentResult {
-  color: var(--portfolio-muted);
-}
+.experimentResult { color: var(--portfolio-muted); }
 
 .experimentToggle {
   font-size: 14px;
   text-align: right;
   color: var(--portfolio-muted);
+  transition: transform 0.25s ease;
+}
+
+.experimentItem[data-open="true"] .experimentToggle {
+  transform: rotate(45deg);
 }
 
 .experimentDetail {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.3s ease;
+  transition: grid-template-rows 0.35s ease;
 }
 
 .experimentDetail[data-open="true"] {
@@ -492,79 +422,79 @@
 }
 
 .experimentDetailInner p {
-  margin: 0 0 20px;
-  max-width: 640px;
-
+  margin: 0 0 16px;
+  max-width: 600px;
+  padding-left: clamp(44px, calc(44px + 2vw), 70px);
   font-size: 15px;
-  line-height: 1.55;
-  color: var(--portfolio-muted);
+  line-height: 1.6;
+  color: #444;
+  padding-bottom: 4px;
 }
 
 .experimentLink {
   display: inline-block;
-  margin-bottom: 28px;
-
+  margin-left: clamp(44px, calc(44px + 2vw), 70px);
+  margin-bottom: 24px;
   font-family: var(--portfolio-mono);
   font-size: 10px;
-
   border-bottom: 1px solid #111;
-  padding-bottom: 5px;
+  padding-bottom: 4px;
+  transition: opacity 0.2s;
 }
 
+.experimentLink:hover { opacity: 0.5; }
+
+/* =========================================================
+   APPROACH
+   ========================================================= */
+
 .approach {
-  min-height: 80vh;
-  padding: clamp(72px, 16vh, 200px) 0;
+  padding: clamp(56px, 11vh, 160px) 0;
 }
 
 .approachInner {
   margin-left: var(--portfolio-indent);
-  width: calc(100% - var(--portfolio-indent) * 2);
+  width: calc(100% - var(--portfolio-indent) * 1.5);
 }
 
 .approachTop {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(32px, 10vw, 10vw);
+  gap: clamp(32px, 8vw, 80px);
 }
 
 .approach h2 {
   margin: 0;
   font-family: var(--portfolio-serif);
-  font-size: clamp(36px, 6vw, 90px);
+  font-size: clamp(34px, 6vw, 90px);
   font-weight: 400;
   line-height: 0.92;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.055em;
 }
 
-.approach h2 em {
-  font-style: italic;
-}
+.approach h2 em { font-style: italic; }
 
 .approachCopy {
-  font-size: clamp(15px, 2vw, 17px);
-  line-height: 1.5;
+  font-size: clamp(14px, 1.8vw, 17px);
+  line-height: 1.55;
   max-width: 430px;
 }
 
-.approachCopy p {
-  margin: 0 0 25px;
-}
+.approachCopy p { margin: 0 0 22px; }
 
 .methodList {
-  margin-top: clamp(64px, 13vh, 170px);
+  margin-top: clamp(48px, 9vh, 140px);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   border-top: 1px solid var(--portfolio-line);
 }
 
 .method {
-  padding: 25px 25px 25px 0;
+  padding: 22px 20px 22px 0;
   border-right: 1px solid var(--portfolio-line);
 }
 
-.method:last-child {
-  border-right: 0;
-}
+.method:last-child { border-right: 0; }
 
 .methodNumber {
   font-family: var(--portfolio-mono);
@@ -573,9 +503,9 @@
 }
 
 .method h4 {
-  margin: 40px 0 15px;
+  margin: 28px 0 12px;
   font-family: var(--portfolio-serif);
-  font-size: 25px;
+  font-size: clamp(18px, 2.5vw, 25px);
   font-weight: 400;
 }
 
@@ -586,51 +516,52 @@
   max-width: 180px;
 }
 
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
 .profile {
-  min-height: 80vh;
-  padding: clamp(72px, 16vh, 200px) 0;
+  padding: clamp(56px, 11vh, 160px) 0;
 }
 
 .profileInner {
   margin-left: var(--portfolio-indent);
-  width: calc(100% - var(--portfolio-indent) * 2);
+  width: calc(100% - var(--portfolio-indent) * 1.5);
 }
 
 .profileGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(32px, 10vw, 10vw);
+  gap: clamp(32px, 8vw, 80px);
 }
 
 .profile h2 {
   margin: 0;
   font-family: var(--portfolio-serif);
-  font-size: clamp(38px, 6vw, 92px);
+  font-size: clamp(36px, 6vw, 92px);
   font-weight: 400;
   line-height: 0.9;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.055em;
 }
 
 .profileCopy {
-  font-size: clamp(15px, 2vw, 17px);
-  line-height: 1.5;
+  font-size: clamp(14px, 1.8vw, 17px);
+  line-height: 1.55;
   max-width: 450px;
 }
 
-.profileCopy p {
-  margin: 0 0 28px;
-}
+.profileCopy p { margin: 0 0 24px; }
 
 .profileDetails {
-  margin-top: clamp(64px, 13vh, 170px);
+  margin-top: clamp(48px, 9vh, 140px);
   border-top: 1px solid var(--portfolio-line);
 }
 
 .profileDetail {
   display: grid;
-  grid-template-columns: 170px 1fr;
+  grid-template-columns: 160px 1fr;
   border-bottom: 1px solid var(--portfolio-line);
-  padding: 18px 0;
+  padding: 16px 0;
   gap: 12px;
 }
 
@@ -640,56 +571,58 @@
   color: var(--portfolio-muted);
 }
 
-.profileValue {
-  font-size: 13px;
-}
+.profileValue { font-size: 13px; }
+
+/* =========================================================
+   CONTACT
+   ========================================================= */
 
 .contact {
-  min-height: 80vh;
-  padding: clamp(80px, 17vh, 210px) 0 clamp(56px, 12vh, 150px);
+  padding: clamp(64px, 13vh, 180px) 0 clamp(48px, 10vh, 130px);
   display: flex;
   align-items: center;
 }
 
 .contactInner {
   margin-left: var(--portfolio-indent);
-  width: calc(100% - var(--portfolio-indent) * 2);
+  width: calc(100% - var(--portfolio-indent) * 1.5);
 }
 
 .contactLabel {
   font-family: var(--portfolio-mono);
   font-size: 10px;
   color: var(--portfolio-muted);
-  margin-bottom: 45px;
+  margin-bottom: clamp(24px, 5vh, 45px);
 }
 
 .contact h2 {
   margin: 0;
   font-family: var(--portfolio-serif);
   font-weight: 400;
-  font-size: clamp(44px, 9vw, 140px);
-  line-height: 0.84;
-  letter-spacing: -0.07em;
+  font-size: clamp(40px, 9vw, 140px);
+  line-height: 0.86;
+  letter-spacing: -0.065em;
 }
 
-.contact h2 em {
-  font-style: italic;
-}
+.contact h2 em { font-style: italic; }
 
 .contactEmail {
   display: inline-block;
-  margin-top: 70px;
+  margin-top: clamp(36px, 6vh, 70px);
   font-family: var(--portfolio-mono);
   font-size: 11px;
   border-bottom: 1px solid #111;
   padding-bottom: 7px;
+  transition: opacity 0.2s;
 }
+
+.contactEmail:hover { opacity: 0.5; }
 
 .contactLinksRow {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
-  margin-top: 28px;
+  gap: 20px;
+  margin-top: 24px;
 }
 
 .contactLink {
@@ -706,6 +639,10 @@
   border-color: var(--portfolio-text);
 }
 
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
 .footer {
   border-top: 1px solid var(--portfolio-line);
   padding: 20px var(--portfolio-gutter);
@@ -718,92 +655,109 @@
   flex-wrap: wrap;
 }
 
-/* From here down: only genuine STRUCTURAL changes remain —
-   grid reflows and hiding elements. All spacing and type sizing
-   is already fluid above via clamp(), so there is nothing left
-   to "reset" at a breakpoint, which is what was causing the
-   desktop/mobile mismatch. */
+/* =========================================================
+   RESPONSIVE — structural grid reflows only
+   ========================================================= */
 
 @media (max-width: 900px) {
-  .heroScroll {
-    display: none;
+
+  /* hero stacks the bottom two columns */
+  .heroBottom {
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
 
+  .heroScroll { display: none; }
+
+  /* all section indents collapse to gutter */
+  .introductionGrid,
+  .workIntroInner,
+  .experimentsInner,
+  .approachInner,
+  .profileInner,
+  .contactInner {
+    margin-left: 0;
+    width: 100%;
+    padding: 0 var(--portfolio-gutter);
+  }
+
+  /* introduction two-col → one-col */
+  .introductionGrid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  /* project grids: drop the sidebar into its own row */
   .projectGrid,
   .project02 .projectGrid,
+  .project03 .projectGrid,
   .project04 .projectGrid {
-    grid-template-columns: 44px 1fr;
-    gap: 24px;
+    grid-template-columns: 36px 1fr;
+    gap: 20px;
   }
 
   .projectSide {
     grid-column: 2;
-    margin-top: 45px;
+    align-self: start;
+    margin-top: 32px;
   }
 
+  /* approach two-col → one-col */
+  .approachTop {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  /* method list 4-col → 2-col */
   .methodList {
     grid-template-columns: 1fr 1fr;
   }
 
-  .method:nth-child(2) {
-    border-right: 0;
-  }
-
+  .method:nth-child(2) { border-right: 0; }
   .method:nth-child(3),
-  .method:nth-child(4) {
-    border-top: 1px solid var(--portfolio-line);
+  .method:nth-child(4) { border-top: 1px solid var(--portfolio-line); }
+
+  /* profile two-col → one-col */
+  .profileGrid {
+    grid-template-columns: 1fr;
+    gap: 28px;
   }
 
+  /* experiments: hide middle columns, keep num / name / toggle */
   .experimentRow {
-    grid-template-columns: 34px 1fr 24px;
+    grid-template-columns: 36px 1fr 24px;
   }
 
   .experimentTech,
-  .experimentResult {
-    display: none;
-  }
+  .experimentResult { display: none; }
 }
 
 @media (max-width: 550px) {
-  .nav a:nth-child(2) {
-    display: none;
-  }
+  .nav a:nth-child(2) { display: none; }
 
   .projectGrid,
   .project02 .projectGrid,
+  .project03 .projectGrid,
   .project04 .projectGrid {
-    grid-template-columns: 28px 1fr;
+    grid-template-columns: 24px 1fr;
   }
 
-  .methodList {
-    grid-template-columns: 1fr;
-  }
+  /* method list 2-col → 1-col */
+  .methodList { grid-template-columns: 1fr; }
 
   .method {
     border-right: 0 !important;
     border-bottom: 1px solid var(--portfolio-line);
-    padding-bottom: 35px;
+    padding-bottom: 28px;
   }
 
-  .method:last-child {
-    border-bottom: 0;
-  }
+  .method:last-child { border-bottom: 0; }
 
-  .profileDetail {
-    grid-template-columns: 96px 1fr;
-  }
+  .profileDetail { grid-template-columns: 90px 1fr; }
 }
 
 @media (max-width: 380px) {
-  .nav {
-    gap: 10px;
-  }
-
-  .nav a {
-    font-size: 8px;
-  }
-
-  .footer span:nth-child(2) {
-    display: none;
-  }
+  .nav { gap: 10px; }
+  .nav a { font-size: 8px; }
+  .footer span:nth-child(2) { display: none; }
 }
