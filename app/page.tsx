@@ -13,7 +13,7 @@ import {
   type CaseStudy,
 } from "./data";
 import { useState } from "react";
-import { BrutalistPortfolio } from "./components/brutalist-portfolio";
+import BrutalistPortfolio  from "./components/brutalist-portfolio";
 import EditorialPortfolio from "./components/editorial-portfolio";
 import { DesignToggle, type DesignMode } from "./components/design-toggle";
 
