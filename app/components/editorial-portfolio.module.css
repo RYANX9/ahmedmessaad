@@ -3,6 +3,13 @@
   --portfolio-text: #111;
   --portfolio-muted: #777;
   --portfolio-line: #d2d2cc;
+
+  /* Fluid spacing tokens — one source of truth for horizontal breathing
+     room. These never resolve to 0, so nothing ever sits flush against
+     the screen edge, and they scale continuously instead of snapping
+     at a breakpoint. */
+  --portfolio-gutter: clamp(20px, 5vw, 72px);
+  --portfolio-indent: clamp(24px, 14vw, 220px);
 }
 
 .page {
@@ -48,9 +55,10 @@
 }
 
 .container {
-  width: 86%;
+  width: 100%;
   max-width: 1450px;
   margin: 0 auto;
+  padding: 0 var(--portfolio-gutter);
 }
 
 .header {
@@ -59,7 +67,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  padding: 22px 4vw;
+  padding: 22px var(--portfolio-gutter);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -81,7 +89,7 @@
 
 .nav {
   display: flex;
-  gap: 28px;
+  gap: clamp(12px, 2vw, 28px);
 }
 
 .nav a {
@@ -97,7 +105,7 @@
 .hero {
   min-height: 100vh;
   position: relative;
-  padding: 16vh 7vw 9vh;
+  padding: clamp(96px, 16vh, 200px) var(--portfolio-gutter) clamp(56px, 9vh, 140px);
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -119,7 +127,7 @@
   margin: 0;
   font-family: var(--portfolio-serif);
   font-weight: 400;
-  font-size: clamp(65px, 9vw, 145px);
+  font-size: clamp(48px, 9vw, 145px);
   line-height: 0.86;
   letter-spacing: -0.065em;
 }
@@ -130,20 +138,20 @@
 
 .heroIndented {
   display: inline-block;
-  margin-left: 10vw;
+  margin-left: clamp(0px, 10vw, 10vw);
 }
 
 .heroBottom {
   margin-top: 9vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12vw;
+  gap: clamp(24px, 12vw, 12vw);
   align-items: end;
 }
 
 .heroDescription {
   max-width: 510px;
-  font-size: 18px;
+  font-size: clamp(15px, 2.4vw, 18px);
   line-height: 1.4;
   letter-spacing: -0.02em;
 }
@@ -166,7 +174,7 @@
 
 .heroScroll {
   position: absolute;
-  right: 4vw;
+  right: var(--portfolio-gutter);
   bottom: 7vh;
   font-family: var(--portfolio-mono);
   font-size: 9px;
@@ -176,29 +184,29 @@
 
 .introduction {
   min-height: 85vh;
-  padding: 16vh 0;
+  padding: clamp(72px, 16vh, 200px) 0;
 }
 
 .introductionGrid {
-  margin-left: 16%;
-  width: 68%;
+  margin-left: var(--portfolio-indent);
+  width: calc(100% - var(--portfolio-indent) * 2);
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 9vw;
+  gap: clamp(32px, 9vw, 9vw);
 }
 
 .introduction h2 {
   margin: 0;
   font-family: var(--portfolio-serif);
   font-weight: 400;
-  font-size: clamp(42px, 5vw, 76px);
+  font-size: clamp(36px, 5vw, 76px);
   line-height: 0.95;
   letter-spacing: -0.055em;
 }
 
 .introductionText {
   padding-top: 10px;
-  font-size: 17px;
+  font-size: clamp(15px, 2vw, 17px);
   line-height: 1.55;
   max-width: 430px;
 }
@@ -209,11 +217,12 @@
 
 .workIntro {
   min-height: 55vh;
-  padding: 14vh 0 10vh;
+  padding: clamp(64px, 14vh, 180px) 0 clamp(48px, 10vh, 130px);
 }
 
 .workIntroInner {
-  margin-left: 16%;
+  margin-left: var(--portfolio-indent);
+  width: calc(100% - var(--portfolio-indent) * 2);
 }
 
 .label {
@@ -224,7 +233,7 @@
   margin: 0;
   max-width: 850px;
   font-family: var(--portfolio-serif);
-  font-size: clamp(50px, 7vw, 110px);
+  font-size: clamp(38px, 7vw, 110px);
   font-weight: 400;
   line-height: 0.9;
   letter-spacing: -0.065em;
@@ -236,7 +245,7 @@
 
 .project {
   min-height: 100vh;
-  padding: 13vh 0 15vh;
+  padding: clamp(64px, 13vh, 170px) 0 clamp(90px, 15vh, 200px);
 }
 
 .projectGrid {
@@ -273,7 +282,7 @@
   margin: 0;
   font-family: var(--portfolio-serif);
   font-weight: 400;
-  font-size: clamp(50px, 6.5vw, 100px);
+  font-size: clamp(38px, 6.5vw, 100px);
   line-height: 0.88;
   letter-spacing: -0.06em;
 }
@@ -283,9 +292,9 @@
 }
 
 .projectDescription {
-  margin-top: 55px;
+  margin-top: clamp(32px, 6vh, 55px);
   max-width: 600px;
-  font-size: 20px;
+  font-size: clamp(16px, 3.2vw, 20px);
   line-height: 1.35;
   letter-spacing: -0.025em;
 }
@@ -306,7 +315,7 @@
 .metricValue {
   display: block;
   font-family: var(--portfolio-serif);
-  font-size: 38px;
+  font-size: clamp(28px, 4vw, 38px);
   line-height: 1;
   margin-bottom: 8px;
 }
@@ -344,7 +353,7 @@
 }
 
 .project02 {
-  padding-top: 18vh;
+  padding-top: clamp(72px, 18vh, 220px);
 }
 
 .project02 .projectGrid {
@@ -360,7 +369,7 @@
 }
 
 .project03 {
-  padding-top: 17vh;
+  padding-top: clamp(68px, 17vh, 210px);
 }
 
 .project03 h3 {
@@ -376,8 +385,8 @@
 }
 
 .project04 {
-  padding-top: 16vh;
-  padding-bottom: 20vh;
+  padding-top: clamp(64px, 16vh, 200px);
+  padding-bottom: clamp(96px, 20vh, 240px);
 }
 
 .project04 .projectGrid {
@@ -393,27 +402,29 @@
 }
 
 .experiments {
-  padding: 15vh 0 17vh;
+  padding: clamp(64px, 15vh, 190px) 0 clamp(72px, 17vh, 210px);
 }
 
 .experimentsInner {
-  margin-left: 16%;
-  width: 68%;
+  margin-left: var(--portfolio-indent);
+  width: calc(100% - var(--portfolio-indent) * 2);
 }
 
 .experimentsHeading {
   display: flex;
   justify-content: space-between;
-  align-items: end;
+  align-items: flex-end;
   border-bottom: 1px solid var(--portfolio-line);
   padding-bottom: 25px;
   margin-bottom: 0;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
 .experimentsHeading h2 {
   margin: 0;
   font-family: var(--portfolio-serif);
-  font-size: clamp(48px, 6vw, 90px);
+  font-size: clamp(34px, 6vw, 90px);
   font-weight: 400;
   letter-spacing: -0.06em;
 }
@@ -424,8 +435,8 @@
 
 .experimentRow {
   display: grid;
-  grid-template-columns: 70px 1fr 1fr 100px 24px;
-  gap: 25px;
+  grid-template-columns: 50px 1fr 1fr 100px 24px;
+  gap: clamp(12px, 2.5vw, 25px);
   align-items: baseline;
 
   width: 100%;
@@ -453,7 +464,7 @@
 
 .experimentName {
   font-family: var(--portfolio-serif);
-  font-size: 25px;
+  font-size: clamp(18px, 3vw, 25px);
 }
 
 .experimentResult {
@@ -502,24 +513,24 @@
 
 .approach {
   min-height: 80vh;
-  padding: 16vh 0;
+  padding: clamp(72px, 16vh, 200px) 0;
 }
 
 .approachInner {
-  margin-left: 16%;
-  width: 68%;
+  margin-left: var(--portfolio-indent);
+  width: calc(100% - var(--portfolio-indent) * 2);
 }
 
 .approachTop {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10vw;
+  gap: clamp(32px, 10vw, 10vw);
 }
 
 .approach h2 {
   margin: 0;
   font-family: var(--portfolio-serif);
-  font-size: clamp(48px, 6vw, 90px);
+  font-size: clamp(36px, 6vw, 90px);
   font-weight: 400;
   line-height: 0.92;
   letter-spacing: -0.06em;
@@ -530,7 +541,7 @@
 }
 
 .approachCopy {
-  font-size: 17px;
+  font-size: clamp(15px, 2vw, 17px);
   line-height: 1.5;
   max-width: 430px;
 }
@@ -540,7 +551,7 @@
 }
 
 .methodList {
-  margin-top: 13vh;
+  margin-top: clamp(64px, 13vh, 170px);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   border-top: 1px solid var(--portfolio-line);
@@ -577,31 +588,31 @@
 
 .profile {
   min-height: 80vh;
-  padding: 16vh 0;
+  padding: clamp(72px, 16vh, 200px) 0;
 }
 
 .profileInner {
-  margin-left: 16%;
-  width: 68%;
+  margin-left: var(--portfolio-indent);
+  width: calc(100% - var(--portfolio-indent) * 2);
 }
 
 .profileGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10vw;
+  gap: clamp(32px, 10vw, 10vw);
 }
 
 .profile h2 {
   margin: 0;
   font-family: var(--portfolio-serif);
-  font-size: clamp(50px, 6vw, 92px);
+  font-size: clamp(38px, 6vw, 92px);
   font-weight: 400;
   line-height: 0.9;
   letter-spacing: -0.06em;
 }
 
 .profileCopy {
-  font-size: 17px;
+  font-size: clamp(15px, 2vw, 17px);
   line-height: 1.5;
   max-width: 450px;
 }
@@ -611,7 +622,7 @@
 }
 
 .profileDetails {
-  margin-top: 13vh;
+  margin-top: clamp(64px, 13vh, 170px);
   border-top: 1px solid var(--portfolio-line);
 }
 
@@ -620,6 +631,7 @@
   grid-template-columns: 170px 1fr;
   border-bottom: 1px solid var(--portfolio-line);
   padding: 18px 0;
+  gap: 12px;
 }
 
 .profileLabel {
@@ -634,13 +646,14 @@
 
 .contact {
   min-height: 80vh;
-  padding: 17vh 0 12vh;
+  padding: clamp(80px, 17vh, 210px) 0 clamp(56px, 12vh, 150px);
   display: flex;
   align-items: center;
 }
 
 .contactInner {
-  margin-left: 16%;
+  margin-left: var(--portfolio-indent);
+  width: calc(100% - var(--portfolio-indent) * 2);
 }
 
 .contactLabel {
@@ -654,7 +667,7 @@
   margin: 0;
   font-family: var(--portfolio-serif);
   font-weight: 400;
-  font-size: clamp(60px, 9vw, 140px);
+  font-size: clamp(44px, 9vw, 140px);
   line-height: 0.84;
   letter-spacing: -0.07em;
 }
@@ -695,97 +708,37 @@
 
 .footer {
   border-top: 1px solid var(--portfolio-line);
-  padding: 20px 4vw;
+  padding: 20px var(--portfolio-gutter);
   display: flex;
   justify-content: space-between;
   font-family: var(--portfolio-mono);
   font-size: 9px;
   color: var(--portfolio-muted);
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
+/* From here down: only genuine STRUCTURAL changes remain —
+   grid reflows and hiding elements. All spacing and type sizing
+   is already fluid above via clamp(), so there is nothing left
+   to "reset" at a breakpoint, which is what was causing the
+   desktop/mobile mismatch. */
+
 @media (max-width: 900px) {
-  .header {
-    padding: 18px 24px;
-  }
-
-  .nav {
-    gap: 15px;
-  }
-
-  .hero {
-    padding: 120px 24px 70px;
-  }
-
-  .hero h1 {
-    font-size: 17vw;
-  }
-
-  .heroBottom {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    margin-top: 60px;
-  }
-
-  .heroFields {
-    max-width: none;
-  }
-
   .heroScroll {
     display: none;
-  }
-
-  .container {
-    width: auto;
-    margin: 0 24px;
-  }
-
-  .introduction,
-  .workIntro,
-  .experiments,
-  .approach,
-  .profile {
-    padding: 100px 24px;
-  }
-
-  .introductionGrid,
-  .workIntroInner,
-  .experimentsInner,
-  .approachInner,
-  .profileInner,
-  .contactInner {
-    margin-left: 0;
-    width: 100%;
-  }
-
-  .introductionGrid,
-  .approachTop,
-  .profileGrid {
-    grid-template-columns: 1fr;
-    gap: 50px;
-  }
-
-  .project {
-    padding: 100px 24px;
   }
 
   .projectGrid,
   .project02 .projectGrid,
   .project04 .projectGrid {
-    grid-template-columns: 45px 1fr;
-    gap: 25px;
+    grid-template-columns: 44px 1fr;
+    gap: 24px;
   }
 
   .projectSide {
     grid-column: 2;
     margin-top: 45px;
-  }
-
-  .project h3 {
-    font-size: 15vw;
-  }
-
-  .projectDescription {
-    font-size: 17px;
   }
 
   .methodList {
@@ -802,16 +755,12 @@
   }
 
   .experimentRow {
-    grid-template-columns: 40px 1fr 24px;
+    grid-template-columns: 34px 1fr 24px;
   }
 
   .experimentTech,
   .experimentResult {
     display: none;
-  }
-
-  .footer {
-    padding: 20px 24px;
   }
 }
 
@@ -820,25 +769,10 @@
     display: none;
   }
 
-  .hero h1 {
-    font-size: 18vw;
-  }
-
-  .introduction h2,
-  .workIntro h2,
-  .approach h2,
-  .profile h2 {
-    font-size: 13vw;
-  }
-
   .projectGrid,
   .project02 .projectGrid,
   .project04 .projectGrid {
-    grid-template-columns: 30px 1fr;
-  }
-
-  .project h3 {
-    font-size: 17vw;
+    grid-template-columns: 28px 1fr;
   }
 
   .methodList {
@@ -856,56 +790,17 @@
   }
 
   .profileDetail {
-    grid-template-columns: 100px 1fr;
-  }
-
-  .contact h2 {
-    font-size: 18vw;
+    grid-template-columns: 96px 1fr;
   }
 }
 
 @media (max-width: 380px) {
-  .header {
-    padding-left: 18px;
-    padding-right: 18px;
-  }
-
-  .brand {
-    font-size: 9px;
-  }
-
   .nav {
     gap: 10px;
   }
 
   .nav a {
     font-size: 8px;
-  }
-
-  .hero {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  .project,
-  .introduction,
-  .workIntro,
-  .experiments,
-  .approach,
-  .profile {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  .container {
-    margin-left: 20px;
-    margin-right: 20px;
-  }
-
-  .footer {
-    padding-left: 20px;
-    padding-right: 20px;
-    gap: 15px;
   }
 
   .footer span:nth-child(2) {
