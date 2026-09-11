@@ -76,7 +76,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${spaceMono.variable} ${instrumentSerif.variable} ${dmMono.variable} ${inter.variable} ${playfair.variable} ${libreBaskerville.variable}`}
+      className={[
+        dmSans.variable,
+        spaceMono.variable,
+        instrumentSerif.variable,
+        dmMono.variable,
+        inter.variable,
+        playfair.variable,
+        libreBaskerville.variable,
+      ].join(" ")}
     >
       <body>{children}</body>
     </html>
