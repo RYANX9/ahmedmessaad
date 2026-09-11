@@ -1,5 +1,14 @@
 import type { Metadata } from "next";
-import { DM_Sans, Space_Mono, Instrument_Serif, DM_Mono, Inter, Playfair_Display } from "next/font/google";
+import {
+  DM_Sans,
+  Space_Mono,
+  Instrument_Serif,
+  DM_Mono,
+  Inter,
+  Playfair_Display,
+  Libre_Baskerville,
+} from "next/font/google";
+
 import "./globals.css";
 import { profile, rail } from "./data";
 
@@ -41,10 +50,22 @@ const playfair = Playfair_Display({
   variable: "--font-playfair",
 });
 
+const libreBaskerville = Libre_Baskerville({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-libre-baskerville",
+});
+
 export const metadata: Metadata = {
   title: `${rail.firstName} ${rail.lastName} — Contact Sheet`,
   description: `${rail.firstName} ${rail.lastName} — ${rail.roles.join(", ")}.`,
-  authors: [{ name: `${rail.firstName} ${rail.lastName}`, url: profile.linkedin }],
+  authors: [
+    {
+      name: `${rail.firstName} ${rail.lastName}`,
+      url: profile.linkedin,
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -55,7 +76,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${spaceMono.variable} ${instrumentSerif.variable} ${dmMono.variable} ${inter.variable} ${playfair.variable}`}
+      className={`${dmSans.variable} ${spaceMono.variable} ${instrumentSerif.variable} ${dmMono.variable} ${inter.variable} ${playfair.variable} ${libreBaskerville.variable}`}
     >
       <body>{children}</body>
     </html>
