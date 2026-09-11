@@ -1,10 +1,10 @@
 "use client";
 
-export type DesignMode = "dossier" | "minimal" | "editorial";
+export type DesignMode = "dossier" | "brutalist" | "editorial";
 
 const MODES: { key: DesignMode; label: string }[] = [
   { key: "dossier", label: "Dossier" },
-  { key: "minimal", label: "Minimal" },
+  { key: "brutalist", label: "Brutalist" },
   { key: "editorial", label: "Editorial" },
 ];
 
