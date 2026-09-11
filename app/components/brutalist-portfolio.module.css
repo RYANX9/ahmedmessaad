@@ -1719,7 +1719,7 @@
     transform 0.7s ease;
 }
 
-[data-parallax] {
+.heroImage[data-parallax] {
   transition: transform 0.1s linear;
 }
 
@@ -1737,7 +1737,7 @@
     transition: none;
   }
 
-  [data-parallax] {
+  .heroImage[data-parallax] {
     transform: none !important;
   }
 }
