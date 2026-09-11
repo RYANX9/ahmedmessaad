@@ -1,17 +1,15 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap");
-
 :root {
   --portfolio-bg: #f5f5f1;
   --portfolio-text: #111;
   --portfolio-muted: #777;
   --portfolio-line: #d2d2cc;
-
-  --portfolio-serif: "Playfair Display", Georgia, serif;
-  --portfolio-sans: Inter, sans-serif;
-  --portfolio-mono: "DM Mono", monospace;
 }
 
 .page {
+  --portfolio-serif: var(--font-playfair), Georgia, serif;
+  --portfolio-sans: var(--font-inter), sans-serif;
+  --portfolio-mono: var(--font-dm-mono), monospace;
+
   width: 100%;
   background: var(--portfolio-bg);
   color: var(--portfolio-text);
