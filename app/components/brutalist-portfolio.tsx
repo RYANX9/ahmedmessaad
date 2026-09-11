@@ -1,836 +1,787 @@
 "use client";
 
-import React from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./brutalist-portfolio.module.css";
 
-const HERO_IMAGE = "/images/ahmed-hero.png";
+const HERO_IMAGE = "/ahmed-hero.png";
 
-const secondaryWork = [
+type ArchiveItem = {
+  number: string;
+  category: string;
+  title: React.ReactNode;
+  description: string;
+  href: string;
+  linkLabel: string;
+};
+
+const archiveItems: ArchiveItem[] = [
   {
     number: "04",
-
-    title: "Healthcare Cost Prediction",
-    category: "MACHINE LEARNING",
+    category: "PREDICTIVE AI",
+    title: (
+      <>
+        Find the <em>drivers.</em>
+      </>
+    ),
     description:
-      "A healthcare cost prediction system built around 47 engineered features, a Conv1D model, and SHAP-based interpretation. The work reached an R² of 0.88 while keeping the reasoning around the prediction visible.",
-    result: "R² 0.88",
-    link: "https://github.com/RYANX9/healthcare-cost-prediction",
-    linkLabel: "VIEW REPOSITORY",
+      "Healthcare cost prediction using Conv1D with 47 engineered features. SHAP analysis surfaces the variables that actually move the prediction.",
+    href: "https://github.com/RYANX9/healthcare-cost-prediction",
+    linkLabel: "VIEW RESEARCH ↗",
   },
   {
     number: "05",
-    title: "Multi-Disease Diagnostic Platform",
-    category: "M.SC. THESIS",
+    category: "DIAGNOSTIC AI",
+    title: (
+      <>
+        One interface. Five <em>diseases.</em>
+      </>
+    ),
     description:
-      "A multi-disease diagnostic platform developed as an M.Sc. thesis, covering five disease categories and combining machine learning with a usable diagnostic interface.",
-    result: "90–99%",
-    link: "https://youtu.be/kh7WBjNPpEM",
-    linkLabel: "WATCH DEMO",
+      "M.Sc. thesis: a multi-disease diagnostic platform covering five diseases, with model performance ranging from 90–99%.",
+    href: "https://youtu.be/kh7WBjNPpEM",
+    linkLabel: "WATCH THE DEMO ↗",
   },
   {
     number: "06",
-    title: "Specmob",
-    category: "FULL-STACK PRODUCT",
+    category: "FULL-STACK",
+    title: (
+      <>
+        Find the right <em>machine.</em>
+      </>
+    ),
     description:
-      "A focused product-search experience for smartphone specifications. Search, filtering, comparison and recommendations are brought into one fast interface.",
-    result: "NEXT.JS",
-    link: "https://specmob.vercel.app",
-    linkLabel: "OPEN SPECmob",
+      "Specmob — a smartphone specs search, filter, compare and recommendation system built with Next.js.",
+    href: "https://specmob.vercel.app",
+    linkLabel: "OPEN SPECMOB ↗",
   },
   {
     number: "07",
-    title: "Deep RL Trading",
-    category: "REINFORCEMENT LEARNING",
+    category: "DEEP RL / TRADING",
+    title: (
+      <>
+        The useful <em>failure.</em>
+      </>
+    ),
     description:
-      "An experiment with PPO and A2C trading agents. The important result was not a stronger strategy, but the opposite: in a noisy, non-stationary market, added algorithmic complexity did not automatically beat a simple SMA baseline.",
-    result: "PPO / A2C",
-    link: "https://github.com/RYANX9/deep-rl-trading",
-    linkLabel: "VIEW REPOSITORY",
+      "PPO and A2C trading agents that failed to beat a simple SMA strategy. A useful result: added complexity does not guarantee a better strategy in noisy, non-stationary markets.",
+    href: "https://github.com/RYANX9/deep-rl-trading",
+    linkLabel: "READ THE CODE ↗",
   },
   {
     number: "08",
-    title: "Day Tracker",
-    category: "PERSONAL SYSTEM",
+    category: "PRODUCT / FULL-STACK",
+    title: (
+      <>
+        Life, <em>structured.</em>
+      </>
+    ),
     description:
-      "A personal productivity system combining tasks, budgets, streaks, reminders and notes. Built around PostgreSQL with web-push notifications and a practical day-to-day workflow.",
-    result: "POSTGRESQL",
-    link: "https://github.com/RYANX9/rystudio",
-    linkLabel: "VIEW REPOSITORY",
+      "Day Tracker — a productivity system for tasks, budgets, streaks, reminders and notes, backed by PostgreSQL with web push notifications.",
+    href: "https://github.com/RYANX9/rystudio",
+    linkLabel: "EXPLORE THE SYSTEM ↗",
   },
   {
     number: "09",
-    title: "Git-Backed CMS",
-    category: "SOFTWARE SYSTEM",
+    category: "WEB / INFRASTRUCTURE",
+    title: (
+      <>
+        Ship without a <em>database.</em>
+      </>
+    ),
     description:
-      "An administrative interface where content changes are committed directly to a Git repository through the GitHub Contents API. Git remains the source of truth instead of introducing a separate database.",
-    result: "GIT AS SOURCE",
-    link: "https://zaid-saad.vercel.app",
-    linkLabel: "OPEN PROJECT",
+      "A Git-backed CMS where the admin panel commits directly to a repository through the GitHub Contents API. Git remains the source of truth.",
+    href: "https://zaid-saad.vercel.app",
+    linkLabel: "SEE THE SITE ↗",
   },
   {
     number: "10",
-    title: "Portfolio Infrastructure",
-    category: "WEB / SYSTEM DESIGN",
+    category: "PORTFOLIO / SYSTEMS",
+    title: (
+      <>
+        A surface that carries the <em>work.</em>
+      </>
+    ),
     description:
-      "The infrastructure behind the portfolio itself: multiple visual modes, component-based architecture and a system designed to let the same body of work be experienced through different interfaces.",
-    result: "NEXT.JS",
-    link: "https://github.com/RYANX9",
-    linkLabel: "GITHUB",
+      "This portfolio — designed as an interface between the thinking, the systems and the work itself.",
+    href: "#contact",
+    linkLabel: "GET IN TOUCH ↗",
   },
 ];
 
-const capabilities = [
-  "AI / ML",
-  "Computer Vision",
-  "Medical Imaging",
-  "Deep Reinforcement Learning",
-  "Clinical Decision Support",
-  "Full-Stack Engineering",
-  "Research",
-  "Applied Systems",
-];
+export default function BrutalistPortfolio() {
+  const [scrolled, setScrolled] = useState(false);
+  const archiveRefs = useRef<Array<HTMLDetailsElement | null>>([]);
+  const heroImageRef = useRef<HTMLElement | null>(null);
 
-export function BrutalistPortfolio() {
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 14);
+
+      if (heroImageRef.current) {
+        const reduceMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+        if (!reduceMotion) {
+          const y = Math.min(window.scrollY, 700) * 0.035;
+          heroImageRef.current.style.transform = `translateY(${y}px)`;
+        }
+      }
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    const revealElements = document.querySelectorAll<HTMLElement>(
+      "[data-reveal]"
+    );
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add(styles.revealIn);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.08,
+      }
+    );
+
+    revealElements.forEach((element) => observer.observe(element));
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+    };
+  }, []);
+
+  const handleArchiveToggle = (index: number) => {
+    const current = archiveRefs.current[index];
+
+    if (!current?.open) return;
+
+    archiveRefs.current.forEach((item, itemIndex) => {
+      if (itemIndex !== index && item) {
+        item.open = false;
+      }
+    });
+  };
+
   return (
-    <main className={styles.page}>
-      {/* =========================================================
-          TOP BAR
-      ========================================================= */}
-      <header className={styles.topbar}>
-        <a href="#top" className={styles.logo} aria-label="Ahmed Messaad home">
-          AM<span className={styles.logoDot}>.</span>
+    <main id="top" className={styles.page}>
+      {/* NAVIGATION */}
+      <nav
+        className={`${styles.nav} ${scrolled ? styles.scrolled : ""}`}
+        aria-label="Main navigation"
+      >
+        <a href="#top" className={styles.brand}>
+          AM / 01
         </a>
 
-        <div className={styles.topbarCenter}>
-          <span>AI / ML ENGINEER</span>
-          <span className={styles.topbarSlash}>/</span>
-          <span>RESEARCHER</span>
-          <span className={styles.topbarSlash}>/</span>
-          <span>FULL-STACK</span>
+        <div className={styles.navCenter}>
+          INTELLIGENCE · SYSTEMS · RESEARCH
         </div>
 
-        <a href="#contact" className={styles.topbarLink}>
-          CONTACT <span>↘</span>
-        </a>
-      </header>
+        <div className={styles.navLinks}>
+          <a href="#work">INDEX</a>
+          <a href="#about">ABOUT</a>
+          <a href="#contact">CONTACT</a>
+        </div>
+      </nav>
 
-      {/* =========================================================
-          HERO
-      ========================================================= */}
-      <section id="top" className={styles.hero}>
-        <div className={styles.heroGrid} />
-
-        <div className={styles.heroMeta}>
-          <span>ALGERIA</span>
-          <span>2026</span>
-          <span>01 / 10</span>
+      {/* HERO */}
+      <section className={styles.hero} aria-labelledby="hero-title">
+        <div className={styles.heroTop}>
+          <span>AM / 01 — ALGERIA</span>
+          <span className={styles.heroTopRight}>
+            PORTFOLIO / 2026 <b>→</b> IDEAS → SYSTEMS
+          </span>
         </div>
 
-        <div className={styles.heroStatement}>
-          <div className={styles.heroKicker}>
-            <span className={styles.heroKickerMark}>+</span>
-            <span>BUILDING SYSTEMS FROM HARD QUESTIONS</span>
+        <div className={styles.heroMain}>
+          <div className={styles.heroHeadline}>
+            <h1 id="hero-title" data-reveal>
+              I turn difficult
+              <br />
+              questions into <em>systems.</em>
+            </h1>
+
+            <p className={styles.heroStatement} data-reveal>
+              Start with the question.
+              <br />
+              <em>Build what the answer needs.</em>
+            </p>
+
+            <p className={styles.heroDescription} data-reveal>
+              AI/ML, medical imaging and software — explored as one continuous
+              practice: understand the problem, shape the intelligence, then
+              give it somewhere useful to live.
+            </p>
           </div>
 
-          <h1 className={styles.heroTitle}>
-            I TURN
-            <br />
-            DIFFICULT
-            <br />
-            <span className={styles.heroTitleOutline}>QUESTIONS</span>
-            <br />
-            INTO
-            <br />
-            SYSTEMS<span className={styles.heroTitleDot}>.</span>
-          </h1>
-        </div>
+          <div className={styles.heroOrbit} aria-hidden="true">
+            <div className={styles.orbitOuter} />
+            <div className={styles.orbitInner} />
 
-        <div className={styles.heroVisual}>
-          <div className={styles.heroVisualFrame}>
-            <div className={`${styles.heroCross} ${styles.heroCrossTop}`}>+</div>
-            <div className={`${styles.heroCross} ${styles.heroCrossBottom}`}>+</div>
+            <div className={`${styles.spark} ${styles.sparkOne}`}>✦</div>
+            <div className={`${styles.spark} ${styles.sparkTwo}`}>✧</div>
+            <div className={`${styles.spark} ${styles.sparkThree}`}>·</div>
 
-            <div className={styles.heroImageWrap}>
-              <img
-                src={HERO_IMAGE}
-                alt="Ahmed Messaad — AI, research and systems"
-                className={styles.heroImage}
-              />
-            </div>
-
-            <div className={styles.heroCircle} />
-            <div className={styles.heroTarget}>
-              <span />
-            </div>
-
-            <div className={styles.heroImageLabel}>
-              <span>AM / 01</span>
-              <span>INTELLIGENCE → USE</span>
-            </div>
+            <div className={styles.orbitDot} />
+            <div className={styles.orbitCross}>+</div>
           </div>
         </div>
 
         <div className={styles.heroBottom}>
-          <div className={styles.heroBottomBlock}>
-            <span className={styles.microLabel}>WORKING METHOD</span>
-            <strong>
-              OBSERVE.
-              <br />
-              MODEL.
-              <br />
-              MAKE USEFUL.
-            </strong>
-          </div>
+          <div className={`${styles.heroLabel} ${styles.heroLabelLeft}`}>
+            <span className={styles.heroLabelTitle}>01 / WORKING METHOD</span>
 
-          <div className={styles.heroBottomBlock}>
-            <span className={styles.microLabel}>THE IDEA IN MOTION</span>
             <strong>
-              QUESTION
+              Observe.
               <br />
-              → INTELLIGENCE
+              Model.
               <br />
-              → CONSEQUENCE
+              Make useful.
             </strong>
-          </div>
 
-          <div className={styles.heroBottomText}>
             <p>
               Stay close to the real problem. Let the work determine the form.
             </p>
           </div>
+
+          <figure
+            ref={heroImageRef}
+            className={styles.heroImageWrap}
+            data-parallax
+            data-reveal
+          >
+            <img
+              src={HERO_IMAGE}
+              alt="Ahmed Messaad"
+              className={styles.heroImage}
+            />
+            <figcaption className={styles.heroImageCaption}>
+              <span>AM</span>
+              <span>01</span>
+            </figcaption>
+          </figure>
+
+          <div className={`${styles.heroLabel} ${styles.heroLabelRight}`}>
+            <span className={styles.heroLabelTitle}>THE IDEA IN MOTION</span>
+
+            <strong>
+              Question
+              <br />
+              → intelligence
+              <br />→ consequence
+            </strong>
+
+            <p>
+              A useful idea should survive contact with the people and systems
+              around it.
+            </p>
+          </div>
+        </div>
+
+        <div className={styles.heroStamp} aria-hidden="true">
+          AM
         </div>
       </section>
 
-      {/* =========================================================
-          INTRO / STATEMENT
-      ========================================================= */}
-      <section className={styles.statementSection}>
-        <div className={styles.sectionNumber}>01</div>
-
-        <div className={styles.statementMain}>
-          <p className={styles.statementEyebrow}>A PRACTICE BETWEEN</p>
+      {/* SELECTED WORK */}
+      <section id="work" className={styles.work}>
+        <div className={styles.sectionIntro} data-reveal>
+          <span className={styles.mono}>SELECTED WORK / 01—10</span>
 
           <h2>
-            THOUGHT
+            Selected
             <br />
-            <span>AND USE.</span>
+            <em>work.</em>
           </h2>
 
-          <div className={styles.statementCopy}>
-            <p>
-              I work in the space between a difficult question and the system
-              built to answer it.
-            </p>
-
-            <p>
-              AI/ML, medical imaging, decision support and full-stack
-              engineering are not separate boxes here. They are parts of the
-              same process: understand the problem, shape the intelligence,
-              then give it somewhere useful to live.
-            </p>
-          </div>
-        </div>
-
-        <div className={styles.statementSide}>
-          <div className={styles.sideCross}>×</div>
-          <span>METHOD / 001</span>
-          <span>RESEARCH → ENGINEERING</span>
-          <span>MODEL → INTERFACE</span>
-          <span>QUESTION → SYSTEM</span>
-        </div>
-      </section>
-
-      {/* =========================================================
-          SYSTEM STRIP
-      ========================================================= */}
-      <section className={styles.systemStrip} aria-label="Working method">
-        <div className={styles.systemItem}>
-          <span>01</span>
-          <strong>QUESTION</strong>
-        </div>
-
-        <div className={styles.systemArrow}>→</div>
-
-        <div className={styles.systemItem}>
-          <span>02</span>
-          <strong>MODEL</strong>
-        </div>
-
-        <div className={styles.systemArrow}>→</div>
-
-        <div className={styles.systemItem}>
-          <span>03</span>
-          <strong>MAKE USEFUL</strong>
-        </div>
-      </section>
-
-      {/* =========================================================
-          SELECTED WORK
-      ========================================================= */}
-      <section id="work" className={styles.workSection}>
-        <div className={styles.sectionHeader}>
-          <div>
-            <span className={styles.sectionEyebrow}>
-              SELECTED WORK / 01—03
-            </span>
-            <h2>SELECTED WORK<span>.</span></h2>
-          </div>
-
           <p>
-            Three pieces are given room to breathe because they show the
-            clearest range of the practice. The rest stay lighter: experiments,
-            products and smaller systems that still reveal how I think and
-            build.
+            Projects built around difficult questions — medical imaging,
+            clinical intelligence, reinforcement learning, prediction and
+            software systems.
           </p>
         </div>
 
-        {/* =====================================================
-            PROJECT 01 — HEMAVISION
-        ===================================================== */}
-        <article className={`${styles.project} ${styles.projectLarge}`}>
-          <div className={styles.projectIndex}>01</div>
-
-          <div className={styles.projectMain}>
-            <div className={styles.projectTopline}>
-              <span>MEDICAL AI</span>
-              <span>COMPUTER VISION</span>
-              <span>01 / 03</span>
+        {/* PROJECT 01 */}
+        <article className={styles.case} data-reveal>
+          <div className={styles.caseHeader}>
+            <div>
+              <span className={styles.caseNumber}>01</span>
+              <span className={styles.caseCategory}>
+                · CLINICAL AI / VISION
+              </span>
             </div>
 
-            <div className={styles.projectHeroBlock}>
-              <div className={styles.projectNumberGraphic}>
+            <span className={styles.caseTag}>HEMAVISION</span>
+          </div>
+
+          <div className={styles.caseGrid}>
+            <div className={styles.caseVisual}>
+              <div className={styles.visualText}>
+                SEE <span>→</span> UNDERSTAND <span>→</span> SUPPORT
+              </div>
+
+              <div className={styles.visualCross} aria-hidden="true">
+                +
+              </div>
+
+              <div className={styles.visualOrb} aria-hidden="true">
+                <span>✦</span>
+              </div>
+
+              <div className={styles.visualBottom}>
+                <span>HEMATOLOGY / CV</span>
                 <span>01</span>
               </div>
-
-              <div>
-                <p className={styles.projectKicker}>HEMAVISION</p>
-                <h3>
-                  SEE THE
-                  <br />
-                  BLOOD.
-                  <br />
-                  <span>READ THE SIGNAL.</span>
-                </h3>
-              </div>
             </div>
 
-            <div className={styles.projectDescription}>
-              <p>
-                HemaVision brings microscope imagery into a structured
-                diagnostic workflow. Computer vision classifies blood-cell
-                imagery, while the surrounding application makes those results
-                easier to inspect and use.
+            <div className={styles.caseContent}>
+              <h3>
+                From blood
+                <br />
+                smear to <em>clarity.</em>
+              </h3>
+
+              <p className={styles.caseDescription}>
+                HemaVision is a hematology platform that turns microscope
+                imagery into structured diagnostic information. Computer
+                vision identifies blood-cell classes and feeds a workflow
+                designed around how a clinician actually works. The system was
+                validated by a practicing clinical hematologist and featured
+                on BBC News Arabic&apos;s 4Tech program.
               </p>
 
-              <p>
-                The system was validated by a practicing clinical hematologist,
-                then featured on BBC News Arabic&apos;s 4Tech program.
+              <p className={styles.caseNote}>
+                The intelligence belongs where the work happens.
               </p>
-            </div>
 
-            <div className={styles.projectFooter}>
               <a
-                href="https://www.bbc.com/arabic"
+                href="https://www.youtube.com/watch?v=fX77vZlHkng"
                 target="_blank"
                 rel="noreferrer"
-                className={styles.projectLink}
+                className={styles.caseLink}
               >
-                SEE THE WORK <span>↗</span>
+                SEE THE WORK ↗
               </a>
 
-              <span className={styles.projectStatement}>
-                THE INTELLIGENCE BELONGS
-                <br />
-                WHERE THE WORK HAPPENS.
-              </span>
+              <div className={styles.metric}>
+                <strong>97%</strong>
+                <span>MULTI-CLASS ACCURACY</span>
+              </div>
+
+              <div className={styles.specs}>
+                <div>
+                  <strong>SIGNAL</strong>
+                  <span>45 min → 3 min diagnostic time</span>
+                </div>
+
+                <div>
+                  <span>YOLOv8 / U-Net / OpenCV / PyTorch</span>
+                </div>
+
+                <div>
+                  <span>Clinical hematologist validation</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <aside className={styles.projectAside}>
-            <div className={styles.projectAsideLabel}>SIGNAL</div>
-
-            <div className={styles.statBlock}>
-              <strong>97%</strong>
-              <span>MULTI-CLASS<br />ACCURACY</span>
-            </div>
-
-            <div className={styles.statBlock}>
-              <strong>45 → 3</strong>
-              <span>MINUTES<br />DIAGNOSTIC TIME</span>
-            </div>
-
-            <div className={styles.techBlock}>
-              <span>STACK</span>
-              <p>
-                YOLOv8
-                <br />
-                U-NET
-                <br />
-                OPENCV
-                <br />
-                PYTORCH
-              </p>
-            </div>
-
-            <div className={styles.asideGraphic}>
-              <div className={styles.asideCircle} />
-              <div className={styles.asideCross}>+</div>
-              <div className={styles.asideDot} />
-            </div>
-          </aside>
+          <div className={styles.caseSymbol} aria-hidden="true">
+            ✦
+          </div>
         </article>
 
-        {/* =====================================================
-            PROJECT 02 — AIRM
-        ===================================================== */}
-        <article className={`${styles.project} ${styles.projectLarge}`}>
-          <div className={styles.projectIndex}>02</div>
-
-          <div className={styles.projectMain}>
-            <div className={styles.projectTopline}>
-              <span>MEDICAL IMAGING</span>
-              <span>CLINICAL TOOL</span>
-              <span>02 / 03</span>
+        {/* PROJECT 02 */}
+        <article
+          className={`${styles.case} ${styles.caseDark}`}
+          data-reveal
+        >
+          <div className={styles.caseHeader}>
+            <div>
+              <span className={styles.caseNumber}>02</span>
+              <span className={styles.caseCategory}>
+                · MEDICAL IMAGING
+              </span>
             </div>
 
-            <div className={styles.projectHeroBlock}>
-              <div className={styles.projectNumberGraphic}>
+            <span className={styles.caseTag}>AIRM</span>
+          </div>
+
+          <div className={styles.caseGrid}>
+            <div className={styles.caseVisual}>
+              <div className={styles.visualText}>
+                SCAN <span>→</span> READ <span>→</span> ACT
+              </div>
+
+              <div className={styles.scanFrame}>
+                <div className={styles.scanCircle}>
+                  <span>04</span>
+                </div>
+
+                <div className={styles.scanLine} />
+              </div>
+
+              <div className={styles.visualBottom}>
+                <span>MRI / CLASSIFICATION</span>
                 <span>02</span>
               </div>
-
-              <div>
-                <p className={styles.projectKicker}>AIRM</p>
-                <h3>
-                  FROM
-                  <br />
-                  TRAINED MODEL
-                  <br />
-                  <span>TO WORKING TOOL.</span>
-                </h3>
-              </div>
             </div>
 
-            <div className={styles.projectDescription}>
-              <p>
+            <div className={styles.caseContent}>
+              <h3>
+                From trained model
+                <br />
+                to <em>working tool.</em>
+              </h3>
+
+              <p className={styles.caseDescription}>
                 AIRM is a hospital-oriented MRI pipeline for four-class
-                brain-tumor classification. The system handles DICOM data,
-                preprocessing, inference, interface design and validation as
-                one continuous workflow.
+                brain-tumor classification. It handles DICOM input,
+                preprocessing, inference, a clinical interface and validation
+                as one connected system — rather than treating the model as
+                the product.
               </p>
 
-              <p>
-                The model reached 99% classification performance and was shaped
-                into a PyQt5 clinical application, with validation from a
-                radiologist.
+              <p className={styles.caseNote}>
+                A prediction matters when someone can act on it.
               </p>
-            </div>
 
-            <div className={styles.projectFooter}>
               <a
                 href="https://youtu.be/2OeqBKF3X_A"
                 target="_blank"
                 rel="noreferrer"
-                className={styles.projectLink}
+                className={styles.caseLink}
               >
-                WATCH THE WORK <span>↗</span>
+                WATCH THE WORK ↗
               </a>
 
-              <span className={styles.projectStatement}>
-                A PREDICTION MATTERS
-                <br />
-                WHEN SOMEONE CAN ACT ON IT.
-              </span>
+              <div className={styles.metric}>
+                <strong>99%</strong>
+                <span>FOUR-CLASS CLASSIFICATION</span>
+              </div>
+
+              <div className={styles.specs}>
+                <div>
+                  <strong>EVIDENCE</strong>
+                  <span>DICOM MRI pipeline</span>
+                </div>
+
+                <div>
+                  <span>PyQt5 clinical application</span>
+                </div>
+
+                <div>
+                  <span>Radiologist validation</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <aside className={styles.projectAside}>
-            <div className={styles.projectAsideLabel}>IMAGING</div>
-
-            <div className={styles.statBlock}>
-              <strong>99%</strong>
-              <span>CLASSIFICATION<br />PERFORMANCE</span>
-            </div>
-
-            <div className={styles.statBlock}>
-              <strong>04</strong>
-              <span>BRAIN-TUMOR<br />CLASSES</span>
-            </div>
-
-            <div className={styles.techBlock}>
-              <span>APPLICATION</span>
-              <p>
-                DICOM
-                <br />
-                PREPROCESSING
-                <br />
-                INFERENCE
-                <br />
-                PYQT5
-              </p>
-            </div>
-
-            <div className={styles.asideGraphic}>
-              <div className={styles.scanGraphic}>
-                <i />
-                <i />
-                <i />
-                <i />
-              </div>
-            </div>
-          </aside>
+          <div className={styles.caseSymbol} aria-hidden="true">
+            02
+          </div>
         </article>
 
-        {/* =====================================================
-            PROJECT 03 — MEDICAL TREATMENT DRL
-        ===================================================== */}
-        <article className={`${styles.project} ${styles.projectLarge}`}>
-          <div className={styles.projectIndex}>03</div>
-
-          <div className={styles.projectMain}>
-            <div className={styles.projectTopline}>
-              <span>DEEP REINFORCEMENT LEARNING</span>
-              <span>CLINICAL DECISION</span>
-              <span>03 / 03</span>
+        {/* PROJECT 03 */}
+        <article className={styles.case} data-reveal>
+          <div className={styles.caseHeader}>
+            <div>
+              <span className={styles.caseNumber}>03</span>
+              <span className={styles.caseCategory}>
+                · DEEP RL / HEALTHCARE
+              </span>
             </div>
 
-            <div className={styles.projectHeroBlock}>
-              <div className={styles.projectNumberGraphic}>
+            <span className={styles.caseTag}>TREATMENT DRL</span>
+          </div>
+
+          <div className={styles.caseGrid}>
+            <div className={styles.caseVisual}>
+              <div className={styles.visualText}>
+                STATE <span>→</span> DECISION <span>→</span> SAFETY
+              </div>
+
+              <div className={styles.decisionDiagram}>
+                <div className={styles.diagramNode}>STATE</div>
+                <div className={styles.diagramArrow}>↓</div>
+                <div className={styles.diagramNode}>POLICY</div>
+                <div className={styles.diagramArrow}>↓</div>
+                <div className={styles.diagramNode}>ACTION</div>
+              </div>
+
+              <div className={styles.visualBottom}>
+                <span>ICU / SEQUENTIAL DECISION</span>
                 <span>03</span>
               </div>
-
-              <div>
-                <p className={styles.projectKicker}>MEDICAL TREATMENT DRL</p>
-                <h3>
-                  WHEN
-                  <br />
-                  TREATMENT
-                  <br />
-                  <span>BECOMES A DECISION.</span>
-                </h3>
-              </div>
             </div>
 
-            <div className={styles.projectDescription}>
-              <p>
-                A sequential decision-making system for ICU treatment timing
-                built with the MIMIC-III dataset. The research starts from a
-                difficult question: how should an agent reason about treatment
-                decisions that unfold over time?
+            <div className={styles.caseContent}>
+              <h3>
+                When treatment
+                <br />
+                becomes a <em>decision.</em>
+              </h3>
+
+              <p className={styles.caseDescription}>
+                Medical Treatment DRL explores ICU treatment timing as a
+                sequential decision problem using MIMIC-III. The system
+                combines state design, reward construction, an A2C policy and
+                a safety layer to constrain actions toward clinically
+                appropriate behavior.
               </p>
 
-              <p>
-                State design, reward construction, an A2C policy and a safety
-                layer were brought together inside a 26-dimensional Gym
-                environment.
+              <p className={styles.caseNote}>
+                A research question shaped into a sequence of decisions.
               </p>
-            </div>
 
-            <div className={styles.projectFooter}>
               <a
                 href="https://github.com/RYANX9/medical-treatment-drl/"
                 target="_blank"
                 rel="noreferrer"
-                className={styles.projectLink}
+                className={styles.caseLink}
               >
-                EXPLORE THE RESEARCH <span>↗</span>
+                EXPLORE THE RESEARCH ↗
               </a>
 
-              <span className={styles.projectStatement}>
-                A RESEARCH QUESTION
-                <br />
-                SHAPED INTO DECISIONS.
-              </span>
+              <div className={styles.metric}>
+                <strong>99.5%</strong>
+                <span>CLINICAL APPROPRIATENESS</span>
+              </div>
+
+              <div className={styles.specs}>
+                <div>
+                  <strong>METHOD</strong>
+                  <span>MIMIC-III</span>
+                </div>
+
+                <div>
+                  <span>A2C agent</span>
+                </div>
+
+                <div>
+                  <span>Custom safety filter</span>
+                </div>
+
+                <div>
+                  <span>26-D Gym environment</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <aside className={styles.projectAside}>
-            <div className={styles.projectAsideLabel}>DECISION</div>
-
-            <div className={styles.statBlock}>
-              <strong>99.5%</strong>
-              <span>CLINICAL<br />APPROPRIATENESS</span>
-            </div>
-
-            <div className={styles.statBlock}>
-              <strong>26-D</strong>
-              <span>GYM<br />ENVIRONMENT</span>
-            </div>
-
-            <div className={styles.techBlock}>
-              <span>METHOD</span>
-              <p>
-                MIMIC-III
-                <br />
-                A2C
-                <br />
-                REWARD DESIGN
-                <br />
-                SAFETY LAYER
-              </p>
-            </div>
-
-            <div className={styles.asideGraphic}>
-              <div className={styles.decisionGraphic}>
-                <span>STATE</span>
-                <b>→</b>
-                <span>ACTION</span>
-                <b>→</b>
-                <span>OUTCOME</span>
-              </div>
-            </div>
-          </aside>
+          <div className={styles.caseSymbol} aria-hidden="true">
+            03
+          </div>
         </article>
-      </section>
 
-      {/* =========================================================
-          FURTHER WORK
-      ========================================================= */}
-      <section className={styles.furtherSection}>
-        <div className={styles.furtherHeader}>
-          <div>
-            <span className={styles.sectionEyebrow}>OTHER WORK / 04—10</span>
-            <h2>
-              FURTHER
-              <br />
-              WORK<span>.</span>
-            </h2>
+        {/* FURTHER WORK */}
+        <div className={styles.archive} data-reveal>
+          <div className={styles.archiveHeader}>
+            <span className={styles.mono}>FURTHER WORK / 04—10</span>
+
+            <span className={styles.archiveHint}>
+              OPEN AN ITEM TO EXPAND
+            </span>
           </div>
 
-          <p>
-            Not everything needs the same scale. These pieces stay concise, but
-            each one marks a different way of thinking, testing or building.
-          </p>
-        </div>
+          <div className={styles.archiveList}>
+            {archiveItems.map((item, index) => (
+              <details
+                key={item.number}
+                ref={(element) => {
+                  archiveRefs.current[index] = element;
+                }}
+                className={styles.archiveItem}
+                onToggle={() => handleArchiveToggle(index)}
+              >
+                <summary>
+                  <span className={styles.archiveNumber}>
+                    {item.number}
+                  </span>
 
-        <div className={styles.workList}>
-          {secondaryWork.map((work) => (
-            <details key={work.number} className={styles.workItem}>
-              <summary className={styles.workSummary}>
-                <span className={styles.workNumber}>{work.number}</span>
+                  <span className={styles.archiveCategory}>
+                    {item.category}
+                  </span>
 
-                <span className={styles.workTitle}>
-                  <small>{work.category}</small>
-                  {work.title}
-                </span>
+                  <span className={styles.archiveTitle}>
+                    {item.title}
+                  </span>
 
-                <span className={styles.workResult}>{work.result}</span>
+                  <span className={styles.archiveArrow}>↘</span>
+                </summary>
 
-                <span className={styles.workToggle}>+</span>
-              </summary>
+                <div className={styles.archiveBody}>
+                  <p>{item.description}</p>
 
-              <div className={styles.workDetails}>
-                <p>{work.description}</p>
-
-                <a
-                  href={work.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={styles.workLink}
-                >
-                  {work.linkLabel} <span>↗</span>
-                </a>
-              </div>
-            </details>
-          ))}
-        </div>
-      </section>
-
-      {/* =========================================================
-          CAPABILITIES
-      ========================================================= */}
-      <section className={styles.capabilitiesSection}>
-        <div className={styles.capabilitiesTop}>
-          <span className={styles.sectionEyebrow}>THE TOOLBOX / 08</span>
-
-          <span className={styles.capabilitiesMark}>×</span>
-
-          <span className={styles.capabilitiesCode}>
-            AM / ENGINEERING / RESEARCH
-          </span>
-        </div>
-
-        <div className={styles.capabilitiesGrid}>
-          <div className={styles.capabilitiesIntro}>
-            <span>WHAT I WORK WITH</span>
-            <p>
-              Different tools, one underlying habit: get close enough to the
-              problem that the implementation becomes obvious.
-            </p>
-          </div>
-
-          <div className={styles.capabilitiesList}>
-            {capabilities.map((capability, index) => (
-              <div key={capability} className={styles.capability}>
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <strong>{capability}</strong>
-                <i>↗</i>
-              </div>
+                  <a
+                    href={item.href}
+                    target={item.href.startsWith("#") ? undefined : "_blank"}
+                    rel={
+                      item.href.startsWith("#") ? undefined : "noreferrer"
+                    }
+                  >
+                    {item.linkLabel}
+                  </a>
+                </div>
+              </details>
             ))}
           </div>
         </div>
       </section>
 
-      {/* =========================================================
-          ABOUT
-      ========================================================= */}
-      <section className={styles.aboutSection}>
-        <div className={styles.aboutNumber}>09</div>
-
-        <div className={styles.aboutMain}>
-          <span className={styles.sectionEyebrow}>ABOUT / PRACTICE</span>
-
-          <h2>
-            BETWEEN
-            <br />
-            <span>THOUGHT</span>
-            <br />
-            &amp; USE.
-          </h2>
-
-          <p className={styles.aboutLead}>
-            I am Ahmed Messaad — an AI/ML engineer, full-stack developer and
-            researcher based in Algeria.
-          </p>
-
-          <div className={styles.aboutBody}>
-            <p>
-              My work sits across medical AI, computer vision, deep
-              reinforcement learning, clinical decision support and software
-              systems.
-            </p>
-
-            <p>
-              I am interested in the part after the model: the interface, the
-              workflow, the constraints, the validation and the people who
-              eventually have to use what was built.
-            </p>
-
-            <p>
-              The goal is not to make technology look impressive. The goal is
-              to make difficult things understandable, testable and useful.
-            </p>
-          </div>
+      {/* THROUGH-LINE */}
+      <section className={styles.systemStrip} data-reveal>
+        <div>
+          <span>01</span>
+          <strong>QUESTION</strong>
         </div>
 
-        <aside className={styles.aboutAside}>
-          <div className={styles.aboutEducation}>
-            <span>EDUCATION</span>
-            <strong>
-              M.SC.
-              <br />
-              ELECTRONICS OF
-              <br />
-              EMBEDDED SYSTEMS
-            </strong>
-            <p>Université Mohamed Boudiaf de M&apos;sila · 2023</p>
-          </div>
+        <div className={styles.systemCenter}>
+          <span>THE THROUGH-LINE</span>
+          <strong>QUESTION → MODEL → USE</strong>
+        </div>
 
-          <div className={styles.aboutApplied}>
-            <span>APPLIED</span>
-            <strong>
-              MEDICAL AI
-              <br />
-              SOFTWARE
-              <br />
-              RESEARCH
-            </strong>
-          </div>
-        </aside>
+        <div>
+          <span>02</span>
+          <strong>MAKE USEFUL</strong>
+        </div>
       </section>
 
-      {/* =========================================================
-          CONTACT
-      ========================================================= */}
-      <section id="contact" className={styles.contactSection}>
-        <div className={styles.contactGrid} />
-
-        <div className={styles.contactTop}>
-          <span>10 / 10</span>
-          <span>LET&apos;S BUILD SOMETHING DIFFICULT</span>
-        </div>
-
-        <div className={styles.contactMain}>
-          <span className={styles.contactKicker}>OPEN TO GOOD PROBLEMS</span>
+      {/* ABOUT */}
+      <section id="about" className={styles.about}>
+        <div className={styles.aboutHeader} data-reveal>
+          <span className={styles.mono}>ABOUT / 01</span>
 
           <h2>
-            BRING THE
+            Between
             <br />
-            <span>HARD</span>
+            <em>thought &amp; use.</em>
+          </h2>
+        </div>
+
+        <div className={styles.aboutContent}>
+          <p className={styles.aboutLead} data-reveal>
+            I&apos;m Ahmed Messaad — an AI/ML engineer, full-stack developer
+            and researcher working where intelligent systems meet real
+            constraints.
+          </p>
+
+          <div className={styles.aboutBody} data-reveal>
+            <p>
+              My work moves between medical AI, computer vision, deep
+              reinforcement learning and software systems. The common thread
+              is not a particular technology. It&apos;s the attempt to take a
+              difficult question seriously enough to build the system it
+              requires.
+            </p>
+
+            <p>
+              That means the model is only part of the work. The data pipeline,
+              the interface, the validation, the deployment and the people who
+              use the result all matter. I&apos;m interested in the whole
+              system — from first question to useful consequence.
+            </p>
+          </div>
+        </div>
+
+        <div className={styles.aboutFacts} data-reveal>
+          <div>
+            <span>2023</span>
+            <strong>
+              M.Sc. Electronics of Embedded Systems
+              <br />
+              Université Mohamed Boudiaf de M&apos;sila
+            </strong>
+          </div>
+
+          <div>
+            <span>FOCUS</span>
+            <strong>
+              Medical AI / Computer Vision
+              <br />
+              Deep Reinforcement Learning / Clinical Decision Support
+            </strong>
+          </div>
+
+          <div>
+            <span>IN PRACTICE</span>
+            <strong>
+              AIRM contract
+              <br />
+              Hemolab contract
+              <br />
+              Shipped software systems
+            </strong>
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACT */}
+      <section id="contact" className={styles.contact}>
+        <div className={styles.contactTop} data-reveal>
+          <span className={styles.mono}>CONTACT / 01</span>
+        </div>
+
+        <div className={styles.contactMain} data-reveal>
+          <h2>
+            Bring the
             <br />
-            QUESTION.
+            hard question. <em>Let&apos;s work.</em>
           </h2>
 
           <p>
-            Research, engineering, product work, or a problem that does not fit
-            neatly inside one discipline. The interesting work usually begins
-            where the boundaries stop being useful.
+            If you&apos;re working on something difficult — a clinical
+            problem, an intelligent system, a product that needs thinking, or
+            research that needs building — I&apos;d like to hear about it.
           </p>
 
           <a
             href="mailto:ahmed.messaad@outlook.com"
-            className={styles.emailLink}
+            className={styles.contactEmail}
           >
-            AHMED.MESSAAD@OUTLOOK.COM <span>↗</span>
+            ahmed.messaad@outlook.com
           </a>
         </div>
 
-        <div className={styles.contactGraphic}>
-          <div className={styles.contactCircleOuter} />
-          <div className={styles.contactCircleInner} />
-          <div className={styles.contactCross}>+</div>
-          <span>AM</span>
-        </div>
+        <footer className={styles.footer}>
+          <div>
+            AM / 2026 · ALGERIA · INTELLIGENCE / SYSTEMS / RESEARCH
+          </div>
 
-        <div className={styles.contactBottom}>
-          <span>ALGERIA / 2026</span>
-          <span>AI / SYSTEMS / RESEARCH</span>
-          <span>END / BEGIN</span>
-        </div>
+          <div className={styles.footerLinks}>
+            <a
+              href="https://github.com/RYANX9"
+              target="_blank"
+              rel="noreferrer"
+            >
+              GITHUB
+            </a>
+
+            <a
+              href="https://linkedin.com/in/ahmedmessaad"
+              target="_blank"
+              rel="noreferrer"
+            >
+              LINKEDIN
+            </a>
+
+            <a
+              href="https://kaggle.com/ahmedmessaad"
+              target="_blank"
+              rel="noreferrer"
+            >
+              KAGGLE
+            </a>
+          </div>
+        </footer>
       </section>
-
-      {/* =========================================================
-          FOOTER
-      ========================================================= */}
-      <footer className={styles.footer}>
-        <div className={styles.footerBrand}>
-          <span>AM</span>
-          <strong>AHMED MESSAAD</strong>
-        </div>
-
-        <div className={styles.footerLinks}>
-          <a
-            href="https://github.com/RYANX9"
-            target="_blank"
-            rel="noreferrer"
-          >
-            GITHUB ↗
-          </a>
-
-          <a
-            href="https://linkedin.com/in/ahmedmessaad"
-            target="_blank"
-            rel="noreferrer"
-          >
-            LINKEDIN ↗
-          </a>
-
-          <a
-            href="https://kaggle.com/ahmedmessaad"
-            target="_blank"
-            rel="noreferrer"
-          >
-            KAGGLE ↗
-          </a>
-        </div>
-
-        <div className={styles.footerMeta}>
-          2026
-          <br />
-          ALGERIA
-        </div>
-      </footer>
     </main>
   );
 }
-
-export default BrutalistPortfolio;
