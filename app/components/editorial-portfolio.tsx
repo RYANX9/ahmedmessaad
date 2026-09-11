@@ -1,8 +1,74 @@
 "use client";
 
+import { useState } from "react";
 import styles from "./editorial-portfolio.module.css";
 
+type Experiment = {
+  id: string;
+  name: string;
+  tech: string;
+  result: string;
+  description: string;
+  link: string;
+  linkLabel: string;
+};
+
+const experiments: Experiment[] = [
+  {
+    id: "05",
+    name: "Healthcare Cost Prediction",
+    tech: "CONV1D · SHAP · 47 FEATURES",
+    result: "R² 0.88",
+    description:
+      "A predictive healthcare model using engineered features and explainability tooling to move beyond a single prediction toward understanding what drives the estimate. Feature engineering and SHAP analysis expose which signals influence projected healthcare cost.",
+    link: "https://github.com/RYANX9/healthcare-cost-prediction",
+    linkLabel: "READ THE CODE",
+  },
+  {
+    id: "06",
+    name: "My Daily Health",
+    tech: "MULTI-DISEASE · DEEP LEARNING",
+    result: "M.SC. THESIS",
+    description:
+      "A multi-disease diagnostic platform developed as an M.Sc. thesis, bringing multiple model architectures and disease domains into one usable system rather than a stack of disconnected notebooks.",
+    link: "https://youtu.be/kh7WBjNPpEM",
+    linkLabel: "WATCH THE DEMO",
+  },
+  {
+    id: "07",
+    name: "Crypto Trading",
+    tech: "PPO · A2C · SMA BASELINE",
+    result: "DRL",
+    description:
+      "A deep reinforcement-learning trading experiment comparing PPO and A2C against a simpler SMA baseline in a noisy, non-stationary environment. Greater model complexity did not guarantee a better strategy — an honest negative result kept in the record.",
+    link: "https://github.com/RYANX9/deep-rl-trading",
+    linkLabel: "READ THE EXPERIMENT",
+  },
+  {
+    id: "08",
+    name: "Day Tracker",
+    tech: "POSTGRESQL · WEB PUSH",
+    result: "SYSTEM",
+    description:
+      "A personal productivity system connecting tasks, budgets, streaks, reminders, notes and web push into one practical application, designed around a daily human workflow rather than an algorithm.",
+    link: "https://github.com/RYANX9/rystudio",
+    linkLabel: "READ THE CODE",
+  },
+  {
+    id: "09",
+    name: "Git-Backed CMS",
+    tech: "GITHUB API · ADMIN SYSTEM",
+    result: "PRODUCT",
+    description:
+      "A portfolio administration system where content edits flow through the GitHub Contents API, keeping the repository itself as the source of truth — every edit made through the admin dashboard is a real, versioned git commit.",
+    link: "https://zaid-saad.vercel.app",
+    linkLabel: "SEE THE PRODUCT",
+  },
+];
+
 export default function EditorialPortfolio() {
+  const [openExperiment, setOpenExperiment] = useState<string | null>(null);
+
   return (
     <div className={styles.page}>
       {/* HEADER */}
@@ -387,52 +453,46 @@ export default function EditorialPortfolio() {
             <div className={styles.mono}>05—09 / OTHER WORK</div>
           </div>
 
-          <div className={styles.experimentRow}>
-            <div className={styles.experimentNumber}>05</div>
-            <div className={styles.experimentName}>
-              Healthcare Cost Prediction
-            </div>
-            <div className={styles.experimentTech}>
-              CONV1D · SHAP · 47 FEATURES
-            </div>
-            <div className={styles.experimentResult}>R² 0.88</div>
-          </div>
+          {experiments.map((exp) => {
+            const isOpen = openExperiment === exp.id;
+            return (
+              <div className={styles.experimentItem} key={exp.id}>
+                <button
+                  type="button"
+                  className={styles.experimentRow}
+                  onClick={() => setOpenExperiment(isOpen ? null : exp.id)}
+                  aria-expanded={isOpen}
+                  aria-controls={`experiment-detail-${exp.id}`}
+                >
+                  <span className={styles.experimentNumber}>{exp.id}</span>
+                  <span className={styles.experimentName}>{exp.name}</span>
+                  <span className={styles.experimentTech}>{exp.tech}</span>
+                  <span className={styles.experimentResult}>{exp.result}</span>
+                  <span className={styles.experimentToggle} aria-hidden="true">
+                    {isOpen ? "−" : "+"}
+                  </span>
+                </button>
 
-          <div className={styles.experimentRow}>
-            <div className={styles.experimentNumber}>06</div>
-            <div className={styles.experimentName}>My Daily Health</div>
-            <div className={styles.experimentTech}>
-              MULTI-DISEASE · DEEP LEARNING
-            </div>
-            <div className={styles.experimentResult}>M.SC. THESIS</div>
-          </div>
-
-          <div className={styles.experimentRow}>
-            <div className={styles.experimentNumber}>07</div>
-            <div className={styles.experimentName}>Crypto Trading</div>
-            <div className={styles.experimentTech}>
-              PPO · A2C · SMA BASELINE
-            </div>
-            <div className={styles.experimentResult}>DRL</div>
-          </div>
-
-          <div className={styles.experimentRow}>
-            <div className={styles.experimentNumber}>08</div>
-            <div className={styles.experimentName}>Day Tracker</div>
-            <div className={styles.experimentTech}>
-              POSTGRESQL · WEB PUSH
-            </div>
-            <div className={styles.experimentResult}>SYSTEM</div>
-          </div>
-
-          <div className={styles.experimentRow}>
-            <div className={styles.experimentNumber}>09</div>
-            <div className={styles.experimentName}>Git-Backed CMS</div>
-            <div className={styles.experimentTech}>
-              GITHUB API · ADMIN SYSTEM
-            </div>
-            <div className={styles.experimentResult}>PRODUCT</div>
-          </div>
+                <div
+                  id={`experiment-detail-${exp.id}`}
+                  className={styles.experimentDetail}
+                  data-open={isOpen}
+                >
+                  <div className={styles.experimentDetailInner}>
+                    <p>{exp.description}</p>
+                    <a
+                      className={styles.experimentLink}
+                      href={exp.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {exp.linkLabel} ↗
+                    </a>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -591,6 +651,33 @@ export default function EditorialPortfolio() {
           >
             AHMED.MESSAAD@OUTLOOK.COM ↗
           </a>
+
+          <div className={styles.contactLinksRow}>
+            <a
+              className={styles.contactLink}
+              href="https://github.com/RYANX9"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GITHUB ↗
+            </a>
+            <a
+              className={styles.contactLink}
+              href="https://linkedin.com/in/ahmedmessaad"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LINKEDIN ↗
+            </a>
+            <a
+              className={styles.contactLink}
+              href="https://kaggle.com/ahmedmessaad"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              KAGGLE ↗
+            </a>
+          </div>
         </div>
       </section>
 
